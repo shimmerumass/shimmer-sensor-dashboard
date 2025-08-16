@@ -3,7 +3,7 @@ frontend:
   phases:
     preBuild:
       commands:
-        - npm ci
+        - npm install
         - npm install -g @angular/cli
         - npm install -D tailwindcss postcss autoprefixer
     build:
