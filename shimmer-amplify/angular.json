@@ -26,7 +26,8 @@
             ],
             "styles": [
               "src/styles.css"
-            ]
+            ],
+            "outputPath": "dist/shimmer-amplify"
           },
           "configurations": {
             "production": {
