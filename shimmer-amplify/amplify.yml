@@ -1,0 +1,15 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+    build:
+      commands:
+        - 'ng build'
+  artifacts:
+    baseDirectory: dist/shimmer-amplify
+    files:
+      - '**/*'
+  cache:
+    paths: []
