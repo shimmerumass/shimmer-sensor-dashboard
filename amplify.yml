@@ -10,7 +10,6 @@ frontend:
         - npm install -D tailwindcss postcss autoprefixer
     build:
       commands:
-        - cd shimmer-amplify
         - ng build
   artifacts:
     baseDirectory: shimmer-amplify/dist/shimmer-amplify
