@@ -3,6 +3,7 @@ frontend:
   phases:
     preBuild:
       commands:
+        - rm -rf shimmer-amplify/node_modules
         - cd shimmer-amplify
         - npm ci
         - npm install -g @angular/cli
