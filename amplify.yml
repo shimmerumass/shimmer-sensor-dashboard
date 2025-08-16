@@ -12,7 +12,7 @@ frontend:
       commands:
         - ng build
   artifacts:
-    baseDirectory: shimmer-amplify/dist/shimmer-amplify/browser
+    baseDirectory: shimmer-amplify/dist/shimmer-amplify
     files:
       - '**/*'
   cache:
