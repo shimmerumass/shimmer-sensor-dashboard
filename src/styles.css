@@ -3,3 +3,53 @@
 @tailwind utilities;
 
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+  --amplify-colors-primary-40: hsl(190, 95%, 30%);
+  --amplify-colors-primary-80: hsl(190, 70%, 70%);
+  --amplify-colors-primary-100: hsl(190, 75%, 95%);
+  --amplify-colors-blue-40: hsl(190, 95%, 30%);
+  --amplify-colors-blue-80: hsl(190, 70%, 70%);
+  --amplify-colors-blue-100: hsl(190, 75%, 95%);
+  --amplify-fonts-default-static: 'Inter', 'Segoe UI', Arial, sans-serif;
+  --amplify-fonts-default-variable: 'Inter', 'Segoe UI', Arial, sans-serif;
+  --amplify-colors-font-primary: hsl(190, 95%, 30%);
+  --amplify-colors-font-secondary: #333;
+}
+
+body, html {
+  font-family: var(--amplify-fonts-default-static);
+  color: var(--amplify-colors-font-secondary);
+}
+
+h1, .amplify-heading--2 {
+  color: var(--amplify-colors-font-primary);
+  font-family: var(--amplify-fonts-default-static);
+}
+
+p, .amplify-font-weights-bold {
+  color: var(--amplify-colors-font-secondary);
+  font-family: var(--amplify-fonts-default-static);
+  font-weight: 600;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Example: override Amplify color variables for dark mode */
+    --amplify-colors-neutral-10: hsl(210, 50%, 10%);
+    --amplify-colors-neutral-20: hsl(210, 25%, 25%);
+    --amplify-colors-neutral-40: hsl(210, 10%, 40%);
+    --amplify-colors-neutral-80: hsl(210, 5%, 87%);
+    --amplify-colors-neutral-90: hsl(210, 5%, 94%);
+    --amplify-colors-neutral-100: hsl(210, 5%, 98%);
+    --amplify-colors-black: #fff;
+    --amplify-colors-white: #000;
+    --amplify-colors-primary-40: hsl(190, 95%, 30%);
+    --amplify-colors-primary-80: hsl(190, 70%, 70%);
+    --amplify-colors-primary-100: hsl(190, 75%, 95%);
+    --amplify-colors-blue-40: hsl(190, 95%, 30%);
+    --amplify-colors-blue-80: hsl(190, 70%, 70%);
+    --amplify-colors-blue-100: hsl(190, 75%, 95%);
+    /* Add more overrides as needed for your theme */
+  }
+}
