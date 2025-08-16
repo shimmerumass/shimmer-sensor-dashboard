@@ -1,0 +1,19 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - nvm install 20.19.0
+        - nvm use 20.19.0
+        - npm ci
+        - npm install -g @angular/cli
+    build:
+      commands:
+        - ng build
+  artifacts:
+    baseDirectory: dist
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
