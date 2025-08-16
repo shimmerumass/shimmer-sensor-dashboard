@@ -17,7 +17,7 @@ frontend:
       commands:
         - ng build
   artifacts:
-    baseDirectory: dist
+    baseDirectory: dist/shimmer-server-ui/browser
     files:
       - '**/*'
   cache:
