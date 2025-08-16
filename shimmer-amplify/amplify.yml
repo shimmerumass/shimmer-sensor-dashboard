@@ -4,9 +4,11 @@ frontend:
     preBuild:
       commands:
         - npm ci
+        - npm install -g @angular/cli
+        - npm install -D tailwindcss postcss autoprefixer
     build:
       commands:
-        - 'ng build'
+        - ng build
   artifacts:
     baseDirectory: dist/shimmer-amplify
     files:
