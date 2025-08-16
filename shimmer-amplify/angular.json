@@ -27,7 +27,9 @@
             "styles": [
               "src/styles.css"
             ],
-            "outputPath": "dist/shimmer-amplify"
+            "outputPath": "dist/shimmer-amplify",
+            "baseHref": "./",
+            "deployUrl": "./"
           },
           "configurations": {
             "production": {
