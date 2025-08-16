@@ -10,14 +10,14 @@ import { AuthenticatorService } from '@aws-amplify/ui-angular';
 })
 export class AuthComp implements OnDestroy {
   @Output() authSuccess = new EventEmitter<void>();
-  private authCheckInterval: any;
+  private routeCheckInterval: any;
 
   constructor(public authenticator: AuthenticatorService, private router: Router) {
-    this.authCheckInterval = setInterval(() => {
-      if (this.authenticator.authStatus === 'authenticated') {
+    this.routeCheckInterval = setInterval(() => {
+      if (this.authenticator.route === 'authenticated') {
         this.router.navigate(['/home']);
         // window.location.reload();
-        clearInterval(this.authCheckInterval);
+        clearInterval(this.routeCheckInterval);
       }
     }, 300);
   }
@@ -28,8 +28,8 @@ export class AuthComp implements OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.authCheckInterval) {
-      clearInterval(this.authCheckInterval);
+    if (this.routeCheckInterval) {
+      clearInterval(this.routeCheckInterval);
     }
   }
 }
