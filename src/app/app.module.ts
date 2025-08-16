@@ -7,8 +7,7 @@ import { PagesModule } from './pages/pages.module';
 // Components
 
 @NgModule({
-  declarations: [
-  ],
+  declarations: [],
   imports: [BrowserModule, AmplifyAuthenticatorModule, CompModule, PagesModule],
   providers: [],
   bootstrap: []
