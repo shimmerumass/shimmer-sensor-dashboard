@@ -11,6 +11,7 @@ frontend:
     build:
       commands:
         - ng build
+        - ls -l dist/shimmer-amplify/browser
   artifacts:
     baseDirectory: shimmer-amplify/dist/shimmer-amplify/browser
     files:
