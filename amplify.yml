@@ -3,15 +3,18 @@ frontend:
   phases:
     preBuild:
       commands:
+        - cd shimmer-amplify
         - npm install
         - npm install -g @angular/cli
         - npm install -D tailwindcss postcss autoprefixer
     build:
       commands:
+        - cd shimmer-amplify
         - ng build
   artifacts:
-    baseDirectory: dist
+    baseDirectory: shimmer-amplify/dist/shimmer-amplify
     files:
       - '**/*'
   cache:
-    paths: []
+    paths:
+      - shimmer-amplify/node_modules/**/*
