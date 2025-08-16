@@ -1,2 +1,3 @@
 <p>auth-comp works!</p>
-<amplify-authenticator></amplify-authenticator>
+<amplify-authenticator (signIn)="onAuthComplete()" (signUp)="onAuthComplete()"></amplify-authenticator>
+<!-- <button (click)="logout()" class="amplify-button amplify-button--primary amplify-button--fullwidth font-normal">Logout</button> -->

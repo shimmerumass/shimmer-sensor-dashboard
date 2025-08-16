@@ -1,4 +1,3 @@
-<h1 class="amplify-heading--2 text-[hsl(190,95%,30%)] text-3xl font-bold mb-4 pt-2">Welcome to Shimmer Cloud Dashboard!</h1>
-<p class="amplify-font-weights-bold text-gray-700 text-lg mb-8 pb-2">Please enter your admin credentials to see more data.</p>
-<app-auth-comp></app-auth-comp>
-<button (click)="logout()" class="amplify-button amplify-button--primary amplify-button--fullwidth font-normal">Logout</button>
+<h1 *ngIf="!isAuthenticated" class="amplify-heading--2 text-[hsl(190,95%,30%)] text-3xl font-bold mb-4 pt-2">Welcome to Shimmer Cloud Dashboard!</h1>
+<p *ngIf="!isAuthenticated" class="amplify-font-weights-bold text-gray-700 text-lg mb-8 pb-2">Please enter your admin credentials to see more data.</p>
+<app-auth-comp (authSuccess)="onAuthSuccess()"></app-auth-comp>
