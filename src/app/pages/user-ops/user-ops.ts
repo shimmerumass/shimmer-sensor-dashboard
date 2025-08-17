@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../services/api.service';
+import { ApiService, DevicePatientRecord } from '../../services/api.service';
 
 @Component({
   selector: 'app-user-ops',
@@ -11,6 +11,7 @@ export class UserOpsPage implements OnInit {
   showModal = false;
   device = '';
   patient = '';
+  readonlyDevice = false;
   saving = false;
   actionError = '';
   unregistered: string[] = [];
@@ -24,18 +25,23 @@ export class UserOpsPage implements OnInit {
   openModal(dev?: string, pat?: string) {
     this.device = dev || '';
     this.patient = pat || '';
+    this.readonlyDevice = !!dev; // make device static when editing a selected device
     this.actionError = '';
     this.showModal = true;
   }
 
-  closeModal() { this.showModal = false; }
+  onUpdate(rec: DevicePatientRecord) {
+    this.openModal(rec.device, rec.patient || '');
+  }
+
+  closeModal() { this.showModal = false; this.readonlyDevice = false; }
 
   saveMapping() {
     if (!this.device) { this.actionError = 'Device is required'; return; }
     this.saving = true;
     this.actionError = '';
     this.api.ddbPutDeviceMapping(this.device, { patient: this.patient || '' }).subscribe({
-      next: () => { this.saving = false; this.showModal = false; this.loadUnregistered(); },
+      next: () => { this.saving = false; this.showModal = false; this.readonlyDevice = false; this.loadUnregistered(); },
       error: (e) => { console.error('Failed to save mapping', e); this.saving = false; this.actionError = 'Failed to save mapping.'; }
     });
   }

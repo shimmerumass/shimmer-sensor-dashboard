@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
 import { ApiService, DevicePatientRecord } from '../../services/api.service';
 
@@ -11,10 +11,38 @@ import { ApiService, DevicePatientRecord } from '../../services/api.service';
 export class UserGridComponent implements OnInit {
   private gridApi?: GridApi;
 
+  @Output() updateRequested = new EventEmitter<DevicePatientRecord>();
+
   columnDefs: ColDef[] = [
     { headerName: 'Device', field: 'device', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
-    { headerName: 'Patient', field: 'patient', filter: 'agSetColumnFilter', sortable: true, flex: 1 },
-    { headerName: 'Updated At', field: 'updatedAt', filter: 'agDateColumnFilter', sortable: true, flex: 1 }
+    { headerName: 'Patient', field: 'patient', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
+    { headerName: 'Updated At', field: 'updatedAt', filter: 'agDateColumnFilter', sortable: true, flex: 1 },
+    {
+      headerName: 'Actions',
+      field: 'actions',
+      width: 150,
+      sortable: false,
+      filter: false,
+      cellRenderer: () => `
+        <div style="display:flex; gap:6px;">
+          <button type="button" class="ag-action-btn ag-action-icon update" title="Update mapping">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9" />
+              <path d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4 12.5-12.5z" />
+            </svg>
+          </button>
+          <button type="button" class="ag-action-btn ag-action-icon delete" title="Delete mapping">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+              <path d="M10 11v6" />
+              <path d="M14 11v6" />
+              <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+            </svg>
+          </button>
+        </div>
+      `
+    }
   ];
 
   defaultColDef: ColDef = { resizable: true, filter: true, sortable: true, floatingFilter: true };
@@ -23,6 +51,7 @@ export class UserGridComponent implements OnInit {
   quickFilterText = '';
   isLoading = false;
   loadError = '';
+  actionError = '';
 
   constructor(private api: ApiService) {}
 
@@ -43,5 +72,30 @@ export class UserGridComponent implements OnInit {
   onQuickFilterChange(event: Event) {
     const input = event.target as HTMLInputElement;
     this.quickFilterText = input?.value ?? '';
+  }
+
+  onCellClicked(event: any) {
+    if (event.colDef.field !== 'actions') return;
+    const targetBtn = (event.event?.target as HTMLElement)?.closest('button');
+    if (!targetBtn) return;
+    const rec = event.data as DevicePatientRecord;
+    this.actionError = '';
+    if (targetBtn.classList.contains('update')) {
+      this.updateRequested.emit(rec);
+      return;
+    }
+    if (targetBtn.classList.contains('delete')) {
+      const yes = confirm(`Delete mapping for device ${rec.device}?`);
+      if (!yes) return;
+      this.api.ddbDeleteDeviceMapping(rec.device).subscribe({
+        next: () => {
+          this.rowData = this.rowData.filter(r => r.device !== rec.device);
+        },
+        error: (e) => {
+          console.error('Failed to delete mapping', e);
+          this.actionError = 'Delete failed. Please try again.';
+        }
+      });
+    }
   }
 }

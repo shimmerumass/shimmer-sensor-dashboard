@@ -5,7 +5,15 @@
   <div class="bg-white/70 backdrop-blur rounded-xl shadow border border-gray-100 p-4">
     <div class="flex flex-wrap items-center gap-3">
       <button class="amplify-button amplify-button--primary" (click)="openModal()">Add/Update Mapping</button>
-      <button class="amplify-button" (click)="loadUnregistered()">Refresh Unregistered</button>
+      <button class="amplify-button" (click)="loadUnregistered()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-2 align-middle">
+          <polyline points="23 4 23 10 17 10"></polyline>
+          <polyline points="1 20 1 14 7 14"></polyline>
+          <path d="M3.51 9a9 9 0 0114.13-3.36L23 10"></path>
+          <path d="M20.49 15A9 9 0 016.36 18.36L1 14"></path>
+        </svg>
+        <span class="align-middle">Refresh Unregistered</span>
+      </button>
     </div>
   </div>
 
@@ -14,13 +22,21 @@
     <h4 class="text-gray-800 font-semibold mb-2">Unregistered Devices</h4>
     <div *ngIf="!unregistered.length" class="text-gray-500">None</div>
     <ul class="list-disc pl-5 space-y-1">
-      <li *ngFor="let d of unregistered" class="text-gray-700">{{ d }}</li>
+      <li *ngFor="let d of unregistered" class="flex items-center justify-between text-gray-700">
+        <span>{{ d }}</span>
+        <button class="amplify-button" (click)="openModal(d)" title="Add mapping for this device">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block align-middle">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+      </li>
     </ul>
   </div>
 
   <!-- Grid Card -->
   <div class="bg-white/70 backdrop-blur rounded-xl shadow border border-gray-100 p-2">
-    <app-user-grid></app-user-grid>
+    <app-user-grid (updateRequested)="onUpdate($event)"></app-user-grid>
   </div>
 
   <!-- Modal -->
@@ -29,7 +45,7 @@
     <div class="bg-white rounded-xl shadow-xl border border-gray-100 p-5" *ngIf="showModal" (click)="$event.stopPropagation()">
       <h3 class="text-lg font-semibold text-gray-800 mb-3">Device-Patient Mapping</h3>
       <label class="block text-sm text-gray-600 mb-1">Device</label>
-      <input [(ngModel)]="device" placeholder="Device id" class="w-full mb-3 px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300" />
+      <input [(ngModel)]="device" [readonly]="readonlyDevice" placeholder="Device id" class="w-full mb-3 px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300" />
       <label class="block text-sm text-gray-600 mb-1">Patient</label>
       <input [(ngModel)]="patient" placeholder="Patient name" class="w-full mb-3 px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300" />
       <div *ngIf="actionError" class="bg-red-50 text-red-700 border border-red-200 rounded-lg px-3 py-2 mb-3">{{ actionError }}</div>
