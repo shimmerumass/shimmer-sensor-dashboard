@@ -17,17 +17,11 @@
 
       <!-- Navigation Links (Hidden on mobile) -->
       <nav class="hidden md:flex items-center space-x-8">
-        <a href="#" class="text-white/80 hover:text-white transition-colors duration-200 font-medium">
-          Overview
+        <a routerLink="/" [routerLinkActive]="['text-white','font-semibold']" [routerLinkActiveOptions]="{ exact: true }" class="text-white/80 hover:text-white transition-colors duration-200 font-medium">
+          Files
         </a>
-        <a href="#" class="text-white/80 hover:text-white transition-colors duration-200 font-medium">
-          Sensors
-        </a>
-        <a href="#" class="text-white/80 hover:text-white transition-colors duration-200 font-medium">
-          Analytics
-        </a>
-        <a href="#" class="text-white/80 hover:text-white transition-colors duration-200 font-medium">
-          Alerts
+        <a routerLink="/user-ops" [routerLinkActive]="['text-white','font-semibold']" class="text-white/80 hover:text-white transition-colors duration-200 font-medium">
+          User Ops
         </a>
       </nav>
 

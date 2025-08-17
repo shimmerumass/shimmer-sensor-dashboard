@@ -1,0 +1,42 @@
+<app-header-comp (logoutEvent)="onLogout()"></app-header-comp>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+  <!-- Toolbar Card -->
+  <div class="bg-white/70 backdrop-blur rounded-xl shadow border border-gray-100 p-4">
+    <div class="flex flex-wrap items-center gap-3">
+      <button class="amplify-button amplify-button--primary" (click)="openModal()">Add/Update Mapping</button>
+      <button class="amplify-button" (click)="loadUnregistered()">Refresh Unregistered</button>
+    </div>
+  </div>
+
+  <!-- Unregistered Devices Card -->
+  <div class="bg-white/70 backdrop-blur rounded-xl shadow border border-gray-100 p-4">
+    <h4 class="text-gray-800 font-semibold mb-2">Unregistered Devices</h4>
+    <div *ngIf="!unregistered.length" class="text-gray-500">None</div>
+    <ul class="list-disc pl-5 space-y-1">
+      <li *ngFor="let d of unregistered" class="text-gray-700">{{ d }}</li>
+    </ul>
+  </div>
+
+  <!-- Grid Card -->
+  <div class="bg-white/70 backdrop-blur rounded-xl shadow border border-gray-100 p-2">
+    <app-user-grid></app-user-grid>
+  </div>
+
+  <!-- Modal -->
+  <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40" *ngIf="showModal" (click)="closeModal()"></div>
+  <div class="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-md">
+    <div class="bg-white rounded-xl shadow-xl border border-gray-100 p-5" *ngIf="showModal" (click)="$event.stopPropagation()">
+      <h3 class="text-lg font-semibold text-gray-800 mb-3">Device-Patient Mapping</h3>
+      <label class="block text-sm text-gray-600 mb-1">Device</label>
+      <input [(ngModel)]="device" placeholder="Device id" class="w-full mb-3 px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300" />
+      <label class="block text-sm text-gray-600 mb-1">Patient</label>
+      <input [(ngModel)]="patient" placeholder="Patient name" class="w-full mb-3 px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300" />
+      <div *ngIf="actionError" class="bg-red-50 text-red-700 border border-red-200 rounded-lg px-3 py-2 mb-3">{{ actionError }}</div>
+      <div class="flex justify-end gap-2">
+        <button class="amplify-button" (click)="closeModal()">Cancel</button>
+        <button class="amplify-button amplify-button--primary" [disabled]="saving" (click)="saveMapping()">{{ saving ? 'Saving…' : 'Save' }}</button>
+      </div>
+    </div>
+  </div>
+</div>

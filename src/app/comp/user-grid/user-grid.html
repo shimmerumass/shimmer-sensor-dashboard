@@ -1,0 +1,19 @@
+<div class="user-grid-viewport">
+  <div class="toolbar">
+    <input type="text" placeholder="Quick search..." [value]="quickFilterText" (input)="onQuickFilterChange($event)">
+    <button class="amplify-button" (click)="reload()">Reload</button>
+  </div>
+
+  <div *ngIf="loadError" class="msg msg-error">{{ loadError }}</div>
+
+  <ag-grid-angular
+    class="ag-theme-quartz"
+    style="width:100%; height:520px;"
+    [theme]="'legacy'"
+    [defaultColDef]="defaultColDef"
+    [rowData]="rowData"
+    [columnDefs]="columnDefs"
+    [quickFilterText]="quickFilterText"
+    (gridReady)="onGridReady($event)">
+  </ag-grid-angular>
+</div>

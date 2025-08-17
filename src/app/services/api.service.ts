@@ -24,13 +24,19 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  listFiles(): Observable<FileItem[]> {
-    return this.http.get<FileItem[]>(`${this.baseUrl}/files/`);
+  // Raw filenames (legacy)
+  listFiles(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.baseUrl}/files/`);
   }
 
+  // New: rich metadata objects
+  listFilesMetadata(): Observable<FileItem[]> {
+    return this.http.get<FileItem[]>(`${this.baseUrl}/files/metadata/`);
+  }
+
+  // Back-compat for callers
   listFilesParsed(): Observable<FileItem[]> {
-    // Backend already returns parsed items; keep method for backwards compatibility
-    return this.listFiles();
+    return this.listFilesMetadata();
   }
 
   getDownloadUrl(filename: string): Observable<{ url: string }> {
