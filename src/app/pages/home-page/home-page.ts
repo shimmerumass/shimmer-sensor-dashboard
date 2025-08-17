@@ -1,18 +1,17 @@
 import { Component } from '@angular/core';
-import { signOut } from '@aws-amplify/auth';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
-  standalone:  false,
+  standalone: false,
   templateUrl: './home-page.html',
   styleUrls: ['./home-page.css']
 })
 export class HomePage {
   constructor(private router: Router) {}
 
-  async logout() {
-    await signOut();
-    this.router.navigate(['/']);
+  onLogout() {
+    console.log('Logout event received from header component');
+    // Handle any additional logout logic here
   }
 }

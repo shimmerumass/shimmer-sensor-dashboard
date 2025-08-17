@@ -1,10 +1,10 @@
-import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
-import { App } from './app/app';
+import '@angular/compiler';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { AppModule } from './app/app.module';
 import { Amplify } from 'aws-amplify';
 import amplifyConfig from './amplifyconfiguration.json';
 
 Amplify.configure(amplifyConfig);
 
-bootstrapApplication(App, appConfig)
-  .catch((err) => console.error(err));
+platformBrowserDynamic().bootstrapModule(AppModule)
+  .catch((err: any) => console.error(err));
