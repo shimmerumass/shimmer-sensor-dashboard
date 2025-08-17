@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { fetchAuthSession } from '@aws-amplify/auth';
 import { ApiService, DevicePatientRecord } from '../../services/api.service';
 import { UserGridComponent } from '../../comp/user-grid/user-grid';
 
@@ -24,9 +26,20 @@ export class UserOpsPage implements OnInit {
   notifType: 'success' | 'error' = 'success';
   private notifTimer?: any;
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, private router: Router) {}
+
+  async checkAuth() {
+    try {
+      const session = await fetchAuthSession();
+      const isAuth = session?.tokens?.idToken ? true : false;
+      if (!isAuth) this.router.navigate(['/login']);
+    } catch {
+      this.router.navigate(['/login']);
+    }
+  }
 
   ngOnInit(): void {
+    this.checkAuth();
     this.loadUnregistered();
   }
 

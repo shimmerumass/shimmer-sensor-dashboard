@@ -10,12 +10,13 @@ import { FormsModule } from '@angular/forms';
 const routes: Routes = [
   { path: '', component: LoginPage },
   { path: 'home', component: HomePage },
-  { path: 'user-ops', component: UserOpsPage }
+  { path: 'user-ops', component: UserOpsPage },
+  { path: 'login', component: LoginPage }
 ];
 
 @NgModule({
   declarations: [LoginPage, HomePage, UserOpsPage],
   imports: [CommonModule, CompModule, RouterModule.forChild(routes), FormsModule],
-  exports: [LoginPage, HomePage, UserOpsPage]
+  exports: [RouterModule]
 })
 export class PagesModule {}

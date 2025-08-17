@@ -15,9 +15,9 @@ export class HeaderComp {
   }
 
   async logout() {
-    await signOut();
+    try { await signOut(); } catch {}
     this.logoutEvent.emit();
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 }
 
