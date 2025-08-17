@@ -34,6 +34,10 @@ export class ApiService {
     return this.http.get<{ url: string }>(`${this.baseUrl}/download-all-url/`);
   }
 
+  buildDirectDownloadUrl(filename: string): string {
+    return `${this.baseUrl}/download/${encodeURIComponent(filename)}`;
+  }
+
   private parseFileName(name: string): FileItem {
     // Expected pattern: device_YYYYMMDD_HHMMSS_part.ext (part optional)
     const [device = '', ymd = '', hms = '', partExt = ''] = name.split('_');

@@ -22,7 +22,7 @@
     [pagination]="true"
     [paginationPageSize]="pageSize"
     [paginationPageSizeSelector]="pageSizeOptions"
-    [rowSelection]="{ mode: 'multiRow' }"
+    (cellClicked)="onCellClicked($event)"
     [enableCellTextSelection]="true">
   </ag-grid-angular>
 </div>

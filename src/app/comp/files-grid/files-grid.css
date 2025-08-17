@@ -25,3 +25,35 @@
   user-select: text;
   -webkit-user-select: text;
 }
+
+/* Action button style inside grid */
+.ag-theme-quartz .ag-cell .ag-action-btn {
+  background: hsl(190, 95%, 30%);
+  border: none;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.ag-theme-quartz .ag-cell .ag-action-btn:hover {
+  background: hsl(190, 95%, 25%);
+}
+
+/* Icon-style action button */
+.ag-theme-quartz .ag-cell .ag-action-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  color: hsl(190, 95%, 30%);
+}
+.ag-theme-quartz .ag-cell .ag-action-icon:hover {
+  background: hsl(190, 75%, 95%);
+  border-color: hsl(190, 95%, 30%);
+}
