@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ColDef } from 'ag-grid-community';
+import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
 import { ApiService, FileItem } from '../../services/api.service';
 
 @Component({
@@ -9,10 +9,53 @@ import { ApiService, FileItem } from '../../services/api.service';
   styleUrls: ['./files-grid.css']
 })
 export class FilesGrid implements OnInit {
+  private gridApi?: GridApi;
+
+  private static parseTimeToSeconds(t?: string): number {
+    if (!t) return 0;
+    const m = t.match(/^(\d{2}):(\d{2}):(\d{2})$/);
+    if (!m) return 0;
+    const hh = Number(m[1]);
+    const mm = Number(m[2]);
+    const ss = Number(m[3]);
+    return (hh || 0) * 3600 + (mm || 0) * 60 + (ss || 0);
+  }
+
+  private static compareYyyyMmDd(filterDate: Date, cellValue?: string): number {
+    if (!cellValue) return -1;
+    const [y, m, d] = cellValue.split('-').map(Number);
+    const cellDate = new Date(y, (m || 1) - 1, d || 1);
+    const fd = new Date(filterDate.getFullYear(), filterDate.getMonth(), filterDate.getDate());
+    const cd = new Date(cellDate.getFullYear(), cellDate.getMonth(), cellDate.getDate());
+    if (cd < fd) return -1;
+    if (cd > fd) return 1;
+    return 0;
+  }
+
   columnDefs: ColDef[] = [
     { headerName: 'Device', field: 'device', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
-    { headerName: 'Date', field: 'date', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
-    { headerName: 'Time', field: 'time', filter: 'agTextColumnFilter', sortable: true, width: 130 },
+    {
+      headerName: 'Date',
+      field: 'date',
+      filter: 'agDateColumnFilter',
+      filterParams: {
+        comparator: (filterLocalDateAtMidnight: Date, cellValue: string) =>
+          FilesGrid.compareYyyyMmDd(filterLocalDateAtMidnight, cellValue),
+        browserDatePicker: true
+      },
+      sortable: true,
+      flex: 1
+    },
+    {
+      headerName: 'Time',
+      field: 'time',
+      filter: 'agNumberColumnFilter',
+      filterParams: { filterOptions: ['inRange', 'greaterThan', 'lessThan', 'equals'] },
+      sortable: true,
+      width: 130,
+      valueGetter: params => FilesGrid.parseTimeToSeconds(params.data?.time),
+      valueFormatter: params => params.data?.time ?? ''
+    },
     { headerName: 'File Name', field: 'part', filter: 'agTextColumnFilter', width: 110 },
     { headerName: 'Ext', field: 'ext', filter: 'agTextColumnFilter', width: 110, hide: true },
     { headerName: 'Full Name', field: 'name', filter: 'agTextColumnFilter', flex: 2, hide: true },
@@ -33,6 +76,7 @@ export class FilesGrid implements OnInit {
       filter: false
     }
   ];
+
   defaultColDef: ColDef = { resizable: true, filter: true, sortable: true, floatingFilter: true };
 
   rowData: FileItem[] = [];
@@ -41,11 +85,18 @@ export class FilesGrid implements OnInit {
   pageSize = 25;
   pageSizeOptions = [10, 25, 50, 100];
 
+  timeFrom = '';
+  timeTo = '';
+
   constructor(private api: ApiService) {}
 
   ngOnInit(): void {
-    console.log("Fetching file data...");
+    console.log('Fetching file data...');
     this.api.listFilesParsed().subscribe(items => (this.rowData = items));
+  }
+
+  onGridReady(e: GridReadyEvent) {
+    this.gridApi = e.api;
   }
 
   onQuickFilterChange(event: Event) {
@@ -56,6 +107,20 @@ export class FilesGrid implements OnInit {
   onPageSizeChange(event: Event) {
     const val = Number((event.target as HTMLSelectElement).value);
     this.pageSize = val;
+  }
+
+  applyTimeRangeFilter() {
+    if (!this.gridApi) return;
+    const fromSec = FilesGrid.parseTimeToSeconds(this.timeFrom);
+    const toSec = FilesGrid.parseTimeToSeconds(this.timeTo);
+    if (!fromSec && !toSec) {
+      this.gridApi.setFilterModel({ ...this.gridApi.getFilterModel(), time: null });
+      return;
+    }
+    const model = { filterType: 'number', type: 'inRange', filter: fromSec || 0, filterTo: toSec || 86399 } as any;
+    const fm = this.gridApi.getFilterModel() || {};
+    (fm as any)['time'] = model;
+    this.gridApi.setFilterModel(fm);
   }
 
   onCellClicked(event: any) {

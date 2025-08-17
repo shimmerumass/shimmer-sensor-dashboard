@@ -2,12 +2,18 @@
   <!-- toolbar -->
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; gap:8px; width:100%; max-width:1100px;">
     <h3 style="margin:0; font-weight:700;">Files</h3>
-    <div style="display:flex; align-items:center; gap:8px;">
+    <div style="display:flex; align-items:center; gap:8px; flex-wrap: wrap;">
       <input type="text" placeholder="Quick search..." (input)="onQuickFilterChange($event)" style="padding:6px 10px; border:1px solid #e5e7eb; border-radius:6px;">
       <label style="font-size:12px; color:#6b7280;">Page size</label>
       <select [value]="pageSize" (change)="onPageSizeChange($event)" style="padding:6px 10px; border:1px solid #e5e7eb; border-radius:6px;">
         <option *ngFor="let s of pageSizeOptions" [value]="s">{{s}}</option>
       </select>
+      <label style="font-size:12px; color:#6b7280;">From</label>
+      <input type="time" step="1" (input)="timeFrom = $any($event.target).value" style="padding:6px 10px; border:1px solid #e5e7eb; border-radius:6px;">
+      <label style="font-size:12px; color:#6b7280;">To</label>
+      <input type="time" step="1" (input)="timeTo = $any($event.target).value" style="padding:6px 10px; border:1px solid #e5e7eb; border-radius:6px;">
+      <button (click)="applyTimeRangeFilter()" class="amplify-button amplify-button--primary" style="font-weight:normal; padding:6px 12px;">Apply</button>
+      <button (click)="timeFrom=''; timeTo=''; applyTimeRangeFilter()" class="amplify-button" style="font-weight:normal; padding:6px 12px;">Clear</button>
     </div>
   </div>
   <!-- grid -->
@@ -22,6 +28,7 @@
     [pagination]="true"
     [paginationPageSize]="pageSize"
     [paginationPageSizeSelector]="pageSizeOptions"
+    (gridReady)="onGridReady($event)"
     (cellClicked)="onCellClicked($event)"
     [enableCellTextSelection]="true">
   </ag-grid-angular>
