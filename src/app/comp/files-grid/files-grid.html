@@ -11,6 +11,13 @@
     </div>
     <div class="right">
       <input type="text" placeholder="Quick search..." [value]="quickFilterText" (input)="onQuickFilterChange($event)">
+
+      <label>Patient</label>
+      <select [value]="selectedPatient" (change)="selectedPatient = $any($event.target).value; applyPatientFilter()">
+        <option value="">All</option>
+        <option *ngFor="let p of uniquePatients" [value]="p">{{ p }}</option>
+      </select>
+
       <label>From</label>
       <input type="time" step="1" [value]="timeFrom" (input)="timeFrom = $any($event.target).value">
       <label>To</label>

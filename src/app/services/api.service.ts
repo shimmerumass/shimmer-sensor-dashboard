@@ -9,6 +9,7 @@ export interface FileItem {
   time: string; // HH:MM:SS
   part?: string | null;
   ext: string;
+  patient?: string | null;
 }
 
 @Injectable({ providedIn: 'root' })

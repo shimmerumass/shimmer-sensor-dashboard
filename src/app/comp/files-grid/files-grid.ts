@@ -85,6 +85,7 @@ export class FilesGrid implements OnInit {
   }
 
   columnDefs: ColDef[] = [
+    { headerName: 'Patient', field: 'patient', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
     { headerName: 'Device', field: 'device', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
     {
       headerName: 'Date',
@@ -111,8 +112,9 @@ export class FilesGrid implements OnInit {
       valueFormatter: params => params.data?.time ?? ''
     },
     { headerName: 'File Name', field: 'part', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', width: 110 },
+    
     { headerName: 'Ext', field: 'ext', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', width: 110, hide: true },
-    { headerName: 'Full Name', field: 'name', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', flex: 2, hide: true },
+    { headerName: 'File', field: 'name', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', flex: 2, hide: true },
     {
       headerName: 'Actions',
       field: 'actions',
@@ -148,6 +150,16 @@ export class FilesGrid implements OnInit {
   isLoading = false;
   loadError = '';
   actionError = '';
+
+  // Patient toolbar filter
+  selectedPatient = '';
+  get uniquePatients(): string[] {
+    const s = new Set<string>();
+    for (const r of this.rowData) {
+      if (r.patient) s.add(r.patient);
+    }
+    return Array.from(s).sort();
+  }
 
   constructor(private api: ApiService) {}
 
@@ -196,6 +208,18 @@ export class FilesGrid implements OnInit {
     this.gridApi.setFilterModel(fm);
   }
 
+  applyPatientFilter() {
+    if (!this.gridApi) return;
+    const fm = (this.gridApi.getFilterModel() || {}) as any;
+    if (!this.selectedPatient) {
+      delete fm['patient'];
+      this.gridApi.setFilterModel(Object.keys(fm).length ? fm : null);
+      return;
+    }
+    fm['patient'] = { filterType: 'set', values: [this.selectedPatient] };
+    this.gridApi.setFilterModel(fm);
+  }
+
   clearColumnFilter(colKey: string) {
     if (!this.gridApi) return;
     const fm = (this.gridApi.getFilterModel() || {}) as any;
@@ -218,6 +242,7 @@ export class FilesGrid implements OnInit {
     this.gridApi.setFilterModel(null);
     this.timeFrom = '';
     this.timeTo = '';
+    this.selectedPatient = '';
   }
   
   onCellClicked(event: any) {
@@ -267,5 +292,7 @@ export class FilesGrid implements OnInit {
     const fm = (this.gridApi.getFilterModel() || {}) as any;
     fm[colId] = null;
     this.gridApi.setFilterModel(fm);
+    if (colId === 'patient') this.selectedPatient = '';
+    if (colId === 'time') { this.timeFrom = ''; this.timeTo = ''; }
   }
 }
