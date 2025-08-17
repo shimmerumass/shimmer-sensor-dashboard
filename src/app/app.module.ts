@@ -8,6 +8,10 @@ import { PagesModule } from './pages/pages.module';
 import { App } from './app';
 import { routes } from './app.routes';
 
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
+// Register all Community features
+ModuleRegistry.registerModules([AllCommunityModule]);
+
 @NgModule({
   declarations: [App],
   imports: [
