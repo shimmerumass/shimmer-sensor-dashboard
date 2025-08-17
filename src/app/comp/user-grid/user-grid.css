@@ -1,4 +1,58 @@
 .user-grid-viewport { width: 100%; max-width: 1100px; }
-.toolbar { display:flex; gap:8px; align-items:center; margin-bottom:8px; }
-.msg { margin:8px 0; padding:10px 12px; border-radius:8px; font-size:14px; }
-.msg-error { background:#fef2f2; color:#991b1b; border:1px solid #fecaca; }
+
+/* Toolbar as a light card */
+.toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+  background: rgba(255,255,255,0.7);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+.toolbar input[type="text"] {
+  flex: 1 1 260px;
+  padding: 8px 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: box-shadow .2s ease, border-color .2s ease;
+}
+.toolbar input[type="text"]:focus {
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px rgba(147,197,253,0.35);
+}
+
+/* Action buttons in grid */
+.ag-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #f8fafc;
+  color: #374151;
+  cursor: pointer;
+  transition: background .15s ease, transform .1s ease, border-color .15s ease;
+}
+.ag-action-btn:hover { background: #eef2ff; border-color: #dbeafe; }
+.ag-action-btn:active { transform: scale(0.98); }
+.ag-action-btn svg { pointer-events: none; }
+
+/* Messages */
+.msg { margin:8px 0; padding:10px 12px; border-radius:10px; font-size:14px; border:1px solid transparent; }
+.msg-error { background:#fef2f2; color:#991b1b; border-color:#fecaca; }
+.msg-success { background:#ecfdf5; color:#065f46; border-color:#a7f3d0; }
+
+/* Make ag-grid container rounded with subtle border */
+.ag-theme-quartz {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+}

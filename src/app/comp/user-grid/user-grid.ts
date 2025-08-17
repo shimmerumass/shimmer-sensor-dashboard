@@ -12,6 +12,7 @@ export class UserGridComponent implements OnInit {
   private gridApi?: GridApi;
 
   @Output() updateRequested = new EventEmitter<DevicePatientRecord>();
+  @Output() changed = new EventEmitter<{ action: 'delete'; device: string; ok: boolean; error?: string }>();
 
   columnDefs: ColDef[] = [
     { headerName: 'Device', field: 'device', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
@@ -23,8 +24,9 @@ export class UserGridComponent implements OnInit {
       width: 150,
       sortable: false,
       filter: false,
+      cellStyle: { display: 'flex', justifyContent: 'center', alignItems: 'center' },
       cellRenderer: () => `
-        <div style="display:flex; gap:6px;">
+        <div style="display:flex; justify-content:center; align-items:center; gap:6px; width:100%; height:100%;">
           <button type="button" class="ag-action-btn ag-action-icon update" title="Update mapping">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 20h9" />
@@ -89,11 +91,13 @@ export class UserGridComponent implements OnInit {
       if (!yes) return;
       this.api.ddbDeleteDeviceMapping(rec.device).subscribe({
         next: () => {
-          this.rowData = this.rowData.filter(r => r.device !== rec.device);
+          this.changed.emit({ action: 'delete', device: rec.device, ok: true });
+          this.reload();
         },
         error: (e) => {
           console.error('Failed to delete mapping', e);
           this.actionError = 'Delete failed. Please try again.';
+          this.changed.emit({ action: 'delete', device: rec.device, ok: false, error: 'Delete failed. Please try again.' });
         }
       });
     }

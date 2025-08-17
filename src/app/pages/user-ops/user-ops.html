@@ -1,21 +1,52 @@
 <app-header-comp (logoutEvent)="onLogout()"></app-header-comp>
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-  <!-- Toolbar Card -->
-  <div class="bg-white/70 backdrop-blur rounded-xl shadow border border-gray-100 p-4">
-    <div class="flex flex-wrap items-center gap-3">
-      <button class="amplify-button amplify-button--primary" (click)="openModal()">Add/Update Mapping</button>
-      <button class="amplify-button" (click)="loadUnregistered()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-2 align-middle">
+<section class="relative overflow-hidden bg-gradient-to-r from-[hsl(190,95%,30%)] to-[hsl(190,95%,25%)] text-white py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
+  <div class="absolute inset-0 bg-black/10"></div>
+  <div class="relative max-w-7xl mx-auto">
+    <div class="text-center animate-slide-up">
+      <h1 class="text-3xl md:text-5xl font-bold mb-4 tracking-tight">
+        Manage <span class="text-yellow-300">User Operations</span>
+      </h1>
+      <p class="text-lg md:text-xl mb-6 text-blue-100 max-w-3xl mx-auto">
+        Map devices to patients, review unregistered devices, and maintain your directory with powerful filters and actions.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <button (click)="openModal()" class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-6 py-2.5 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+          Add Mapping
+        </button>
+        <button (click)="loadUnregistered()" class="border-2 border-white hover:bg-white hover:text-[hsl(190,95%,30%)] px-6 py-2.5 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-2 align-middle">
           <polyline points="23 4 23 10 17 10"></polyline>
           <polyline points="1 20 1 14 7 14"></polyline>
           <path d="M3.51 9a9 9 0 0114.13-3.36L23 10"></path>
           <path d="M20.49 15A9 9 0 016.36 18.36L1 14"></path>
         </svg>
-        <span class="align-middle">Refresh Unregistered</span>
-      </button>
+          Refresh Unregistered
+        </button>
+      </div>
     </div>
   </div>
+  <!-- Floating Elements -->
+  <div class="absolute top-10 left-10 w-20 h-20 bg-white opacity-10 rounded-full animate-float"></div>
+  <div class="absolute bottom-10 right-10 w-16 h-16 bg-yellow-300 opacity-20 rounded-full animate-float-delayed"></div>
+  <div class="absolute top-1/2 left-1/4 w-12 h-12 bg-blue-200 opacity-30 rounded-full animate-float-slow"></div>
+</section>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+  <!-- Page intro / explanation -->
+  <div class="bg-blue-50 text-blue-800 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
+    </svg>
+    <div>
+      <h3 class="font-semibold">User Operations</h3>
+      <p class="text-sm">
+        Manage device-to-patient mappings. Use the Unregistered Devices list to add missing mappings, and the grid to filter, update, or delete existing ones. Click Refresh to fetch the latest data.
+      </p>
+    </div>
+  </div>
+
+
 
   <!-- Unregistered Devices Card -->
   <div class="bg-white/70 backdrop-blur rounded-xl shadow border border-gray-100 p-4">
@@ -36,7 +67,12 @@
 
   <!-- Grid Card -->
   <div class="bg-white/70 backdrop-blur rounded-xl shadow border border-gray-100 p-2">
-    <app-user-grid (updateRequested)="onUpdate($event)"></app-user-grid>
+    <app-user-grid (updateRequested)="onUpdate($event)" (changed)="onGridChanged($event)"></app-user-grid>
+  </div>
+
+  <!-- Notifications -->
+  <div *ngIf="notifMessage" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+    <div [ngClass]="notifType === 'success' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200'" class="px-4 py-2 border rounded-lg shadow">{{ notifMessage }}</div>
   </div>
 
   <!-- Modal -->
