@@ -1,5 +1,222 @@
 <app-header-comp (logoutEvent)="onLogout()"></app-header-comp>
-<div class="p-8">
-  <h3 class="text-lg font-semibold mb-4">Welcome to the Home Page!</h3>
-  <p>home-page works!</p>
+
+<!-- Main Dashboard Container -->
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 animate-fade-in">
+  
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden bg-gradient-to-r from-[hsl(190,95%,30%)] to-[hsl(190,95%,25%)] text-white py-16 px-4 sm:px-6 lg:px-8">
+    <div class="absolute inset-0 bg-black opacity-10"></div>
+    <div class="relative max-w-7xl mx-auto">
+      <div class="text-center animate-slide-up">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6 tracking-tight">
+          Welcome to <span class="text-yellow-300">Shimmer Cloud</span>
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto">
+          Your intelligent sensor dashboard for real-time monitoring and analytics
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg animate-pulse">
+            Get Started
+          </button>
+          <button class="border-2 border-white hover:bg-white hover:text-[hsl(190,95%,30%)] px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+            Learn More
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Floating Elements -->
+    <div class="absolute top-10 left-10 w-20 h-20 bg-white opacity-10 rounded-full animate-float"></div>
+    <div class="absolute bottom-10 right-10 w-16 h-16 bg-yellow-300 opacity-20 rounded-full animate-float-delayed"></div>
+    <div class="absolute top-1/2 left-1/4 w-12 h-12 bg-blue-200 opacity-30 rounded-full animate-float-slow"></div>
+  </section>
+
+  <!-- Stats Cards Section -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-3xl font-bold text-gray-900 text-center mb-12 animate-slide-up">
+        Dashboard Overview
+      </h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <!-- Sensor Status Card -->
+        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-slide-up" style="animation-delay: 0.1s;">
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <span class="text-green-600 text-sm font-semibold">Online</span>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">24</h3>
+            <p class="text-gray-600">Active Sensors</p>
+          </div>
+        </div>
+
+        <!-- Data Points Card -->
+        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-slide-up" style="animation-delay: 0.2s;">
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+              </div>
+              <span class="text-blue-600 text-sm font-semibold">+12%</span>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">1.2M</h3>
+            <p class="text-gray-600">Data Points</p>
+          </div>
+        </div>
+
+        <!-- Alerts Card -->
+        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-slide-up" style="animation-delay: 0.3s;">
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                </svg>
+              </div>
+              <span class="text-yellow-600 text-sm font-semibold">3 New</span>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">8</h3>
+            <p class="text-gray-600">Active Alerts</p>
+          </div>
+        </div>
+
+        <!-- Performance Card -->
+        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-slide-up" style="animation-delay: 0.4s;">
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+              </div>
+              <span class="text-purple-600 text-sm font-semibold">+5%</span>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">98.5%</h3>
+            <p class="text-gray-600">Uptime</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Actions Section -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-3xl font-bold text-gray-900 text-center mb-12 animate-slide-up">
+        Quick Actions
+      </h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Add Sensor -->
+        <div class="group bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-8 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-slide-up" style="animation-delay: 0.5s;">
+          <div class="w-16 h-16 bg-[hsl(190,95%,30%)] rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Add New Sensor</h3>
+          <p class="text-gray-600 mb-4">Deploy a new sensor to your network for enhanced monitoring capabilities.</p>
+          <button class="text-[hsl(190,95%,30%)] font-semibold hover:text-[hsl(190,95%,25%)] transition-colors duration-300">
+            Get Started →
+          </button>
+        </div>
+
+        <!-- View Analytics -->
+        <div class="group bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-8 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-slide-up" style="animation-delay: 0.6s;">
+          <div class="w-16 h-16 bg-green-600 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">View Analytics</h3>
+          <p class="text-gray-600 mb-4">Explore detailed analytics and insights from your sensor network.</p>
+          <button class="text-green-600 font-semibold hover:text-green-700 transition-colors duration-300">
+            Explore →
+          </button>
+        </div>
+
+        <!-- Manage Alerts -->
+        <div class="group bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl p-8 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-slide-up" style="animation-delay: 0.7s;">
+          <div class="w-16 h-16 bg-yellow-500 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4.19 4.19A2 2 0 006.03 3h11.94a2 2 0 011.84 1.19L21 7v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 01.19-2.81z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Manage Alerts</h3>
+          <p class="text-gray-600 mb-4">Configure and manage alert settings for your sensor network.</p>
+          <button class="text-yellow-600 font-semibold hover:text-yellow-700 transition-colors duration-300">
+            Configure →
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Activity Section -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-3xl font-bold text-gray-900 text-center mb-12 animate-slide-up">
+        Recent Activity
+      </h2>
+      
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden animate-slide-up" style="animation-delay: 0.8s;">
+        <div class="p-6 border-b border-gray-200">
+          <h3 class="text-lg font-semibold text-gray-900">Latest Events</h3>
+        </div>
+        <div class="divide-y divide-gray-200">
+          <div class="p-6 hover:bg-gray-50 transition-colors duration-200">
+            <div class="flex items-center space-x-4">
+              <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <p class="text-sm font-medium text-gray-900">Sensor #24 came online</p>
+                <p class="text-sm text-gray-500">2 minutes ago</p>
+              </div>
+              <span class="text-green-600 text-sm font-medium">Online</span>
+            </div>
+          </div>
+          
+          <div class="p-6 hover:bg-gray-50 transition-colors duration-200">
+            <div class="flex items-center space-x-4">
+              <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <p class="text-sm font-medium text-gray-900">Temperature threshold exceeded</p>
+                <p class="text-sm text-gray-500">5 minutes ago</p>
+              </div>
+              <span class="text-yellow-600 text-sm font-medium">Alert</span>
+            </div>
+          </div>
+          
+          <div class="p-6 hover:bg-gray-50 transition-colors duration-200">
+            <div class="flex items-center space-x-4">
+              <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <p class="text-sm font-medium text-gray-900">Data sync completed</p>
+                <p class="text-sm text-gray-500">10 minutes ago</p>
+              </div>
+              <span class="text-blue-600 text-sm font-medium">Sync</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>

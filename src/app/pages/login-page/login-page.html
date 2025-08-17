@@ -1,3 +1,151 @@
-<h1 *ngIf="!isAuthenticated" class="amplify-heading--2 text-[hsl(190,95%,30%)] text-3xl font-bold mb-4 pt-2">Welcome to Shimmer Cloud Dashboard!</h1>
-<p *ngIf="!isAuthenticated" class="amplify-font-weights-bold text-gray-700 text-lg mb-8 pb-2">Please enter your admin credentials to see more data.</p>
-<app-auth-comp (authSuccess)="onAuthSuccess()"></app-auth-comp>
+<!-- Login Page Container -->
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 animate-fade-in">
+  
+  <!-- Background Elements -->
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute -top-40 -right-40 w-80 h-80 bg-[hsl(190,95%,30%)] opacity-10 rounded-full blur-3xl animate-float"></div>
+    <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-yellow-400 opacity-10 rounded-full blur-3xl animate-float-delayed"></div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-400 opacity-5 rounded-full blur-3xl animate-float-slow"></div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16">
+    <div class="max-w-6xl w-full space-y-8">
+      
+      <!-- Logo and Branding -->
+      <div class="text-center animate-slide-up">
+        <div class="mx-auto w-20 h-20 bg-gradient-to-br from-[hsl(190,95%,30%)] to-[hsl(190,95%,25%)] rounded-2xl flex items-center justify-center mb-6 shadow-lg animate-pulse-glow">
+          <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+          </svg>
+        </div>
+        
+        <h1 *ngIf="!isAuthenticated" class="text-4xl font-bold text-gray-900 mb-2">
+          Welcome to <span class="text-[hsl(190,95%,30%)]">Shimmer Cloud</span>
+        </h1>
+        <p *ngIf="!isAuthenticated" class="text-xl text-gray-600 mb-8">
+          Your intelligent sensor dashboard
+        </p>
+      </div>
+
+      <!-- Login Card -->
+      <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 animate-slide-up" style="animation-delay: 0.2s;">
+        <div class="p-8 lg:p-16">
+          <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            
+            <!-- Left Side - Branding -->
+            <div class="text-center lg:text-left">
+              <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">Welcome Back</h2>
+              <p class="text-xl text-gray-600 mb-8 leading-relaxed">Access your Shimmer Cloud dashboard with secure authentication and real-time patient monitoring capabilities</p>
+              
+              <!-- Feature Highlights -->
+              <div class="space-y-6">
+                <div class="flex items-center space-x-4">
+                  <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <span class="text-gray-800 font-semibold text-lg">Real-time monitoring</span>
+                    <p class="text-gray-600 text-sm">Live sensor data and patient vitals</p>
+                  </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                  <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <span class="text-gray-800 font-semibold text-lg">Advanced analytics</span>
+                    <p class="text-gray-600 text-sm">AI-powered insights and trends</p>
+                  </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                  <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <span class="text-gray-800 font-semibold text-lg">Enterprise security</span>
+                    <p class="text-gray-600 text-sm">HIPAA compliant data protection</p>
+                  </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                  <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <span class="text-gray-800 font-semibold text-lg">Smart alerts</span>
+                    <p class="text-gray-600 text-sm">Proactive health monitoring</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Right Side - Login Form -->
+            <div class="bg-white/50 backdrop-blur-sm rounded-xl p-8 border border-white/30">
+              <div class="text-center mb-8">
+                <h3 class="text-2xl font-bold text-gray-900 mb-3">Sign In</h3>
+                <p class="text-gray-600 text-lg">Enter your credentials to access the dashboard</p>
+              </div>
+              
+              <!-- Auth Component with Enhanced Styling -->
+              <div class="space-y-8">
+                <app-auth-comp (authSuccess)="onAuthSuccess()"></app-auth-comp>
+              </div>
+              
+              <!-- Additional Info -->
+              <div class="mt-8 text-center">
+                <p class="text-sm text-gray-500">
+                  Secure access to your sensor network
+                </p>
+                <div class="mt-4 flex items-center justify-center space-x-2">
+                  <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                  <span class="text-xs text-green-600 font-medium">System Online</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Features Preview -->
+      <div class="grid grid-cols-3 gap-4 mt-8 animate-slide-up" style="animation-delay: 0.4s;">
+        <div class="text-center">
+          <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <p class="text-xs text-gray-600">Real-time Monitoring</p>
+        </div>
+        
+        <div class="text-center">
+          <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+          </div>
+          <p class="text-xs text-gray-600">Advanced Analytics</p>
+        </div>
+        
+        <div class="text-center">
+          <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+            </svg>
+          </div>
+          <p class="text-xs text-gray-600">Secure Access</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
