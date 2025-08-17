@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 
 export interface FileItem {
   name: string;
   device: string;
   date: string; // YYYY-MM-DD
   time: string; // HH:MM:SS
-  part?: string;
+  part?: string | null;
   ext: string;
 }
 
@@ -17,12 +17,13 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  listFiles(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.baseUrl}/files/`);
+  listFiles(): Observable<FileItem[]> {
+    return this.http.get<FileItem[]>(`${this.baseUrl}/files/`);
   }
 
   listFilesParsed(): Observable<FileItem[]> {
-    return this.listFiles().pipe(map(files => files.map(name => this.parseFileName(name))));
+    // Backend already returns parsed items; keep method for backwards compatibility
+    return this.listFiles();
   }
 
   getDownloadUrl(filename: string): Observable<{ url: string }> {
