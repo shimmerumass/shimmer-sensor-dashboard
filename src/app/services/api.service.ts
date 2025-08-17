@@ -34,6 +34,10 @@ export class ApiService {
     return this.http.get<{ url: string }>(`${this.baseUrl}/download-all-url/`);
   }
 
+  buildDownloadAllUrl(): string {
+    return `${this.baseUrl}/download-all-url/`;
+  }
+
   buildDirectDownloadUrl(filename: string): string {
     return `${this.baseUrl}/download/${encodeURIComponent(filename)}`;
   }

@@ -141,12 +141,31 @@ export class FilesGrid implements OnInit {
 
   timeFrom = '';
   timeTo = '';
+  isDownloadingAll = false;
+  downloadAllUrl = '';
+
+  // Error handling state
+  isLoading = false;
+  loadError = '';
+  actionError = '';
 
   constructor(private api: ApiService) {}
 
   ngOnInit(): void {
-    console.log('Fetching file data...');
-    this.api.listFilesParsed().subscribe(items => (this.rowData = items));
+    this.isLoading = true;
+    this.api.listFilesParsed().subscribe({
+      next: items => {
+        this.rowData = items;
+        this.loadError = '';
+        this.isLoading = false;
+      },
+      error: err => {
+        console.error('Failed to load files', err);
+        this.rowData = [];
+        this.loadError = 'Failed to load files. Please try again.';
+        this.isLoading = false;
+      }
+    });
   }
 
   onGridReady(e: GridReadyEvent) {
@@ -205,15 +224,48 @@ export class FilesGrid implements OnInit {
     if (event.colDef.field === 'actions') {
       const filename = event.data?.name;
       if (!filename) return;
-      const url = this.api.buildDirectDownloadUrl(filename);
-      window.open(url, '_blank');
+      this.actionError = '';
+      this.api.getDownloadUrl(filename).subscribe({
+        next: ({ url }) => { if (url) window.open(url, '_blank'); },
+        error: (e) => {
+          console.error('Failed to get download URL', e);
+          this.actionError = 'Failed to start download. Please try again.';
+        }
+      });
     }
   }
 
-  onHeaderClear(colId: string) {
-    if (colId === 'time') {
-      this.timeFrom = '';
-      this.timeTo = '';
+  downloadAll() {
+    if (this.isDownloadingAll) {
+      return;
     }
+    this.isDownloadingAll = true;
+    this.downloadAllUrl = '';
+    this.actionError = '';
+    this.api.getDownloadAllUrl().subscribe({
+      next: ({ url }) => {
+        this.isDownloadingAll = false;
+        const target = url || this.api.buildDownloadAllUrl();
+        this.downloadAllUrl = target;
+        try {
+          window.open(target, '_blank');
+        } catch {
+          // Fallback: link shown in UI
+        }
+      },
+      error: (e) => {
+        console.error('Failed to get download-all URL', e);
+        this.isDownloadingAll = false;
+        this.downloadAllUrl = this.api.buildDownloadAllUrl();
+        this.actionError = 'Could not generate a pre-signed URL. A direct link is provided.';
+      }
+    });
+  }
+
+  onHeaderClear(colId: string) {
+    if (!this.gridApi) return;
+    const fm = (this.gridApi.getFilterModel() || {}) as any;
+    fm[colId] = null;
+    this.gridApi.setFilterModel(fm);
   }
 }

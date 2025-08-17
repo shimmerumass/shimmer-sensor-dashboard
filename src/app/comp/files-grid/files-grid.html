@@ -1,22 +1,30 @@
 <div class="files-grid-viewport">
   <!-- toolbar -->
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; gap:8px; width:100%; max-width:1100px;">
-    <h3 style="margin:0; font-weight:700;">Files</h3>
-    <div style="display:flex; align-items:center; gap:8px; flex-wrap: wrap;">
-      <input type="text" placeholder="Quick search..." [value]="quickFilterText" (input)="onQuickFilterChange($event)" style="padding:6px 10px; border:1px solid #e5e7eb; border-radius:6px;">
-      <label style="font-size:12px; color:#6b7280;">Page size</label>
-      <select [value]="pageSize" (change)="onPageSizeChange($event)" style="padding:6px 10px; border:1px solid #e5e7eb; border-radius:6px;">
-        <option *ngFor="let s of pageSizeOptions" [value]="s">{{s}}</option>
-      </select>
-      <label style="font-size:12px; color:#6b7280;">From</label>
-      <input type="time" step="1" [value]="timeFrom" (input)="timeFrom = $any($event.target).value" style="padding:6px 10px; border:1px solid #e5e7eb; border-radius:6px;">
-      <label style="font-size:12px; color:#6b7280;">To</label>
-      <input type="time" step="1" [value]="timeTo" (input)="timeTo = $any($event.target).value" style="padding:6px 10px; border:1px solid #e5e7eb; border-radius:6px;">
-      <button (click)="applyTimeRangeFilter()" class="amplify-button amplify-button--primary" style="font-weight:normal; padding:6px 12px;">Apply</button>
-      <button (click)="clearTimeFilter()" class="amplify-button" style="font-weight:normal; padding:6px 12px;">Clear Time</button>
-      <button (click)="clearAllFilters()" class="amplify-button" style="font-weight:normal; padding:6px 12px;">Clear All</button>
+  <div class="files-grid-toolbar">
+    <div class="left">
+      <button (click)="downloadAll()" [disabled]="!rowData.length || isDownloadingAll" class="amplify-button amplify-button--primary">
+        {{ isDownloadingAll ? 'Preparing…' : 'Download All' }}
+      </button>
+      <a *ngIf="downloadAllUrl && !actionError" [href]="downloadAllUrl" target="_blank" rel="noopener" style="font-size:13px; color:#2563eb; text-decoration:underline;">
+        Or click here
+      </a>
+    </div>
+    <div class="right">
+      <input type="text" placeholder="Quick search..." [value]="quickFilterText" (input)="onQuickFilterChange($event)">
+      <label>From</label>
+      <input type="time" step="1" [value]="timeFrom" (input)="timeFrom = $any($event.target).value">
+      <label>To</label>
+      <input type="time" step="1" [value]="timeTo" (input)="timeTo = $any($event.target).value">
+      <button (click)="applyTimeRangeFilter()" class="amplify-button amplify-button--primary">Apply</button>
+      <button (click)="clearTimeFilter()" class="amplify-button">Clear Time</button>
+      <button (click)="clearAllFilters()" class="amplify-button">Clear All</button>
     </div>
   </div>
+
+  <!-- messages -->
+  <div *ngIf="loadError" class="msg msg-error">{{ loadError }}</div>
+  <div *ngIf="actionError" class="msg msg-error">{{ actionError }}</div>
+
   <!-- grid -->
   <ag-grid-angular
     class="ag-theme-quartz"
