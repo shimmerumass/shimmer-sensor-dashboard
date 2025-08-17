@@ -163,6 +163,9 @@ export class FilesGrid implements OnInit {
 
   private readonly downloadBase: string = 'https://odb777ddnc.execute-api.us-east-2.amazonaws.com/download/';
 
+  // Global screen loader flag
+  isScreenLoading = false;
+
   constructor(private api: ApiService) {}
 
   ngOnInit(): void {
@@ -247,21 +250,59 @@ export class FilesGrid implements OnInit {
     this.selectedPatient = '';
   }
   
+  // Stream download helper: keeps loader active until the file finishes downloading
+  private async streamDownload(url: string, filenameHint?: string) {
+    try {
+      const resp = await fetch(url, { credentials: 'include', mode: 'cors' as RequestMode });
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+
+      const blob = await resp.blob();
+      const cd = resp.headers.get('content-disposition') || '';
+      const suggested = this.getFilenameFromContentDisposition(cd) || filenameHint || 'download';
+      const objectUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = objectUrl;
+      a.download = suggested;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
+    } catch (e) {
+      console.error('Stream download failed, falling back to navigation', e);
+      try { window.location.href = url; } catch {}
+    } finally {
+      this.isScreenLoading = false;
+      this.isDownloadingAll = false;
+    }
+  }
+
+  private getFilenameFromContentDisposition(cd: string): string | null {
+    try {
+      const m = /filename\*=UTF-8''([^;]+)|filename="?([^";]+)"?/i.exec(cd);
+      if (!m) return null;
+      const fn = decodeURIComponent(m[1] || m[2]);
+      return fn || null;
+    } catch { return null; }
+  }
+
   onCellClicked(event: any) {
     if (event.colDef.field !== 'actions') return;
     const filename = event.data?.name;
     if (!filename) return;
     this.actionError = '';
 
+    this.isScreenLoading = true;
+
     this.api.getDownloadUrl(filename).subscribe({
       next: ({ url }) => {
         const targetUrl = url || (this.downloadBase + encodeURIComponent(filename));
-        // Navigate in the same tab
-        window.location.href = targetUrl;
+        // Keep loader until the file is received, using streaming when possible
+        void this.streamDownload(targetUrl, filename);
       },
       error: (e) => {
         console.error('Failed to get download URL', e);
         this.actionError = 'Failed to start download. Please try again.';
+        this.isScreenLoading = false;
       }
     });
   }
@@ -271,19 +312,20 @@ export class FilesGrid implements OnInit {
       return;
     }
     this.isDownloadingAll = true;
+    this.isScreenLoading = true;
     this.downloadAllUrl = '';
     this.actionError = '';
     this.api.getDownloadAllUrl().subscribe({
       next: ({ url }) => {
-        this.isDownloadingAll = false;
         const target = url || this.api.buildDownloadAllUrl();
         this.downloadAllUrl = target;
-        // Navigate in the same tab
-        try { window.location.href = target; } catch { /* fallback handled by link in UI */ }
+        // Keep loader until the bulk file is fully received
+        void this.streamDownload(target, 'shimmer-files.zip');
       },
       error: (e) => {
         console.error('Failed to get download-all URL', e);
         this.isDownloadingAll = false;
+        this.isScreenLoading = false;
         this.downloadAllUrl = this.api.buildDownloadAllUrl();
         this.actionError = 'Could not generate a pre-signed URL.';
       }
