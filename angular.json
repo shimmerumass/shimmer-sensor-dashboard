@@ -26,7 +26,9 @@
             ],
             "styles": [
               "src/styles.css",
-              "node_modules/@aws-amplify/ui-angular/theme.css"
+              "node_modules/@aws-amplify/ui-angular/theme.css",
+              "node_modules/ag-grid-community/styles/ag-grid.css",
+              "node_modules/ag-grid-community/styles/ag-theme-quartz.css"
             ]
           },
           "configurations": {
@@ -79,7 +81,9 @@
             ],
             "styles": [
               "src/styles.css",
-              "node_modules/@aws-amplify/ui-angular/theme.css"
+              "node_modules/@aws-amplify/ui-angular/theme.css",
+              "node_modules/ag-grid-community/styles/ag-grid.css",
+              "node_modules/ag-grid-community/styles/ag-theme-quartz.css"
             ]
           }
         }
