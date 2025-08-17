@@ -50,19 +50,28 @@
 
   <!-- Unregistered Devices Card -->
   <div class="bg-white/70 backdrop-blur rounded-xl shadow border border-gray-100 p-4">
-    <h4 class="text-gray-800 font-semibold mb-2">Unregistered Devices</h4>
-    <div *ngIf="!unregistered.length" class="text-gray-500">None</div>
-    <ul class="list-disc pl-5 space-y-1">
-      <li *ngFor="let d of unregistered" class="flex items-center justify-between text-gray-700">
-        <span>{{ d }}</span>
-        <button class="amplify-button" (click)="openModal(d)" title="Add mapping for this device">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block align-middle">
-            <line x1="12" y1="5" x2="12" y2="19"></line>
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-          </svg>
+    <div class="flex items-center justify-between mb-2">
+      <h4 class="text-gray-800 font-semibold">Unregistered Devices</h4>
+      <span class="text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200">{{ unregistered.length }} total</span>
+    </div>
+
+    <div *ngIf="!unregistered.length" class="flex items-center gap-3 text-gray-500 bg-gray-50/60 border border-dashed border-gray-200 rounded-lg p-4">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3M13 9l3 3-3 3"/></svg>
+      <span>No unregistered devices found.</span>
+    </div>
+
+    <div *ngIf="unregistered.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-2">
+      <div *ngFor="let d of unregistered" class="group flex items-center justify-between rounded-lg border border-gray-200 bg-white/80 p-3 hover:shadow-sm transition">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="inline-flex items-center justify-center w-6 h-6 rounded-md bg-sky-100 text-sky-600 text-xs font-semibold">ID</span>
+          <span class="font-mono text-gray-800 truncate" title="{{ d }}">{{ d }}</span>
+        </div>
+        <button class="inline-flex items-center gap-1 text-sky-700 hover:text-sky-900 px-2 py-1 rounded-md hover:bg-sky-50 border border-transparent hover:border-sky-200 transition" (click)="openModal(d)" title="Add mapping for this device">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg>
+          <span class="text-sm font-medium">Add</span>
         </button>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 
   <!-- Grid Card -->
