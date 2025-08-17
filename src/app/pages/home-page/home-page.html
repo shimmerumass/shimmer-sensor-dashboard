@@ -117,51 +117,91 @@
   <!-- Quick Actions Section -->
   <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
     <div class="max-w-7xl mx-auto">
-      <h2 class="text-3xl font-bold text-gray-900 text-center mb-12 animate-slide-up">
+      <h2 class="text-3xl font-bold text-gray-900 text-center mb-4 animate-slide-up">
         Quick Actions
       </h2>
+      <p class="text-center text-gray-500 mb-12 animate-slide-up" style="animation-delay:.05s;">
+        Shortcuts to the most common workflows
+      </p>
       
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Add Sensor -->
-        <div class="group bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-8 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-slide-up" style="animation-delay: 0.5s;">
-          <div class="w-16 h-16 bg-[hsl(190,95%,30%)] rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-            </svg>
+        <!-- Manage Users & Mappings -->
+        <div class="group relative overflow-hidden rounded-2xl border border-indigo-200/70 bg-white/70 backdrop-blur-sm p-7 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slide-up" style="animation-delay:.1s;">
+          <div class="pointer-events-none absolute -top-12 -right-10 w-44 h-44 rounded-full bg-indigo-500/10 blur-2xl"></div>
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-sm">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900">Manage Users & Mappings</h3>
+                <p class="text-sm text-gray-600">Create or update device-to-patient mappings and review unregistered devices.</p>
+              </div>
+            </div>
           </div>
-          <h3 class="text-xl font-semibold text-gray-900 mb-3">Add New Sensor</h3>
-          <p class="text-gray-600 mb-4">Deploy a new sensor to your network for enhanced monitoring capabilities.</p>
-          <button class="text-[hsl(190,95%,30%)] font-semibold hover:text-[hsl(190,95%,25%)] transition-colors duration-300">
-            Get Started →
-          </button>
+          <div class="mt-6 flex justify-end">
+            <a routerLink="/user-ops" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-indigo-700 hover:text-indigo-800 hover:bg-indigo-50 transition" aria-label="Go to User Ops">
+              Go to User Ops
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Browse Files -->
+        <div class="group relative overflow-hidden rounded-2xl border border-sky-200/70 bg-white/70 backdrop-blur-sm p-7 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slide-up" style="animation-delay:.15s;">
+          <div class="pointer-events-none absolute -top-12 -right-10 w-44 h-44 rounded-full bg-sky-500/10 blur-2xl"></div>
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-[hsl(190,95%,30%)] text-white flex items-center justify-center shadow-sm">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 7V5a2 2 0 012-2h4l2 2h8a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900">Browse Files</h3>
+                <p class="text-sm text-gray-600">Explore uploaded sensor files and their metadata directly from the dashboard.</p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end">
+            <a routerLink="/home" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-[hsl(190,95%,30%)] hover:text-[hsl(190,95%,25%)] hover:bg-sky-50 transition" aria-label="Open Files">
+              Open Files
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </div>
         </div>
 
         <!-- View Analytics -->
-        <div class="group bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-8 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-slide-up" style="animation-delay: 0.6s;">
-          <div class="w-16 h-16 bg-green-600 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-            </svg>
+        <div class="group relative overflow-hidden rounded-2xl border border-emerald-200/70 bg-white/70 backdrop-blur-sm p-7 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slide-up" style="animation-delay:.2s;">
+          <div class="pointer-events-none absolute -top-12 -right-10 w-44 h-44 rounded-full bg-emerald-500/10 blur-2xl"></div>
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-sm">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm3 0V4l7 7h-4v8h-3z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900">View Analytics</h3>
+                <p class="text-sm text-gray-600">Visualize trends and insights from your sensor data over time.</p>
+              </div>
+            </div>
           </div>
-          <h3 class="text-xl font-semibold text-gray-900 mb-3">View Analytics</h3>
-          <p class="text-gray-600 mb-4">Explore detailed analytics and insights from your sensor network.</p>
-          <button class="text-green-600 font-semibold hover:text-green-700 transition-colors duration-300">
-            Explore →
-          </button>
-        </div>
-
-        <!-- Manage Alerts -->
-        <div class="group bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl p-8 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-slide-up" style="animation-delay: 0.7s;">
-          <div class="w-16 h-16 bg-yellow-500 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4.19 4.19A2 2 0 006.03 3h11.94a2 2 0 011.84 1.19L21 7v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 01.19-2.81z"></path>
-            </svg>
+          <div class="mt-6 flex justify-end">
+            <button type="button" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50 transition" aria-label="Explore Analytics">
+              Explore
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </button>
           </div>
-          <h3 class="text-xl font-semibold text-gray-900 mb-3">Manage Alerts</h3>
-          <p class="text-gray-600 mb-4">Configure and manage alert settings for your sensor network.</p>
-          <button class="text-yellow-600 font-semibold hover:text-yellow-700 transition-colors duration-300">
-            Configure →
-          </button>
         </div>
       </div>
     </div>

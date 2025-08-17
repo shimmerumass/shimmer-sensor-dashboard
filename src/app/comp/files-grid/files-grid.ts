@@ -161,6 +161,8 @@ export class FilesGrid implements OnInit {
     return Array.from(s).sort();
   }
 
+  private readonly downloadBase: string = 'https://odb777ddnc.execute-api.us-east-2.amazonaws.com/download/';
+
   constructor(private api: ApiService) {}
 
   ngOnInit(): void {
@@ -246,18 +248,22 @@ export class FilesGrid implements OnInit {
   }
   
   onCellClicked(event: any) {
-    if (event.colDef.field === 'actions') {
-      const filename = event.data?.name;
-      if (!filename) return;
-      this.actionError = '';
-      this.api.getDownloadUrl(filename).subscribe({
-        next: ({ url }) => { if (url) window.open(url, '_blank'); },
-        error: (e) => {
-          console.error('Failed to get download URL', e);
-          this.actionError = 'Failed to start download. Please try again.';
-        }
-      });
-    }
+    if (event.colDef.field !== 'actions') return;
+    const filename = event.data?.name;
+    if (!filename) return;
+    this.actionError = '';
+
+    this.api.getDownloadUrl(filename).subscribe({
+      next: ({ url }) => {
+        const targetUrl = url || (this.downloadBase + encodeURIComponent(filename));
+        // Navigate in the same tab
+        window.location.href = targetUrl;
+      },
+      error: (e) => {
+        console.error('Failed to get download URL', e);
+        this.actionError = 'Failed to start download. Please try again.';
+      }
+    });
   }
 
   downloadAll() {
@@ -272,17 +278,14 @@ export class FilesGrid implements OnInit {
         this.isDownloadingAll = false;
         const target = url || this.api.buildDownloadAllUrl();
         this.downloadAllUrl = target;
-        try {
-          window.open(target, '_blank');
-        } catch {
-          // Fallback: link shown in UI
-        }
+        // Navigate in the same tab
+        try { window.location.href = target; } catch { /* fallback handled by link in UI */ }
       },
       error: (e) => {
         console.error('Failed to get download-all URL', e);
         this.isDownloadingAll = false;
         this.downloadAllUrl = this.api.buildDownloadAllUrl();
-        this.actionError = 'Could not generate a pre-signed URL. A direct link is provided.';
+        this.actionError = 'Could not generate a pre-signed URL.';
       }
     });
   }
