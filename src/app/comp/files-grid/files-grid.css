@@ -19,3 +19,9 @@
   border-radius: 12px;
   overflow: hidden;
 }
+
+/* Allow text selection for copying */
+.ag-theme-quartz .ag-cell {
+  user-select: text;
+  -webkit-user-select: text;
+}
