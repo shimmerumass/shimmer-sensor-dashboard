@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { fetchAuthSession } from '@aws-amplify/auth';
+import { ApiService } from '../../services/api.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
@@ -9,7 +11,10 @@ import { fetchAuthSession } from '@aws-amplify/auth';
   styleUrls: ['./home-page.css']
 })
 export class HomePage implements OnInit {
-  constructor(private router: Router) {}
+  public activeSensors = 0;
+  patients$!: Observable<string[]>;
+
+  constructor(private router: Router, private api: ApiService) {}
 
   async checkAuth() {
     try {
@@ -21,8 +26,20 @@ export class HomePage implements OnInit {
     }
   }
 
+  private loadActiveSensors() {
+    this.patients$ = this.api.listUniquePatients();
+    this.api.listUniquePatients().subscribe({
+      next: (patients) => {
+        const count = Array.isArray(patients) ? patients.length : 0;
+        this.activeSensors = count * 2;
+      },
+      error: () => { this.activeSensors = 0; }
+    });
+  }
+
   ngOnInit(): void {
     this.checkAuth();
+    this.loadActiveSensors();
   }
 
   onLogout() {

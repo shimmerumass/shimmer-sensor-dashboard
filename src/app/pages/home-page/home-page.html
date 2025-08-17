@@ -48,10 +48,9 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
               </div>
-              <span class="text-green-600 text-sm font-semibold">Online</span>
             </div>
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">24</h3>
-            <p class="text-gray-600">Active Sensors</p>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ activeSensors }}</h3>
+            <p class="text-gray-600">Total Sensors</p>
           </div>
         </div>
 
@@ -161,64 +160,4 @@
     </div>
   </section>
 
-  <!-- Recent Activity Section -->
-  <section class="py-16 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-7xl mx-auto">
-      <h2 class="text-3xl font-bold text-gray-900 text-center mb-12 animate-slide-up">
-        Recent Activity
-      </h2>
-      
-      <div class="bg-white rounded-xl shadow-lg overflow-hidden animate-slide-up" style="animation-delay: 0.8s;">
-        <div class="p-6 border-b border-gray-200">
-          <h3 class="text-lg font-semibold text-gray-900">Latest Events</h3>
-        </div>
-        <div class="divide-y divide-gray-200">
-          <div class="p-6 hover:bg-gray-50 transition-colors duration-200">
-            <div class="flex items-center space-x-4">
-              <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-              </div>
-              <div class="flex-1">
-                <p class="text-sm font-medium text-gray-900">Sensor #24 came online</p>
-                <p class="text-sm text-gray-500">2 minutes ago</p>
-              </div>
-              <span class="text-green-600 text-sm font-medium">Online</span>
-            </div>
-          </div>
-          
-          <div class="p-6 hover:bg-gray-50 transition-colors duration-200">
-            <div class="flex items-center space-x-4">
-              <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
-                <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                </svg>
-              </div>
-              <div class="flex-1">
-                <p class="text-sm font-medium text-gray-900">Temperature threshold exceeded</p>
-                <p class="text-sm text-gray-500">5 minutes ago</p>
-              </div>
-              <span class="text-yellow-600 text-sm font-medium">Alert</span>
-            </div>
-          </div>
-          
-          <div class="p-6 hover:bg-gray-50 transition-colors duration-200">
-            <div class="flex items-center space-x-4">
-              <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                </svg>
-              </div>
-              <div class="flex-1">
-                <p class="text-sm font-medium text-gray-900">Data sync completed</p>
-                <p class="text-sm text-gray-500">10 minutes ago</p>
-              </div>
-              <span class="text-blue-600 text-sm font-medium">Sync</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 </div>
