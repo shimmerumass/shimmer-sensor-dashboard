@@ -1,0 +1,27 @@
+<div class="files-grid-viewport">
+  <!-- toolbar -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; gap:8px; width:100%; max-width:1100px;">
+    <h3 style="margin:0; font-weight:700;">Files</h3>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <input type="text" placeholder="Quick search..." (input)="onQuickFilterChange($event)" style="padding:6px 10px; border:1px solid #e5e7eb; border-radius:6px;">
+      <label style="font-size:12px; color:#6b7280;">Page size</label>
+      <select [value]="pageSize" (change)="onPageSizeChange($event)" style="padding:6px 10px; border:1px solid #e5e7eb; border-radius:6px;">
+        <option *ngFor="let s of pageSizeOptions" [value]="s">{{s}}</option>
+      </select>
+    </div>
+  </div>
+  <!-- grid -->
+  <ag-grid-angular
+    class="ag-theme-quartz"
+    style="width:100%; max-width:1100px; height:520px;"
+    [theme]="'legacy'"
+    [defaultColDef]="defaultColDef"
+    [rowData]="rowData"
+    [columnDefs]="columnDefs"
+    [quickFilterText]="quickFilterText"
+    [pagination]="true"
+    [paginationPageSize]="pageSize"
+    [paginationPageSizeSelector]="pageSizeOptions"
+    [rowSelection]="{ mode: 'multiRow' }">
+  </ag-grid-angular>
+</div>

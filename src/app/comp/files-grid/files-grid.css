@@ -1,0 +1,19 @@
+/* Center the grid on the page */
+.files-grid-viewport {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+
+/* Theme container with size */
+.files-grid-viewport .ag-theme-quartz {
+  width: 100%;
+  max-width: 1100px;
+  height: 520px; /* grid must have a height */
+}
+
+/* Optional: rounded container */
+.ag-theme-quartz {
+  border-radius: 12px;
+  overflow: hidden;
+}
