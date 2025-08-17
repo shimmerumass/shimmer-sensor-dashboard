@@ -1,6 +1,0 @@
-/* Use global AG Grid CSS from angular.json; no local imports needed */
-
-.ag-theme-quartz {
-  height: 500px; /* ensure the grid has height */
-  width: 100%;
-}

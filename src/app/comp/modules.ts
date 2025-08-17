@@ -8,11 +8,10 @@ import { RouterModule } from '@angular/router';
 import { AuthComp } from './auth-comp/auth-comp';
 import { HeaderComp } from './header-comp/header-comp';
 import { FilesGrid } from './files-grid/files-grid';
-import { FileViewerComp } from './file-viewer-comp/file-viewer-comp';
 import { UserGridComponent } from './user-grid/user-grid';
 
 @NgModule({
-  declarations: [AuthComp, HeaderComp, FilesGrid, FileViewerComp, UserGridComponent],
+  declarations: [AuthComp, HeaderComp, FilesGrid, UserGridComponent],
   imports: [
     CommonModule,
     AmplifyAuthenticatorModule,
@@ -20,6 +19,6 @@ import { UserGridComponent } from './user-grid/user-grid';
     FormsModule,
     RouterModule
   ],
-  exports: [AuthComp, HeaderComp, FilesGrid, FileViewerComp, UserGridComponent]
+  exports: [AuthComp, HeaderComp, FilesGrid, UserGridComponent]
 })
 export class CompModule {}

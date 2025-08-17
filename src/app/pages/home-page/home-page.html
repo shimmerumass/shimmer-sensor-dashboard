@@ -19,7 +19,7 @@
             Get Started
           </button>
           <button class="border-2 border-white hover:bg-white hover:text-[hsl(190,95%,30%)] px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
-            Learn More
+            Contact Us
           </button>
         </div>
       </div>
@@ -63,7 +63,14 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                 </svg>
               </div>
-              <span class="text-blue-600 text-sm font-semibold">{{ dataPointsRecentPercent }}%</span>
+              <span class="inline-flex items-center gap-1.5 text-blue-600 text-sm font-semibold leading-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 -mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h6v6"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 19l14-14"/>
+                </svg>
+                {{ dataPointsRecentPercent }}%
+                <span class="text-xs text-blue-400 font-normal align-middle"> in 5 days</span>
+              </span>
             </div>
             <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ dataPointsTotal | number }}</h3>
             <p class="text-gray-600">Data Points</p>
@@ -115,7 +122,7 @@
   <app-files-grid></app-files-grid>
 
   <!-- Quick Actions Section -->
-  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+  <!-- <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
     <div class="max-w-7xl mx-auto">
       <h2 class="text-3xl font-bold text-gray-900 text-center mb-4 animate-slide-up">
         Quick Actions
@@ -125,7 +132,7 @@
       </p>
       
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Manage Users & Mappings -->
+  
         <div class="group relative overflow-hidden rounded-2xl border border-indigo-200/70 bg-white/70 backdrop-blur-sm p-7 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slide-up" style="animation-delay:.1s;">
           <div class="pointer-events-none absolute -top-12 -right-10 w-44 h-44 rounded-full bg-indigo-500/10 blur-2xl"></div>
           <div class="flex items-start justify-between">
@@ -152,7 +159,7 @@
           </div>
         </div>
 
-        <!-- Browse Files -->
+
         <div class="group relative overflow-hidden rounded-2xl border border-sky-200/70 bg-white/70 backdrop-blur-sm p-7 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slide-up" style="animation-delay:.15s;">
           <div class="pointer-events-none absolute -top-12 -right-10 w-44 h-44 rounded-full bg-sky-500/10 blur-2xl"></div>
           <div class="flex items-start justify-between">
@@ -178,7 +185,7 @@
           </div>
         </div>
 
-        <!-- View Analytics -->
+   
         <div class="group relative overflow-hidden rounded-2xl border border-emerald-200/70 bg-white/70 backdrop-blur-sm p-7 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slide-up" style="animation-delay:.2s;">
           <div class="pointer-events-none absolute -top-12 -right-10 w-44 h-44 rounded-full bg-emerald-500/10 blur-2xl"></div>
           <div class="flex items-start justify-between">
@@ -205,6 +212,6 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
 </div>
