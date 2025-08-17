@@ -63,42 +63,49 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                 </svg>
               </div>
-              <span class="text-blue-600 text-sm font-semibold">+12%</span>
+              <span class="text-blue-600 text-sm font-semibold">{{ dataPointsRecentPercent }}%</span>
             </div>
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">1.2M</h3>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ dataPointsTotal | number }}</h3>
             <p class="text-gray-600">Data Points</p>
           </div>
         </div>
 
-        <!-- Alerts Card -->
+        <!-- Unregistered Devices Card (replaces Alerts) -->
         <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-slide-up" style="animation-delay: 0.3s;">
           <div class="p-6">
             <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+              <div class="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M6 10h12M4 14h16M5 18h14" />
                 </svg>
               </div>
-              <span class="text-yellow-600 text-sm font-semibold">3 New</span>
             </div>
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">8</h3>
-            <p class="text-gray-600">Active Alerts</p>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ unregisteredCount }}</h3>
+            <p class="text-gray-600">Unregistered Devices</p>
           </div>
         </div>
 
-        <!-- Performance Card -->
+        <!-- Users Card (replaces Performance/Uptime) -->
         <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-slide-up" style="animation-delay: 0.4s;">
           <div class="p-6">
             <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
               </div>
-              <span class="text-purple-600 text-sm font-semibold">+5%</span>
             </div>
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">98.5%</h3>
-            <p class="text-gray-600">Uptime</p>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ usersCount }}</h3>
+            <p class="text-gray-600">Users</p>
+            <div class="mt-4 flex justify-end">
+              <a routerLink="/user-ops" class="text-indigo-600 font-semibold hover:text-indigo-700 inline-flex items-center gap-1" title="Go to User Ops">
+                Manage Users
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
       </div>
