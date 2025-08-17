@@ -18,7 +18,7 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   listFiles(): Observable<FileItem[]> {
-    return this.http.get<FileItem[]>(`${this.baseUrl}/files/`);
+    return this.http.get<FileItem[]>(`${this.baseUrl}/files/metadata/`);
   }
 
   listFilesParsed(): Observable<FileItem[]> {
