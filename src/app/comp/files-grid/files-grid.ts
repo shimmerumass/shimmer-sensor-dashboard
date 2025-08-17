@@ -1,6 +1,56 @@
 import { Component, OnInit } from '@angular/core';
-import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
+import { ColDef, GridApi, GridReadyEvent, IHeaderComp, IHeaderParams } from 'ag-grid-community';
 import { ApiService, FileItem } from '../../services/api.service';
+
+class ClearFilterHeader implements IHeaderComp {
+  private eGui!: HTMLElement;
+  private btn!: HTMLButtonElement;
+  private params!: IHeaderParams;
+  private clickHandler!: () => void;
+
+  init(params: IHeaderParams): void {
+    this.params = params;
+    const eGui = document.createElement('div');
+    eGui.style.display = 'flex';
+    eGui.style.alignItems = 'center';
+    eGui.style.gap = '6px';
+
+    const label = document.createElement('span');
+    label.textContent = params.displayName ?? params.column.getColId();
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'ag-hdr-clear-btn';
+    btn.title = 'Clear filter';
+    btn.setAttribute('aria-label', 'Clear filter');
+    btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+
+    this.clickHandler = () => {
+      const api = this.params.api;
+      const colId = this.params.column.getColId();
+      const model = (api.getFilterModel() || {}) as any;
+      model[colId] = null; // set to null so floating filter UI also clears
+      api.setFilterModel(model);
+      // notify host component to sync toolbar inputs
+      const ctx: any = this.params.context;
+      if (ctx && typeof ctx.onClear === 'function') {
+        ctx.onClear(colId);
+      }
+    };
+
+    btn.addEventListener('click', this.clickHandler);
+
+    eGui.appendChild(label);
+    eGui.appendChild(btn);
+
+    this.eGui = eGui;
+    this.btn = btn;
+  }
+
+  getGui(): HTMLElement { return this.eGui; }
+  destroy(): void { this.btn?.removeEventListener('click', this.clickHandler); }
+  refresh(params: IHeaderParams): boolean { this.params = params; return true; }
+}
 
 @Component({
   selector: 'app-files-grid',
@@ -10,6 +60,8 @@ import { ApiService, FileItem } from '../../services/api.service';
 })
 export class FilesGrid implements OnInit {
   private gridApi?: GridApi;
+  components = { clearFilterHeader: ClearFilterHeader };
+  context = { onClear: (colId: string) => this.onHeaderClear(colId) };
 
   private static parseTimeToSeconds(t?: string): number {
     if (!t) return 0;
@@ -33,10 +85,11 @@ export class FilesGrid implements OnInit {
   }
 
   columnDefs: ColDef[] = [
-    { headerName: 'Device', field: 'device', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
+    { headerName: 'Device', field: 'device', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
     {
       headerName: 'Date',
       field: 'date',
+      headerComponent: 'clearFilterHeader',
       filter: 'agDateColumnFilter',
       filterParams: {
         comparator: (filterLocalDateAtMidnight: Date, cellValue: string) =>
@@ -49,6 +102,7 @@ export class FilesGrid implements OnInit {
     {
       headerName: 'Time',
       field: 'time',
+      headerComponent: 'clearFilterHeader',
       filter: 'agNumberColumnFilter',
       filterParams: { filterOptions: ['inRange', 'greaterThan', 'lessThan', 'equals'] },
       sortable: true,
@@ -56,9 +110,9 @@ export class FilesGrid implements OnInit {
       valueGetter: params => FilesGrid.parseTimeToSeconds(params.data?.time),
       valueFormatter: params => params.data?.time ?? ''
     },
-    { headerName: 'File Name', field: 'part', filter: 'agTextColumnFilter', width: 110 },
-    { headerName: 'Ext', field: 'ext', filter: 'agTextColumnFilter', width: 110, hide: true },
-    { headerName: 'Full Name', field: 'name', filter: 'agTextColumnFilter', flex: 2, hide: true },
+    { headerName: 'File Name', field: 'part', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', width: 110 },
+    { headerName: 'Ext', field: 'ext', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', width: 110, hide: true },
+    { headerName: 'Full Name', field: 'name', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', flex: 2, hide: true },
     {
       headerName: 'Actions',
       field: 'actions',
@@ -114,7 +168,7 @@ export class FilesGrid implements OnInit {
     const fromSec = FilesGrid.parseTimeToSeconds(this.timeFrom);
     const toSec = FilesGrid.parseTimeToSeconds(this.timeTo);
     if (!fromSec && !toSec) {
-      this.gridApi.setFilterModel({ ...this.gridApi.getFilterModel(), time: null });
+      this.clearColumnFilter('time');
       return;
     }
     const model = { filterType: 'number', type: 'inRange', filter: fromSec || 0, filterTo: toSec || 86399 } as any;
@@ -123,12 +177,43 @@ export class FilesGrid implements OnInit {
     this.gridApi.setFilterModel(fm);
   }
 
+  clearColumnFilter(colKey: string) {
+    if (!this.gridApi) return;
+    const fm = (this.gridApi.getFilterModel() || {}) as any;
+    fm[colKey] = null; // set to null to fully reset including floating filter UI
+    this.gridApi.setFilterModel(fm);
+  }
+
+  clearTimeFilter() {
+    this.timeFrom = '';
+    this.timeTo = '';
+    this.clearColumnFilter('time');
+  }
+
+  clearDateFilter() {
+    this.clearColumnFilter('date');
+  }
+
+  clearAllFilters() {
+    if (!this.gridApi) return;
+    this.gridApi.setFilterModel(null);
+    this.timeFrom = '';
+    this.timeTo = '';
+  }
+  
   onCellClicked(event: any) {
     if (event.colDef.field === 'actions') {
       const filename = event.data?.name;
       if (!filename) return;
       const url = this.api.buildDirectDownloadUrl(filename);
       window.open(url, '_blank');
+    }
+  }
+
+  onHeaderClear(colId: string) {
+    if (colId === 'time') {
+      this.timeFrom = '';
+      this.timeTo = '';
     }
   }
 }

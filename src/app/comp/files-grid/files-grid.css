@@ -57,3 +57,23 @@
   background: hsl(190, 75%, 95%);
   border-color: hsl(190, 95%, 30%);
 }
+
+/* Header clear button style */
+.ag-theme-quartz .ag-header .ag-hdr-clear-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  background: #fff;
+  padding: 0;
+  color: #9ca3af;
+  cursor: pointer;
+}
+.ag-theme-quartz .ag-header .ag-hdr-clear-btn:hover {
+  color: #111827;
+  border-color: #9ca3af;
+  background: #f9fafb;
+}
