@@ -26,6 +26,10 @@ export class UserOpsPage implements OnInit {
   notifType: 'success' | 'error' = 'success';
   private notifTimer?: any;
 
+  // delete confirmation
+  pendingDelete?: DevicePatientRecord | null;
+  deleting = false;
+
   constructor(private api: ApiService, private router: Router) {}
 
   async checkAuth() {
@@ -106,5 +110,31 @@ export class UserOpsPage implements OnInit {
   onLogout() {
     console.log('Logout event received from header component');
     // Handle any additional logout logic here
+  }
+
+  onDeleteRequest(rec: DevicePatientRecord) {
+    this.pendingDelete = rec;
+  }
+
+  cancelDelete() { this.pendingDelete = null; }
+
+  confirmDelete() {
+    if (!this.pendingDelete) return;
+    const device = this.pendingDelete.device;
+    this.deleting = true;
+    this.api.ddbDeleteDeviceMapping(device).subscribe({
+      next: () => {
+        this.deleting = false;
+        this.pendingDelete = null;
+        this.toast(`Deleted mapping for ${device}`, 'success');
+        this.grid?.reload();
+        this.loadUnregistered();
+      },
+      error: (e) => {
+        console.error('Failed to delete mapping', e);
+        this.deleting = false;
+        this.toast('Delete failed. Please try again.', 'error');
+      }
+    });
   }
 }

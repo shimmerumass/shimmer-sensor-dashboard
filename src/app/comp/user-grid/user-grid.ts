@@ -12,6 +12,7 @@ export class UserGridComponent implements OnInit {
   private gridApi?: GridApi;
 
   @Output() updateRequested = new EventEmitter<DevicePatientRecord>();
+  @Output() deleteRequested = new EventEmitter<DevicePatientRecord>();
   @Output() changed = new EventEmitter<{ action: 'delete'; device: string; ok: boolean; error?: string }>();
 
   columnDefs: ColDef[] = [
@@ -87,19 +88,8 @@ export class UserGridComponent implements OnInit {
       return;
     }
     if (targetBtn.classList.contains('delete')) {
-      const yes = confirm(`Delete mapping for device ${rec.device}?`);
-      if (!yes) return;
-      this.api.ddbDeleteDeviceMapping(rec.device).subscribe({
-        next: () => {
-          this.changed.emit({ action: 'delete', device: rec.device, ok: true });
-          this.reload();
-        },
-        error: (e) => {
-          console.error('Failed to delete mapping', e);
-          this.actionError = 'Delete failed. Please try again.';
-          this.changed.emit({ action: 'delete', device: rec.device, ok: false, error: 'Delete failed. Please try again.' });
-        }
-      });
+      this.deleteRequested.emit(rec);
+      return;
     }
   }
 }
