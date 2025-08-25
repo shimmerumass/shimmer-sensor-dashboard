@@ -57,4 +57,37 @@
     (cellClicked)="onCellClicked($event)"
     [enableCellTextSelection]="true">
   </ag-grid-angular>
+
+  <!-- popup -->
+  <div *ngIf="showPopup" class="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
+    <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6 w-full max-w-lg relative">
+      <button (click)="closePopup()" class="absolute top-2 right-2 text-gray-500 hover:text-black" title="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <h2 class="text-lg font-semibold mb-3">Files for selected row</h2>
+      <div class="flex gap-2 mb-3 items-center">
+        <label class="text-sm">From</label>
+        <input type="time" step="1" [(ngModel)]="popupTimeFrom" class="px-2 py-1 rounded border border-gray-300" />
+        <label class="text-sm">To</label>
+        <input type="time" step="1" [(ngModel)]="popupTimeTo" class="px-2 py-1 rounded border border-gray-300" />
+        <button (click)="popupTimeFrom='';popupTimeTo=''" class="amplify-button">Clear</button>
+      </div>
+      <table class="w-full text-sm border">
+        <thead>
+          <tr>
+            <th class="border px-2 py-1">Timestamp</th>
+            <th class="border px-2 py-1">Filename</th>
+            <th class="border px-2 py-1">Extension</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let f of filteredPopupFiles">
+            <td class="border px-2 py-1">{{ f.time }}</td>
+            <td class="border px-2 py-1">{{ f.fullname }}</td>
+            <td class="border px-2 py-1">{{ f.ext }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

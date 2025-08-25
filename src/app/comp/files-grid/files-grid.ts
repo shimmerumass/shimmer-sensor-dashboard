@@ -84,6 +84,11 @@ export class FilesGrid implements OnInit {
     return 0;
   }
 
+  expandedFiles: any[] = [];
+  showPopup = false;
+  popupTimeFrom = '';
+  popupTimeTo = '';
+
   columnDefs: ColDef[] = [
     { headerName: 'Patient', field: 'patient', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
     { headerName: 'Device', field: 'device', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1, hide: false, valueGetter: params => params.data?.device },
@@ -103,13 +108,18 @@ export class FilesGrid implements OnInit {
     {
       headerName: 'Actions',
       field: 'actions',
-      width: 120,
-      cellRenderer: () => `
-        <button type="button" class="ag-action-btn ag-action-icon" aria-label="Download">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      width: 180,
+      cellRenderer: (params: any) => `
+        <button type="button" class="ag-action-btn ag-action-icon" aria-label="Download" title="Download">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
             <polyline points="7 10 12 15 17 10" />
             <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+        </button>
+        <button type="button" class="ag-action-btn ag-action-expand" aria-label="Expand" title="Expand">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9" />
           </svg>
         </button>
       `,
@@ -273,11 +283,44 @@ export class FilesGrid implements OnInit {
 
   onCellClicked(event: any) {
     if (event.colDef.field !== 'actions') return;
+    let target = event.event.target as HTMLElement;
+    // Traverse up to button if SVG or child is clicked
+    while (target && target.tagName !== 'BUTTON' && target.parentElement) {
+      target = target.parentElement;
+    }
     const files = event.data?.files;
     if (!Array.isArray(files) || !files.length) return;
-    this.actionError = '';
-    this.isScreenLoading = true;
-    this.downloadZipByUserDate(files);
+    const classList = target.getAttribute('class') || '';
+    if (classList.includes('ag-action-icon')) {
+      this.actionError = '';
+      this.isScreenLoading = true;
+      this.downloadZipByUserDate(files);
+    } else if (classList.includes('ag-action-expand')) {
+      console.log('Expand clicked, files:', files);
+      this.expandedFiles = files;
+      this.showPopup = true;
+      this.popupTimeFrom = '';
+      this.popupTimeTo = '';
+    }
+  }
+
+  get filteredPopupFiles() {
+    if (!this.popupTimeFrom && !this.popupTimeTo) return this.expandedFiles;
+    const fromSec = FilesGrid.parseTimeToSeconds(this.popupTimeFrom);
+    const toSec = FilesGrid.parseTimeToSeconds(this.popupTimeTo);
+    return this.expandedFiles.filter(f => {
+      const tSec = FilesGrid.parseTimeToSeconds(f.time);
+      if (fromSec && tSec < fromSec) return false;
+      if (toSec && tSec > toSec) return false;
+      return true;
+    });
+  }
+
+  closePopup() {
+    this.showPopup = false;
+    this.expandedFiles = [];
+    this.popupTimeFrom = '';
+    this.popupTimeTo = '';
   }
 
   private downloadZipByUserDate(files: any[]) {
