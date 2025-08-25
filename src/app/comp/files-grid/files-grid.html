@@ -24,12 +24,6 @@
           <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z"/></svg>
           <input type="text" placeholder="Quick search..." [value]="quickFilterText" (input)="onQuickFilterChange($event)" class="pl-9 pr-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-300" />
         </div>
-        <label class="text-sm text-gray-600">From</label>
-        <input type="time" step="1" [value]="timeFrom" (input)="timeFrom = $any($event.target).value" class="px-2 py-2 rounded-lg border border-gray-200" />
-        <label class="text-sm text-gray-600">To</label>
-        <input type="time" step="1" [value]="timeTo" (input)="timeTo = $any($event.target).value" class="px-2 py-2 rounded-lg border border-gray-200" />
-        <button (click)="applyTimeRangeFilter()" class="amplify-button amplify-button--primary">Apply</button>
-        <button (click)="clearTimeFilter()" class="amplify-button">Clear Time</button>
         <button (click)="clearAllFilters()" class="amplify-button">Clear All</button>
       </div>
     </div>
