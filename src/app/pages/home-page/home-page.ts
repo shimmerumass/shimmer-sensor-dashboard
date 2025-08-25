@@ -55,9 +55,8 @@ export class HomePage implements OnInit {
         this.dataPointsTotal = items.length;
         const recent = items.filter(f => {
           const dStr = f?.date || '';
-          const tStr = f?.time || '00:00:00';
           if (!dStr) return false;
-          const dt = new Date(`${dStr}T${tStr}`);
+          const dt = new Date(`${dStr}`);
           return !isNaN(dt.getTime()) && dt >= cutoff;
         }).length;
         this.dataPointsRecentPercent = this.dataPointsTotal ? Math.round((recent / this.dataPointsTotal) * 100) : 0;

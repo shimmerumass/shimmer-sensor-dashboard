@@ -2,14 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+
+export interface Files {
+  time: string;
+  ext: string;
+  part: string; 
+  fullname?: string | null;
+}
+
 export interface FileItem {
-  name: string;
   device: string;
   date: string; // YYYY-MM-DD
-  time: string; // HH:MM:SS
-  part?: string | null;
-  ext: string;
   patient?: string | null;
+  files: Files[];
 }
 
 export interface DevicePatientRecord {
@@ -112,6 +117,17 @@ export class ApiService {
 
     const part = partExt?.includes('.') ? partExt.split('.')[0] : undefined;
 
-    return { name, device, date, time, part, ext } as FileItem;
+    const files: Files[] = [{
+      time,
+      ext,
+      part: part ?? '',
+      fullname: name
+    }];
+
+    return {
+      device,
+      date,
+      files
+    };
   }
 }

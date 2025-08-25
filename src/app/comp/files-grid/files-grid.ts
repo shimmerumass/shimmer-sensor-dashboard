@@ -86,7 +86,7 @@ export class FilesGrid implements OnInit {
 
   columnDefs: ColDef[] = [
     { headerName: 'Patient', field: 'patient', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
-    { headerName: 'Device', field: 'device', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
+    { headerName: 'Device', field: 'device', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1, hide: false, valueGetter: params => params.data?.device },
     {
       headerName: 'Date',
       field: 'date',
@@ -100,21 +100,6 @@ export class FilesGrid implements OnInit {
       sortable: true,
       flex: 1
     },
-    {
-      headerName: 'Time',
-      field: 'time',
-      headerComponent: 'clearFilterHeader',
-      filter: 'agNumberColumnFilter',
-      filterParams: { filterOptions: ['inRange', 'greaterThan', 'lessThan', 'equals'] },
-      sortable: true,
-      width: 130,
-      valueGetter: params => FilesGrid.parseTimeToSeconds(params.data?.time),
-      valueFormatter: params => params.data?.time ?? ''
-    },
-    { headerName: 'File Name', field: 'part', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', width: 110 },
-    
-    { headerName: 'Ext', field: 'ext', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', width: 110, hide: true },
-    { headerName: 'File', field: 'name', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', flex: 2, hide: true },
     {
       headerName: 'Actions',
       field: 'actions',
@@ -171,8 +156,9 @@ export class FilesGrid implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
     this.api.listFilesParsed().subscribe({
-      next: items => {
-        this.rowData = items;
+      next: (resp: any) => {
+        this.rowData = Array.isArray(resp?.data) ? resp.data : [];
+        console.log('FilesGrid rowData:', this.rowData);
         this.loadError = '';
         this.isLoading = false;
       },
@@ -287,24 +273,33 @@ export class FilesGrid implements OnInit {
 
   onCellClicked(event: any) {
     if (event.colDef.field !== 'actions') return;
-    const filename = event.data?.name;
-    if (!filename) return;
+    const files = event.data?.files;
+    if (!Array.isArray(files) || !files.length) return;
     this.actionError = '';
-
     this.isScreenLoading = true;
+    this.downloadZipByUserDate(files);
+  }
 
-    this.api.getDownloadUrl(filename).subscribe({
-      next: ({ url }) => {
-        const targetUrl = url || (this.downloadBase + encodeURIComponent(filename));
-        // Keep loader until the file is received, using streaming when possible
-        void this.streamDownload(targetUrl, filename);
-      },
-      error: (e) => {
-        console.error('Failed to get download URL', e);
+  private downloadZipByUserDate(files: any[]) {
+    fetch('https://odb777ddnc.execute-api.us-east-2.amazonaws.com/download-zip-by-user-date/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'accept': 'application/json' },
+      body: JSON.stringify(files)
+    })
+      .then(resp => resp.json())
+      .then(data => {
+        if (data?.download_url) {
+          window.open(data.download_url, '_blank');
+        } else {
+          this.actionError = 'Download URL not received.';
+        }
+        this.isScreenLoading = false;
+      })
+      .catch(err => {
+        console.error('Failed to get zip download URL', err);
         this.actionError = 'Failed to start download. Please try again.';
         this.isScreenLoading = false;
-      }
-    });
+      });
   }
 
   downloadAll() {
