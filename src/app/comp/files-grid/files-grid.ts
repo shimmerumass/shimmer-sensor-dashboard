@@ -126,7 +126,10 @@ export class FilesGrid implements OnInit {
       `,
       sortable: false,
       filter: false
-    }
+    },
+    { headerName: 'Experiment Name', field: 'experiment_name', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
+    { headerName: 'Shimmer 1', field: 'shimmer1', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
+    { headerName: 'Shimmer 2', field: 'shimmer2', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 }
   ];
 
   defaultColDef: ColDef = { resizable: true, filter: true, sortable: true, floatingFilter: true };

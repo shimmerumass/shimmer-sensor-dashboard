@@ -70,16 +70,18 @@
         <table class="w-full text-sm border">
           <thead>
             <tr>
-              <th class="border px-2 py-1">Timestamp</th>
+              <th class="border px-2 py-1">Time</th>
               <th class="border px-2 py-1">Filename</th>
-              <th class="border px-2 py-1">Extension</th>
+              <th class="border px-2 py-1">Shimmer Device</th>
+              <th class="border px-2 py-1">Shimmer Day</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let f of filteredPopupFiles">
               <td class="border px-2 py-1">{{ f.time }}</td>
               <td class="border px-2 py-1">{{ f.fullname }}</td>
-              <td class="border px-2 py-1">{{ f.ext }}</td>
+              <td class="border px-2 py-1">{{ f.shimmer_device }}</td>
+              <td class="border px-2 py-1">{{ f.shimmer_day }}</td>
             </tr>
           </tbody>
         </table>
