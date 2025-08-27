@@ -197,6 +197,7 @@ export class FilesGrid implements OnInit {
   isDecoding = false;
   decodeError = '';
   decodedResult: any = null;
+  selectedFileName: string = '';
 
   constructor(private api: ApiService) {}
 
@@ -425,6 +426,7 @@ export class FilesGrid implements OnInit {
   }
 
   decodeFileInPopup(rowData: any) {
+    this.selectedFileName = rowData.fullname || rowData.filename || '';
     this.isDecoding = true;
     this.decodeError = '';
     this.decodedResult = null;
