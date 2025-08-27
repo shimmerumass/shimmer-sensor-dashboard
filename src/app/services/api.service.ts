@@ -130,4 +130,10 @@ export class ApiService {
       files
     };
   }
+
+  decodeFile(filename: string) {
+    return this.http.get<any>(
+      `https://odb777ddnc.execute-api.us-east-2.amazonaws.com/file/decode/?filename=${encodeURIComponent(filename)}`
+    );
+  }
 }
