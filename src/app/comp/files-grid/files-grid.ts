@@ -105,10 +105,14 @@ export class FilesGrid implements OnInit {
       sortable: true,
       flex: 1
     },
+    { headerName: 'Experiment Name', field: 'experiment_name', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
+    { headerName: 'Shimmer 1', field: 'shimmer1', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
+    { headerName: 'Shimmer 2', field: 'shimmer2', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
+
     {
       headerName: 'Actions',
       field: 'actions',
-      width: 180,
+      width: 100,
       cellRenderer: (params: any) => `
         <button type="button" class="ag-action-btn ag-action-icon" aria-label="Download" title="Download">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -126,10 +130,14 @@ export class FilesGrid implements OnInit {
       `,
       sortable: false,
       filter: false
-    },
-    { headerName: 'Experiment Name', field: 'experiment_name', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
-    { headerName: 'Shimmer 1', field: 'shimmer1', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
-    { headerName: 'Shimmer 2', field: 'shimmer2', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 }
+    }
+  ];
+
+  popupColumnDefs: ColDef[] = [
+    { headerName: 'Time', field: 'time', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
+    { headerName: 'Filename', field: 'fullname', filter: 'agTextColumnFilter', sortable: true, flex: 2 },
+    { headerName: 'Shimmer Device', field: 'shimmer_device', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
+    { headerName: 'Shimmer Day', field: 'shimmer_day', filter: 'agTextColumnFilter', sortable: true, flex: 1 }
   ];
 
   defaultColDef: ColDef = { resizable: true, filter: true, sortable: true, floatingFilter: true };
