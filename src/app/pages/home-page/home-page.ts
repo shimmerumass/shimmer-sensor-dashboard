@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 })
 export class HomePage implements OnInit {
   public activeSensors = 0;
+  public expectedSensors = 4; // Preset expected number of devices
   public usersCount = 0;
   patients$!: Observable<string[]>;
 
@@ -40,9 +41,27 @@ export class HomePage implements OnInit {
       next: (patients) => {
         const count = Array.isArray(patients) ? patients.length : 0;
         this.usersCount = count;
-        this.activeSensors = count * 2;
       },
-      error: () => { this.usersCount = 0; this.activeSensors = 0; }
+      error: () => { this.usersCount = 0; }
+    });
+    
+    // Load active sensors from metadata
+    this.api.listFilesMetadata().subscribe({
+      next: (response: any) => {
+        const items = Array.isArray(response?.data) ? response.data : [];
+        
+        // Count unique devices from the metadata
+        const uniqueDevices = new Set();
+        items.forEach((row: any) => {
+          if (row?.device) {
+            uniqueDevices.add(row.device);
+          }
+        });
+        
+        this.activeSensors = uniqueDevices.size;
+        console.log(`Active sensors: ${this.activeSensors}, Expected: ${this.expectedSensors}`);
+      },
+      error: () => { this.activeSensors = 0; }
     });
   }
 
@@ -50,16 +69,43 @@ export class HomePage implements OnInit {
     const now = new Date();
     const cutoff = new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000);
     this.api.listFilesMetadata().subscribe({
-      next: (files: FileItem[]) => {
-        const items = Array.isArray(files) ? files : [];
-        this.dataPointsTotal = items.length;
-        const recent = items.filter(f => {
-          const dStr = f?.date || '';
-          if (!dStr) return false;
-          const dt = new Date(`${dStr}`);
+      next: (response: any) => {
+        const items = Array.isArray(response?.data) ? response.data : [];
+        console.log('Files data:', items.slice(0, 2)); // Debug: log first 2 items
+        
+        // Count all individual files, not just rows
+        let allFiles: any[] = [];
+        items.forEach((row: any) => {
+          const rowFiles = row?.files;
+          if (rowFiles && Array.isArray(rowFiles)) {
+            allFiles = allFiles.concat(rowFiles);
+          }
+        });
+        
+        console.log(`Total individual files found: ${allFiles.length}`);
+        
+        this.dataPointsTotal = allFiles.length;
+        
+        const recent = allFiles.filter(f => {
+          // Extract date from timestamp format: 20250827_013909 or 20250904_003502
+          const timestamp = f?.timestamp || '';
+          
+          if (!timestamp || timestamp === 'files.zip') return false;
+          
+          // Parse timestamp YYYYMMDD_HHMMSS
+          const dateMatch = timestamp.match(/^(\d{4})(\d{2})(\d{2})_/);
+          if (!dateMatch) return false;
+          
+          const year = parseInt(dateMatch[1]);
+          const month = parseInt(dateMatch[2]) - 1; // months are 0-based
+          const day = parseInt(dateMatch[3]);
+          const dt = new Date(year, month, day);
+          
           return !isNaN(dt.getTime()) && dt >= cutoff;
         }).length;
+        
         this.dataPointsRecentPercent = this.dataPointsTotal ? Math.round((recent / this.dataPointsTotal) * 100) : 0;
+        console.log(`Total files: ${this.dataPointsTotal}, Recent files: ${recent}, Percent: ${this.dataPointsRecentPercent}`);
       },
       error: () => { this.dataPointsTotal = 0; this.dataPointsRecentPercent = 0; }
     });

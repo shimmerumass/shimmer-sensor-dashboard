@@ -49,8 +49,36 @@
                 </svg>
               </div>
             </div>
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ activeSensors }}</h3>
-            <p class="text-gray-600">Total Sensors</p>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+              {{ activeSensors }} / {{ expectedSensors }}
+              <div class="w-3 h-3 rounded-full" 
+                   [ngClass]="{
+                     'bg-green-500': activeSensors === expectedSensors,
+                     'bg-amber-500': activeSensors > 0 && activeSensors < expectedSensors,
+                     'bg-red-500': activeSensors === 0
+                   }">
+              </div>
+            </h3>
+            <p class="text-gray-600">Active Sensors</p>
+            <p class="text-sm text-gray-400 mt-1">Present / Expected</p>
+            
+            <!-- Status Legend -->
+            <div class="mt-3 pt-3 border-t border-gray-100">
+              <div class="flex flex-wrap gap-3 text-xs">
+                <div class="flex items-center gap-1">
+                  <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                  <span class="text-gray-500">All Online</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+                  <span class="text-gray-500">Partial</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                  <span class="text-gray-500">All Offline</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
