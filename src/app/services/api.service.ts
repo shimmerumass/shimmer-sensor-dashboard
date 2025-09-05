@@ -39,6 +39,11 @@ export class ApiService {
     return this.http.get<FileItem[]>(`${this.baseUrl}/files/metadata/`);
   }
 
+  // New: deconstructed files data
+  listFilesDeconstructed(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/files/deconstructed/`);
+  }
+
   // Back-compat for callers
   listFilesParsed(): Observable<FileItem[]> {
     return this.listFilesMetadata();
