@@ -205,8 +205,15 @@ export class FilesGrid implements OnInit {
     this.isLoading = true;
     this.api.listFilesParsed().subscribe({
       next: (resp: any) => {
-        this.rowData = Array.isArray(resp?.data) ? resp.data : [];
-        console.log('FilesGrid rowData:', this.rowData);
+        console.log('API response from listFilesParsed:', resp);
+        if (Array.isArray(resp)) {
+          this.rowData = resp;
+        } else if (Array.isArray(resp?.data)) {
+          this.rowData = resp.data;
+        } else {
+          this.rowData = [];
+        }
+        console.log('FilesGrid processed rowData:', this.rowData);
         this.loadError = '';
         this.isLoading = false;
       },
