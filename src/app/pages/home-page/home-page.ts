@@ -23,7 +23,18 @@ export class HomePage implements OnInit {
   // New: unregistered devices count
   public unregisteredCount = 0;
 
+  // Popup state for files grid
+  public showFilesGridPopup = false;
+
   constructor(private router: Router, private api: ApiService) {}
+
+  openDownloadPointsPopup() {
+    this.showFilesGridPopup = true;
+  }
+
+  closeFilesGridPopup() {
+    this.showFilesGridPopup = false;
+  }
 
   async checkAuth() {
     try {
