@@ -6,6 +6,7 @@ import { CompModule } from '../comp/modules';
 import { HomePage } from './home-page/home-page';
 import { UserOpsPage } from './user-ops/user-ops';
 import { FormsModule } from '@angular/forms';
+import { DataOps } from './data-ops/data-ops';
 
 const routes: Routes = [
   { path: '', component: LoginPage },
@@ -15,7 +16,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [LoginPage, HomePage, UserOpsPage],
+  declarations: [LoginPage, HomePage, UserOpsPage, DataOps],
   imports: [CommonModule, CompModule, RouterModule.forChild(routes), FormsModule],
   exports: [RouterModule]
 })

@@ -9,9 +9,10 @@ import { AuthComp } from './auth-comp/auth-comp';
 import { HeaderComp } from './header-comp/header-comp';
 import { FilesGrid } from './files-grid/files-grid';
 import { UserGridComponent } from './user-grid/user-grid';
+import { DataGrid } from './data-grid/data-grid';
 
 @NgModule({
-  declarations: [AuthComp, HeaderComp, FilesGrid, UserGridComponent],
+  declarations: [AuthComp, HeaderComp, FilesGrid, UserGridComponent, DataGrid],
   imports: [
     CommonModule,
     AmplifyAuthenticatorModule,
@@ -19,6 +20,6 @@ import { UserGridComponent } from './user-grid/user-grid';
     FormsModule,
     RouterModule
   ],
-  exports: [AuthComp, HeaderComp, FilesGrid, UserGridComponent]
+  exports: [AuthComp, HeaderComp, FilesGrid, UserGridComponent, DataGrid]
 })
 export class CompModule {}
