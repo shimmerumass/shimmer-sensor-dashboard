@@ -141,4 +141,9 @@ export class ApiService {
       `https://odb777ddnc.execute-api.us-east-2.amazonaws.com/file/decode/?filename=${encodeURIComponent(filename)}`
     );
   }
+
+  // Combined metadata endpoint
+  listFilesCombinedMeta(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/files/combined-meta/`);
+  }
 }
