@@ -16,9 +16,11 @@ export class UserGridComponent implements OnInit {
   @Output() changed = new EventEmitter<{ action: 'delete'; device: string; ok: boolean; error?: string }>();
 
   columnDefs: ColDef[] = [
-    { headerName: 'Device', field: 'device', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
-    { headerName: 'Patient', field: 'patient', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
-    { headerName: 'Updated At', field: 'updatedAt', filter: 'agDateColumnFilter', sortable: true, flex: 1 },
+  { headerName: 'Device', field: 'device', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
+  { headerName: 'Patient', field: 'patient', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
+  { headerName: 'Shimmer 1', field: 'shimmer1', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
+  { headerName: 'Shimmer 2', field: 'shimmer2', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
+  { headerName: 'Updated At', field: 'updatedAt', filter: 'agDateColumnFilter', sortable: true, flex: 1 },
     {
       headerName: 'Actions',
       field: 'actions',

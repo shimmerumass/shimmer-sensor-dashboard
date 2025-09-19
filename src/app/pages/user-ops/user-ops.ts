@@ -56,7 +56,9 @@ export class UserOpsPage implements OnInit {
   }
 
   onUpdate(rec: DevicePatientRecord) {
-    this.openModal(rec.device, rec.patient || '');
+  // Pass shimmer1 and shimmer2 to modal if needed in future
+  this.openModal(rec.device, rec.patient || '');
+  // You can now access rec.shimmer1 and rec.shimmer2 here
   }
 
   onGridChanged(evt: { action: 'delete'; device: string; ok: boolean; error?: string }) {

@@ -20,6 +20,8 @@ export interface FileItem {
 export interface DevicePatientRecord {
   device: string;
   patient?: string | null;
+  shimmer1?: string | null;
+  shimmer2?: string | null;
   updatedAt?: string | null;
 }
 
