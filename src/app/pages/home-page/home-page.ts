@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { fetchAuthSession } from '@aws-amplify/auth';
 import { ApiService, FileItem } from '../../services/api.service';
 import { Observable } from 'rxjs';
+import { ChangeDetectorRef } from '@angular/core';
+import { ChartConfiguration } from 'chart.js';
 
 @Component({
   selector: 'app-home-page',
@@ -28,7 +30,36 @@ export class HomePage implements OnInit {
   // New: unregistered devices count
   public unregisteredCount = 0;
 
-  constructor(private router: Router, private api: ApiService) {}
+  
+    lineChartData: ChartConfiguration<'line'>['data'] = {
+  labels: [], 
+  datasets: [
+    {
+      data: [], 
+      label: 'Abs(Y)',
+      fill: false,
+      borderColor: 'rgb(75, 192, 192)',
+      tension: 0.1
+    }
+  ]
+};
+
+  lineChartOptions: ChartConfiguration<'line'>['options'] = {
+    responsive: true,
+    plugins: {
+      legend: { display: true },
+    },
+    scales: {
+      x: {
+        title: { display: true, text: this.x_axis_label }
+      },
+      y: {
+        title: { display: true, text: this.y_axis_label }
+      }
+    }
+  };
+
+  constructor(private router: Router, private api: ApiService, private cdr: ChangeDetectorRef) {}
 
   async checkAuth() {
     try {
@@ -137,18 +168,52 @@ export class HomePage implements OnInit {
     // Handle any additional logout logic here
   }
 
+  // openGraphModal(data: { time?: any[]; abs?: any[] }) {
+  //   console.log('Graph Button Output:', {
+  //     time: data.time,
+  //     abs: data.abs
+  //   });
+
+  //   this.x_values = Array.isArray(data.time) ? [...data.time] : [];
+  //   this.y_values = Array.isArray(data.abs) ? [...data.abs] : [];
+
+  //   // Optionally set modal state if you want to show the arrays in the UI
+  //   // this.graphModalData = data;
+  //   console.log('Opening graph modal', this.x_values.length, this.y_values.length);
+  //   this.showGraphModal = true;
+  //   this.cdr.detectChanges();
+  // }
+
+
   openGraphModal(data: { time?: any[]; abs?: any[] }) {
-    console.log('Graph Button Output:', {
+       console.log('Graph Button Output:', {
       time: data.time,
       abs: data.abs
     });
+  this.x_values = Array.isArray(data.time) ? [...data.time] : [];
+  this.y_values = Array.isArray(data.abs) ? [...data.abs] : [];
 
-    this.x_values = data.time || [];
-    this.y_values = data.abs || [];
+  this.lineChartData = {
+    labels: this.x_values.length ? this.x_values : ['No Data'],
+    datasets: [
+      {
+        data: this.y_values.length ? this.y_values : [0],
+        label: 'Abs(Y)',
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1
+      }
+    ]
+  };
 
-    // Optionally set modal state if you want to show the arrays in the UI
-    // this.graphModalData = data;
-    console.log('Opening graph modal');
-    this.showGraphModal = true;
+  this.showGraphModal = true;
+  this.cdr.detectChanges();
+}
+
+
+  closeModal() { 
+    this.showGraphModal = false; 
+    this.cdr.detectChanges();
   }
+
 }

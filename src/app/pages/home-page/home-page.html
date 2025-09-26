@@ -156,19 +156,43 @@
   </section>
 
   <app-data-grid (graphOutput)="openGraphModal($event)"></app-data-grid>
-  <div *ngIf="showGraphModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-    <div class="bg-white rounded-lg shadow-lg p-6 relative w-full max-w-2xl">
-      <button (click)="showGraphModal = false" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">&times;</button>
-      <h2 class="text-xl font-bold mb-4">Timeseries Data</h2>
-      <div class="mt-4">
-        <strong>X Values:</strong>
-        <span>{{ x_values }}</span>
+
+
+   <!-- <div class="mt-4">
+  <strong>X Values:</strong>
+  <span class="text-xs text-gray-500 ml-2" *ngIf="x_values">(Length: {{ x_values.length }})</span>
       </div>
       <div class="mt-2">
-        <strong>Y Values:</strong>
-        <span>{{ y_values }}</span>
-      </div>
-    </div>
-  </div>
+  <strong>Y Values:</strong>
+  <span class="text-xs text-gray-500 ml-2" *ngIf="y_values">(Length: {{ y_values.length }})</span>
+      </div> -->
 
+</div>
+
+ <!-- Modal -->
+<!--   
+<div *ngIf="showGraphModal" class="fixed inset-0 flex items-center justify-center bg-black/40">
+  <div class="bg-white p-5 rounded-xl shadow-lg w-[90vw] max-w-3xl">
+  <button (click)="closeModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold focus:outline-none z-[10001]" aria-label="Close modal">&times;</button>
+  <h2 class="text-lg font-bold mb-3">Time vs Abs(Y)</h2>
+    <canvas baseChart
+      [data]="lineChartData"
+      [options]="lineChartOptions"
+      [type]="'line'">
+    </canvas>
+    <button (click)="closeModal()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Close</button>
+  </div>
+</div> -->
+
+<!-- Modal -->
+<div *ngIf="showGraphModal" class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40">
+  <div class="relative z-[10000] bg-white p-5 rounded-xl shadow-lg w-[90vw] max-w-3xl">
+    <button (click)="closeModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold focus:outline-none z-[10001]" aria-label="Close modal">&times;</button>
+    <h2 class="text-lg font-bold mb-3">Time vs Abs(Y)</h2>
+    <canvas baseChart
+      [data]="lineChartData"
+      [options]="lineChartOptions"
+      [type]="'line'">
+    </canvas>
+  </div>
 </div>
