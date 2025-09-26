@@ -150,3 +150,4 @@ export class DataGrid implements OnInit {
 
   gridOptions: any;
 }
+
