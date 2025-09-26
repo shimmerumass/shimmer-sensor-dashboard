@@ -15,6 +15,11 @@ export class HomePage implements OnInit {
   public expectedSensors = 4; // Preset expected number of devices
   public usersCount = 0;
   patients$!: Observable<string[]>;
+  showGraphModal = false;
+  x_axis_label = 'Time';
+  y_axis_label = 'Accelerometer Absolute Value';
+  x_values: any[] = [];
+  y_values: any[] = [];
 
   // Data points metrics
   public dataPointsTotal = 0;
@@ -132,13 +137,18 @@ export class HomePage implements OnInit {
     // Handle any additional logout logic here
   }
 
-  openGraphModal(data: { shimmer1?: any[]; shimmer2?: any[] }) {
+  openGraphModal(data: { time?: any[]; abs?: any[] }) {
     console.log('Graph Button Output:', {
-      shimmer1: data.shimmer1,
-      shimmer2: data.shimmer2
+      time: data.time,
+      abs: data.abs
     });
+
+    this.x_values = data.time || [];
+    this.y_values = data.abs || [];
+
     // Optionally set modal state if you want to show the arrays in the UI
     // this.graphModalData = data;
-    // this.showGraphModal = true;
+    console.log('Opening graph modal');
+    this.showGraphModal = true;
   }
 }

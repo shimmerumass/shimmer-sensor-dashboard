@@ -11,7 +11,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrl: './data-grid.css'
 })
 export class DataGrid implements OnInit {
-  @Output() graphOutput = new EventEmitter<{ shimmer1?: any[]; shimmer2?: any[] }>();
+  @Output() graphOutput = new EventEmitter<{ time?: any[]; abs?: any[] }>();
   private chartInstance: Chart | null = null;
 
   private destroyChart() {
@@ -48,8 +48,8 @@ export class DataGrid implements OnInit {
             btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><polyline points="6 17 9 13 13 17 18 10"/></svg>`;
             btn.onclick = () => {
               this.graphOutput.emit({
-                shimmer1: params.data.shimmer1_timestamps,
-                shimmer2: params.data.shimmer1_accel_ln_abs
+                time: params.data.shimmer1_timestamps,
+                abs: params.data.shimmer1_accel_ln_abs
               });
             };
             return btn;
@@ -77,8 +77,8 @@ export class DataGrid implements OnInit {
             btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><polyline points="6 17 9 13 13 17 18 10"/></svg>`;
             btn.onclick = () => {
               this.graphOutput.emit({
-                shimmer1: params.data.shimmer2_timestamps,
-                shimmer2: params.data.shimmer2_accel_ln_abs
+                time: params.data.shimmer2_timestamps,
+                abs: params.data.shimmer2_accel_ln_abs
               });
             };
             return btn;
