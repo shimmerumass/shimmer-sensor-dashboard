@@ -7,6 +7,7 @@ import { CompModule } from './comp/modules';
 import { PagesModule } from './pages/pages.module';
 import { App } from './app';
 import { routes } from './app.routes';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
 // Register all Community features
@@ -22,7 +23,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
     CompModule, 
     PagesModule
   ],
-  providers: [],
+  providers: [provideCharts(withDefaultRegisterables())],
   bootstrap: [App]
 })
 export class AppModule {}

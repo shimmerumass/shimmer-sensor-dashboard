@@ -7,6 +7,8 @@ import { HomePage } from './home-page/home-page';
 import { UserOpsPage } from './user-ops/user-ops';
 import { DataOps } from './data-ops/data-ops';
 import { FormsModule } from '@angular/forms';
+import { BaseChartDirective } from 'ng2-charts';
+
 
 const routes: Routes = [
   { path: '', component: LoginPage },
@@ -18,7 +20,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [LoginPage, HomePage, UserOpsPage, DataOps],
-  imports: [CommonModule, CompModule, RouterModule.forChild(routes), FormsModule],
+  imports: [CommonModule, CompModule, RouterModule.forChild(routes), FormsModule, BaseChartDirective],
   exports: [RouterModule,LoginPage, HomePage, UserOpsPage, DataOps],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
