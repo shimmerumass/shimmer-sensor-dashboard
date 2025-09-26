@@ -155,7 +155,11 @@
     </div>
   </section>
 
-  <app-data-grid></app-data-grid>
+  <app-data-grid (graphOutput)="openGraphModal($event)"></app-data-grid>
+
+  <!-- Modal for Graph Button (triggered from grid) -->
+  <div *ngIf="showGraphModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+    <!-- Modal code removed to resolve Angular template errors -->
   <!-- <app-files-grid></app-files-grid> -->
 
   <!-- Quick Actions Section -->

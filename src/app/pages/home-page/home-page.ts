@@ -23,18 +23,7 @@ export class HomePage implements OnInit {
   // New: unregistered devices count
   public unregisteredCount = 0;
 
-  // Popup state for files grid
-  public showFilesGridPopup = false;
-
   constructor(private router: Router, private api: ApiService) {}
-
-  openDownloadPointsPopup() {
-    this.showFilesGridPopup = true;
-  }
-
-  closeFilesGridPopup() {
-    this.showFilesGridPopup = false;
-  }
 
   async checkAuth() {
     try {
@@ -141,5 +130,15 @@ export class HomePage implements OnInit {
   onLogout() {
     console.log('Logout event received from header component');
     // Handle any additional logout logic here
+  }
+
+  openGraphModal(data: { shimmer1?: any[]; shimmer2?: any[] }) {
+    console.log('Graph Button Output:', {
+      shimmer1: data.shimmer1,
+      shimmer2: data.shimmer2
+    });
+    // Optionally set modal state if you want to show the arrays in the UI
+    // this.graphModalData = data;
+    // this.showGraphModal = true;
   }
 }
