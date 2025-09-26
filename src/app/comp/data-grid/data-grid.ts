@@ -42,6 +42,9 @@ export class DataGrid implements OnInit {
           headerName: '',
           field: 'shimmer1_graph',
           cellRenderer: (params: any) => {
+            const hasTime = Array.isArray(params.data.shimmer1_timestamps) && params.data.shimmer1_timestamps.length > 0;
+            const hasAbs = Array.isArray(params.data.shimmer1_accel_ln_abs) && params.data.shimmer1_accel_ln_abs.length > 0;
+            if (!hasTime || !hasAbs) return '';
             const btn = document.createElement('button');
             btn.className = 'ag-btn ag-btn-graph themed-graph-btn';
             btn.title = 'Show Graph';
@@ -71,6 +74,9 @@ export class DataGrid implements OnInit {
           headerName: '',
           field: 'shimmer2_graph',
           cellRenderer: (params: any) => {
+            const hasTime = Array.isArray(params.data.shimmer2_timestamps) && params.data.shimmer2_timestamps.length > 0;
+            const hasAbs = Array.isArray(params.data.shimmer2_accel_ln_abs) && params.data.shimmer2_accel_ln_abs.length > 0;
+            if (!hasTime || !hasAbs) return '';
             const btn = document.createElement('button');
             btn.className = 'ag-btn ag-btn-graph themed-graph-btn';
             btn.title = 'Show Graph';
