@@ -1,3 +1,19 @@
+/* Themed graph button styles */
+.themed-graph-btn {
+  border: 1px solid #2563eb;
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+  padding: 4px 6px;
+  transition: box-shadow 0.2s, border-color 0.2s;
+  cursor: pointer;
+  outline: none;
+}
+.themed-graph-btn:hover, .themed-graph-btn:focus {
+  border-color: #1d4ed8;
+  box-shadow: 0 4px 16px rgba(37,99,235,0.16);
+  background: #eff6ff;
+}
 /* Center the grid on the page */
 .files-grid-viewport {
   display: flex;
