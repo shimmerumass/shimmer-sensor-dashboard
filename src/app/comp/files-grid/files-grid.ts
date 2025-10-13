@@ -206,14 +206,28 @@ export class FilesGrid implements OnInit {
     this.api.listFilesParsed().subscribe({
       next: (resp: any) => {
         console.log('API response from listFilesParsed:', resp);
+        let rawData: any[] = [];
         if (Array.isArray(resp)) {
-          this.rowData = resp;
+          rawData = resp;
         } else if (Array.isArray(resp?.data)) {
-          this.rowData = resp.data;
-        } else {
-          this.rowData = [];
+          rawData = resp.data;
         }
-        console.log('FilesGrid processed rowData:', this.rowData);
+        
+        // Filter out files in "decode/" folder
+        this.rowData = rawData.map(item => {
+          if (item.files && Array.isArray(item.files)) {
+            return {
+              ...item,
+              files: item.files.filter((file: any) => {
+                const fullname = file?.fullname || '';
+                return !fullname.startsWith('decode/');
+              })
+            };
+          }
+          return item;
+        }).filter(item => item.files && item.files.length > 0); // Remove items with no files left
+        
+        console.log('FilesGrid processed rowData (excluding decode/):', this.rowData);
         this.loadError = '';
         this.isLoading = false;
       },
