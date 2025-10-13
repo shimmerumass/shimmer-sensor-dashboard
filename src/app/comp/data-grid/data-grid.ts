@@ -120,8 +120,6 @@ export class DataGrid implements OnInit {
             shimmer1_filename: s.filename,
             shimmer1_shimmer_day: s.shimmer_day,
             shimmer1_part: s.part,
-            shimmer1_timestamps: s.timestamps,
-            shimmer1_accel_ln_abs: s.accel_ln_abs,
             shimmer1_accel_var: s.Accel_WR_VAR ? parseFloat(s.Accel_WR_VAR.toFixed(4)) : null,
             shimmer1_recorded_timestamp: s.recordedTimestamp ? new Date(s.recordedTimestamp).toLocaleString() : null
           }));
@@ -138,8 +136,6 @@ export class DataGrid implements OnInit {
             shimmer2_filename: s.filename,
             shimmer2_shimmer_day: s.shimmer_day,
             shimmer2_part: s.part,
-            shimmer2_timestamps: s.timestamps,
-            shimmer2_accel_ln_abs: s.accel_ln_abs,
             shimmer2_accel_var: s.Accel_WR_VAR ? parseFloat(s.Accel_WR_VAR.toFixed(4)) : null,
             shimmer2_recorded_timestamp: s.recordedTimestamp ? new Date(s.recordedTimestamp).toLocaleString() : null
           }));
