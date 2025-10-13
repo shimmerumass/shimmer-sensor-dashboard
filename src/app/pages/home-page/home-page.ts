@@ -109,16 +109,21 @@ export class HomePage implements OnInit {
         const items = Array.isArray(response?.data) ? response.data : [];
         console.log('Files data:', items.slice(0, 2)); // Debug: log first 2 items
         
-        // Count all individual files, not just rows
+        // Count all individual files, not just rows, excluding files with "_decode" in name
         let allFiles: any[] = [];
         items.forEach((row: any) => {
           const rowFiles = row?.files;
           if (rowFiles && Array.isArray(rowFiles)) {
-            allFiles = allFiles.concat(rowFiles);
+            // Filter out files with "_decode" in the name
+            const filteredFiles = rowFiles.filter((file: any) => {
+              const fileName = file?.fullname || file?.name || '';
+              return !fileName.includes('_decode');
+            });
+            allFiles = allFiles.concat(filteredFiles);
           }
         });
         
-        console.log(`Total individual files found: ${allFiles.length}`);
+        console.log(`Total individual files found (excluding _decode): ${allFiles.length}`);
         
         this.dataPointsTotal = allFiles.length;
         
