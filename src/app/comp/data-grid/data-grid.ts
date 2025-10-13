@@ -35,6 +35,7 @@ export class DataGrid implements OnInit {
       children: [
         { headerName: 'Day', field: 'shimmer1_shimmer_day', filter: 'agTextColumnFilter', sortable: true, minWidth: 80, maxWidth: 100 },
         { headerName: 'Accel Var', field: 'shimmer1_accel_var', filter: 'agNumberColumnFilter', sortable: true, minWidth: 110, maxWidth: 130 },
+        { headerName: 'Recorded Time', field: 'shimmer1_recorded_timestamp', filter: 'agTextColumnFilter', sortable: true, minWidth: 180, maxWidth: 220 },
         // { headerName: 'Time', field: 'shimmer1_time', filter: 'agTextColumnFilter', sortable: true, minWidth: 100, maxWidth: 120 },
         { headerName: 'Full File Name', field: 'shimmer1_full_file_name', filter: 'agTextColumnFilter', sortable: true, minWidth: 220, maxWidth: 320, hide: true },
         { headerName: 'MAC Address', field: 'shimmer1_mac_address', filter: 'agTextColumnFilter', sortable: true, minWidth: 140, maxWidth: 180 },
@@ -67,6 +68,7 @@ export class DataGrid implements OnInit {
       children: [
         { headerName: 'Day', field: 'shimmer2_shimmer_day', filter: 'agTextColumnFilter', sortable: true, minWidth: 80, maxWidth: 100 },
         { headerName: 'Accel Var', field: 'shimmer2_accel_var', filter: 'agNumberColumnFilter', sortable: true, minWidth: 110, maxWidth: 130 },
+        { headerName: 'Recorded Time', field: 'shimmer2_recorded_timestamp', filter: 'agTextColumnFilter', sortable: true, minWidth: 180, maxWidth: 220 },
         // { headerName: 'Time', field: 'shimmer2_time', filter: 'agTextColumnFilter', sortable: true, minWidth: 100, maxWidth: 120 },
         { headerName: 'Full File Name', field: 'shimmer2_full_file_name', filter: 'agTextColumnFilter', sortable: true, minWidth: 220, maxWidth: 320, hide: true },
         { headerName: 'MAC Address', field: 'shimmer2_mac_address', filter: 'agTextColumnFilter', sortable: true, minWidth: 140, maxWidth: 180 },
@@ -120,7 +122,8 @@ export class DataGrid implements OnInit {
             shimmer1_part: s.part,
             shimmer1_timestamps: s.timestamps,
             shimmer1_accel_ln_abs: s.accel_ln_abs,
-            shimmer1_accel_var: s.Accel_WR_VAR ? parseFloat(s.Accel_WR_VAR.toFixed(4)) : null
+            shimmer1_accel_var: s.Accel_WR_VAR ? parseFloat(s.Accel_WR_VAR.toFixed(4)) : null,
+            shimmer1_recorded_timestamp: s.recordedTimestamp ? new Date(s.recordedTimestamp).toLocaleString() : null
           }));
           const shimmer2Rows = (item.shimmer2_decoded || []).map((s: any) => ({
             patient: item.patient,
@@ -137,7 +140,8 @@ export class DataGrid implements OnInit {
             shimmer2_part: s.part,
             shimmer2_timestamps: s.timestamps,
             shimmer2_accel_ln_abs: s.accel_ln_abs,
-            shimmer2_accel_var: s.Accel_WR_VAR ? parseFloat(s.Accel_WR_VAR.toFixed(4)) : null
+            shimmer2_accel_var: s.Accel_WR_VAR ? parseFloat(s.Accel_WR_VAR.toFixed(4)) : null,
+            shimmer2_recorded_timestamp: s.recordedTimestamp ? new Date(s.recordedTimestamp).toLocaleString() : null
           }));
           return [...shimmer1Rows, ...shimmer2Rows];
         });
