@@ -26,7 +26,7 @@ export class DataGrid implements OnInit {
   columnDefs: (ColDef | ColGroupDef)[] = [
     { headerName: 'Patient', field: 'patient', filter: 'agTextColumnFilter', sortable: true, minWidth: 120, maxWidth: 160 },
     { headerName: 'Device', field: 'device', filter: 'agTextColumnFilter', sortable: true, minWidth: 120, maxWidth: 160 },
-    { headerName: 'Date', field: 'date', filter: 'agDateColumnFilter', sortable: true, minWidth: 120, maxWidth: 140 },
+    { headerName: 'Synced Date', field: 'date', filter: 'agDateColumnFilter', sortable: true, minWidth: 120, maxWidth: 140 },
     { headerName: 'Shimmer 1', field: 'shimmer1', filter: 'agTextColumnFilter', sortable: true, minWidth: 120, maxWidth: 160 },
     { headerName: 'Shimmer 2', field: 'shimmer2', filter: 'agTextColumnFilter', sortable: true, minWidth: 120, maxWidth: 160 },
     {
