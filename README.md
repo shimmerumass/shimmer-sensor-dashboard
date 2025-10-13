@@ -125,18 +125,6 @@ Configure API endpoints in `src/environments/`:
 - `environment.ts` (development)
 - `environment.prod.ts` (production)
 
-## Testing
-
-Run unit tests:
-```bash
-ng test
-```
-
-Run end-to-end tests:
-```bash
-ng e2e
-```
-
 ## Deployment
 
 ### AWS Amplify
