@@ -198,6 +198,8 @@ If the chart modal doesn't display:
 
 ## License
 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 This project is part of the UMass Shimmer research initiative.
 
 ## Contact
