@@ -120,7 +120,7 @@ export class DataGrid implements OnInit {
             shimmer1_part: s.part,
             shimmer1_timestamps: s.timestamps,
             shimmer1_accel_ln_abs: s.accel_ln_abs,
-            shimmer1_accel_var: s.accel_var
+            shimmer1_accel_var: s.Accel_WR_VAR
           }));
           const shimmer2Rows = (item.shimmer2_decoded || []).map((s: any) => ({
             patient: item.patient,
@@ -137,7 +137,7 @@ export class DataGrid implements OnInit {
             shimmer2_part: s.part,
             shimmer2_timestamps: s.timestamps,
             shimmer2_accel_ln_abs: s.accel_ln_abs,
-            shimmer2_accel_var: s.accel_var
+            shimmer2_accel_var: s.Accel_WR_VAR
           }));
           return [...shimmer1Rows, ...shimmer2Rows];
         });
