@@ -3,6 +3,7 @@ import Chart from 'chart.js/auto';
 import { ColDef, ColGroupDef } from 'ag-grid-community';
 import { ApiService } from '../../services/api.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-data-grid',
@@ -43,17 +44,38 @@ export class DataGrid implements OnInit {
           headerName: '',
           field: 'shimmer1_graph',
           cellRenderer: (params: any) => {
-            const hasTime = Array.isArray(params.data.shimmer1_timestamps) && params.data.shimmer1_timestamps.length > 0;
-            const hasAbs = Array.isArray(params.data.shimmer1_accel_ln_abs) && params.data.shimmer1_accel_ln_abs.length > 0;
-            if (!hasTime || !hasAbs) return '';
+            const fullFileName = params.data.shimmer1_full_file_name;
+            if (!fullFileName) return '';
             const btn = document.createElement('button');
             btn.className = 'ag-btn ag-btn-graph themed-graph-btn';
             btn.title = 'Show Graph';
             btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><polyline points="6 17 9 13 13 17 18 10"/></svg>`;
             btn.onclick = () => {
-              this.graphOutput.emit({
-                time: params.data.shimmer1_timestamps,
-                abs: params.data.shimmer1_accel_ln_abs
+              btn.disabled = true;
+              btn.style.opacity = '0.5';
+              forkJoin({
+                time: this.apiService.getDecodedFieldDirect(fullFileName, 'timestampCal'),
+                abs: this.apiService.getDecodedFieldDirect(fullFileName, 'Accel_WR_Absolute')
+              }).subscribe({
+                next: (result) => {
+                  console.log('API Response for Shimmer 1:', result);
+                  console.log('Time data:', result.time);
+                  console.log('Abs data:', result.abs);
+                  
+                  // Send raw data - downsampling will be handled in the modal
+                  this.graphOutput.emit({
+                    time: result.time?.values || [],
+                    abs: result.abs?.values || []
+                  });
+                  btn.disabled = false;
+                  btn.style.opacity = '1';
+                },
+                error: (err) => {
+                  console.error('Error fetching graph data:', err);
+                  btn.disabled = false;
+                  btn.style.opacity = '1';
+                  alert('Failed to load graph data');
+                }
               });
             };
             return btn;
@@ -76,17 +98,38 @@ export class DataGrid implements OnInit {
           headerName: '',
           field: 'shimmer2_graph',
           cellRenderer: (params: any) => {
-            const hasTime = Array.isArray(params.data.shimmer2_timestamps) && params.data.shimmer2_timestamps.length > 0;
-            const hasAbs = Array.isArray(params.data.shimmer2_accel_ln_abs) && params.data.shimmer2_accel_ln_abs.length > 0;
-            if (!hasTime || !hasAbs) return '';
+            const fullFileName = params.data.shimmer2_full_file_name;
+            if (!fullFileName) return '';
             const btn = document.createElement('button');
             btn.className = 'ag-btn ag-btn-graph themed-graph-btn';
             btn.title = 'Show Graph';
             btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><polyline points="6 17 9 13 13 17 18 10"/></svg>`;
             btn.onclick = () => {
-              this.graphOutput.emit({
-                time: params.data.shimmer2_timestamps,
-                abs: params.data.shimmer2_accel_ln_abs
+              btn.disabled = true;
+              btn.style.opacity = '0.5';
+              forkJoin({
+                time: this.apiService.getDecodedFieldDirect(fullFileName, 'timestampCal'),
+                abs: this.apiService.getDecodedFieldDirect(fullFileName, 'Accel_WR_Absolute')
+              }).subscribe({
+                next: (result) => {
+                  console.log('API Response for Shimmer 2:', result);
+                  console.log('Time data:', result.time);
+                  console.log('Abs data:', result.abs);
+                  
+                  // Send raw data - downsampling will be handled in the modal
+                  this.graphOutput.emit({
+                    time: result.time?.values || [],
+                    abs: result.abs?.values || []
+                  });
+                  btn.disabled = false;
+                  btn.style.opacity = '1';
+                },
+                error: (err) => {
+                  console.error('Error fetching graph data:', err);
+                  btn.disabled = false;
+                  btn.style.opacity = '1';
+                  alert('Failed to load graph data');
+                }
               });
             };
             return btn;
