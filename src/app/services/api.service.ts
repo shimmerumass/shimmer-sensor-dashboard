@@ -148,4 +148,12 @@ export class ApiService {
   listFilesCombinedMeta(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/files/combined-meta/`);
   }
+
+  // Get decoded field data for plotting
+  getDecodedFieldDirect(fullFileName: string, fieldName: string): Observable<any> {
+    const params = new HttpParams()
+      .set('full_file_name', fullFileName)
+      .set('field_name', fieldName);
+    return this.http.get<any>(`${this.baseUrl}/get-decoded-field-direct/`, { params });
+  }
 }

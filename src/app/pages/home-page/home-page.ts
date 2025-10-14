@@ -22,6 +22,11 @@ export class HomePage implements OnInit {
   y_axis_label = 'Accelerometer Absolute Value';
   x_values: any[] = [];
   y_values: any[] = [];
+  
+  // Downsample slider
+  downsampleRate = 10;
+  rawTimeData: any[] = [];
+  rawAbsData: any[] = [];
 
   // Data points metrics
   public dataPointsTotal = 0;
@@ -51,7 +56,7 @@ export class HomePage implements OnInit {
     },
     scales: {
       x: {
-        title: { display: true, text: this.x_axis_label }
+        display: false
       },
       y: {
         title: { display: true, text: this.y_axis_label }
@@ -191,29 +196,50 @@ export class HomePage implements OnInit {
 
 
   openGraphModal(data: { time?: any[]; abs?: any[] }) {
-       console.log('Graph Button Output:', {
+    console.log('Graph Button Output:', {
       time: data.time,
-      abs: data.abs
+      abs: data.abs,
+      timeLength: data.time?.length,
+      absLength: data.abs?.length
     });
-  this.x_values = Array.isArray(data.time) ? [...data.time] : [];
-  this.y_values = Array.isArray(data.abs) ? [...data.abs] : [];
+    
+    // Store raw data
+    this.rawTimeData = Array.isArray(data.time) ? [...data.time] : [];
+    this.rawAbsData = Array.isArray(data.abs) ? [...data.abs] : [];
+    
+    // Apply initial downsampling
+    this.updateChartData();
+    
+    this.showGraphModal = true;
+    this.cdr.detectChanges();
+  }
 
-  this.lineChartData = {
-    labels: this.x_values.length ? this.x_values : ['No Data'],
-    datasets: [
-      {
-        data: this.y_values.length ? this.y_values : [0],
-        label: 'Abs(Y)',
-        fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1
-      }
-    ]
-  };
+  updateChartData() {
+    // Downsample the data
+    this.x_values = this.rawTimeData.filter((_, index) => index % this.downsampleRate === 0);
+    this.y_values = this.rawAbsData.filter((_, index) => index % this.downsampleRate === 0);
+    
+    console.log('Processed values:', {
+      x_values: this.x_values.length,
+      y_values: this.y_values.length,
+      downsampleRate: this.downsampleRate
+    });
 
-  this.showGraphModal = true;
-  this.cdr.detectChanges();
-}
+    this.lineChartData = {
+      labels: this.x_values.length ? this.x_values : ['No Data'],
+      datasets: [
+        {
+          data: this.y_values.length ? this.y_values : [0],
+          label: 'Abs(Y)',
+          fill: false,
+          borderColor: 'rgb(75, 192, 192)',
+          tension: 0.1
+        }
+      ]
+    };
+    
+    this.cdr.detectChanges();
+  }
 
 
   closeModal() { 
