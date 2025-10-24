@@ -138,26 +138,26 @@ export class FilesGrid implements OnInit {
     { headerName: 'Filename', field: 'fullname', filter: 'agTextColumnFilter', sortable: true, flex: 2, hide: true},
     { headerName: 'Shimmer Device', field: 'shimmer_device', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
     { headerName: 'Shimmer Day', field: 'shimmer_day', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
-    {
-      headerName: 'Actions',
-      field: 'decode',
-      flex: 1,
-      cellRenderer: (params: any) => `
-        <button class='ag-action-btn' data-decode='${params.data.fullname}' aria-label='Decode file' title='Decode file'>
-          <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
-            <rect x='3' y='11' width='18' height='10' rx='2' ry='2'/>
-            <path d='M7 11V7a5 5 0 0 1 10 0v4'/>
-            <circle cx='12' cy='16' r='1.5'/>
-            <line x1='12' y1='18' x2='12' y2='21'/>
-            <line x1='9' y1='13' x2='9' y2='17'/>
-            <line x1='15' y1='13' x2='15' y2='17'/>
-            <circle cx='6' cy='21' r='0.5'/>
-            <circle cx='18' cy='21' r='0.5'/>
-            <line x1='6' y1='21' x2='7' y2='19'/>
-            <line x1='18' y1='21' x2='17' y2='19'/>
-          </svg>
-        </button>`
-    }
+    // {
+    //   headerName: 'Actions',
+    //   field: 'decode',
+    //   flex: 1,
+    //   cellRenderer: (params: any) => `
+    //     <button class='ag-action-btn' data-decode='${params.data.fullname}' aria-label='Decode file' title='Decode file'>
+    //       <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
+    //         <rect x='3' y='11' width='18' height='10' rx='2' ry='2'/>
+    //         <path d='M7 11V7a5 5 0 0 1 10 0v4'/>
+    //         <circle cx='12' cy='16' r='1.5'/>
+    //         <line x1='12' y1='18' x2='12' y2='21'/>
+    //         <line x1='9' y1='13' x2='9' y2='17'/>
+    //         <line x1='15' y1='13' x2='15' y2='17'/>
+    //         <circle cx='6' cy='21' r='0.5'/>
+    //         <circle cx='18' cy='21' r='0.5'/>
+    //         <line x1='6' y1='21' x2='7' y2='19'/>
+    //         <line x1='18' y1='21' x2='17' y2='19'/>
+    //       </svg>
+    //     </button>`
+    // }
   ];
 
   defaultColDef: ColDef = { resizable: true, filter: true, sortable: true, floatingFilter: true };
