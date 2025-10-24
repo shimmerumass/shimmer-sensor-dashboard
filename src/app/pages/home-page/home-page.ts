@@ -24,7 +24,7 @@ export class HomePage implements OnInit {
   y_values: any[] = [];
   
   // Downsample slider
-  downsampleRate = 10;
+  downsampleRate = 100;
   rawTimeData: any[] = [];
   rawAbsData: any[] = [];
 
@@ -59,7 +59,9 @@ export class HomePage implements OnInit {
         display: false
       },
       y: {
-        title: { display: true, text: this.y_axis_label }
+        title: { display: true, text: this.y_axis_label },
+        min: 0,
+        max: 50
       }
     }
   };
