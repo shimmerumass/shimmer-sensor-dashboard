@@ -197,16 +197,17 @@
       </label>
       <input 
         type="range" 
-        min="10" 
-        max="50" 
-        step="5"
+        min="200" 
+        max="2000" 
+        step="50"
         [(ngModel)]="downsampleRate"
         (input)="updateChartData()"
         class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
       />
-      <div class="flex justify-between text-xs text-gray-500 mt-1">
-        <span>More Detail (10)</span>
-        <span>Less Detail (50)</span>
+      <div class="flex justify-between text-xs text-gray-500 mt-1 items-center">
+        <span>200</span>
+        <span class="mx-2 px-2 py-0.5 rounded bg-blue-100 text-blue-700 font-semibold border border-blue-200 shadow-sm">{{ downsampleRate }}</span>
+        <span>2000</span>
       </div>
     </div>
     
