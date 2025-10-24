@@ -220,7 +220,8 @@ export class FilesGrid implements OnInit {
               ...item,
               files: item.files.filter((file: any) => {
                 const fullname = file?.fullname || '';
-                return !fullname.startsWith('decode/');
+                // Exclude files in decode/ folder and .zip files
+                return !fullname.startsWith('decode/') && !fullname.endsWith('.zip');
               })
             };
           }
