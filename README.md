@@ -1,5 +1,4 @@
 # Shimmer Sensor Dashboard
-
 Angular-based web application for managing and visualizing Shimmer wearable sensor data. Features interactive time-series charts, data grid tables, and real-time device-patient mapping with AWS S3 integration.
 
 ## Features
@@ -163,11 +162,17 @@ git add package-lock.json
 git commit -m "Update package-lock.json"
 ```
 
-### Chart Not Rendering
-If the chart modal doesn't display:
-- Ensure `x_values` and `y_values` arrays are populated before opening modal
-- Check that Chart.js and ng2-charts are properly installed
-- Verify canvas element exists in DOM before chart initialization
+
+### Chart Downsampling and Data Size
+
+Sensor data files can contain tens of thousands of time-series points (e.g., 55,000+ records). To ensure smooth chart rendering and better user experience, the dashboard uses **downsampling** in the chart modal:
+
+- **Original Size**: The modal displays the total number of points available (original size) for each file.
+- **Downsampling**: A slider lets users select the downsampling rate (e.g., every 200th, 250th, ... up to 2000th point). This reduces the number of points plotted, making large datasets manageable and interactive.
+- **Live Preview**: The chart updates in real time as the slider is adjusted, showing the number of points currently displayed.
+- **Preserves Trends**: Downsampling keeps the overall shape and trends of the data while improving performance.
+
+**Tip:** If the chart looks sparse or too dense, adjust the slider to find the best balance between detail and speed. The original data size is always shown for reference.
 
 ## Data Flow
 
@@ -193,6 +198,24 @@ This project is part of the UMass Shimmer research initiative.
 ## Contact
 
 For questions or support, please contact the UMass Shimmer team.
+
+## About AWS Amplify
+
+AWS Amplify is a set of tools and services that enables developers to build secure, scalable full-stack applications powered by AWS. In this project, Amplify is used for deployment, authentication, and integration with AWS S3 for sensor data storage.
+
+**Key Amplify Features in This Project:**
+- **Deployment:** Automatic builds and deployments via Amplify Console. The `amplify.yml` file defines build settings for CI/CD.
+- **Authentication:** User authentication flows are managed by Amplify, as configured in the `amplify/auth` directory.
+- **Storage:** Sensor data is stored and accessed through AWS S3, managed by Amplify's backend configuration.
+- **Configuration:** The `amplify/` directory contains CLI and backend configuration files for resources and environment settings.
+- **Integration:** The Angular app uses Amplify libraries to interact with AWS services, supporting real-time updates and secure data access.
+
+**Deployment Workflow:**
+1. Connect your repository to Amplify Console.
+2. Configure build settings (see `amplify.yml`).
+3. Push changes to trigger automatic deployment and backend updates.
+
+For more information, see the [AWS Amplify Documentation](https://docs.amplify.aws/).
 
 ## Additional Resources
 
