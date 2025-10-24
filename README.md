@@ -217,6 +217,23 @@ AWS Amplify is a set of tools and services that enables developers to build secu
 
 For more information, see the [AWS Amplify Documentation](https://docs.amplify.aws/).
 
+
+## Screenshots
+
+**Dashboard Overview:**
+![Dashboard Overview](WelcomeDashboard.png)
+
+**Bulk Data Management:**
+![Bulk Data Management](DownloadFiles.png)
+
+**User Operations:**
+![User Operations](ManageUsers.png)
+
+**Accelerometer Chart Modal with Downsampling:**
+![Chart Modal with Downsampling](ViewAccelerometer.png)
+
+
+
 ## Additional Resources
 
 - [Angular CLI Documentation](https://angular.dev/tools/cli)
