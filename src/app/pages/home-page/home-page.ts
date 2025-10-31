@@ -37,14 +37,16 @@ export class HomePage implements OnInit {
 
   
     lineChartData: ChartConfiguration<'line'>['data'] = {
-  labels: [], 
+  labels: [],
   datasets: [
     {
-      data: [], 
+      data: [],
       label: 'Abs(Y)',
       fill: false,
       borderColor: 'rgb(75, 192, 192)',
-      tension: 0.1
+      tension: 0.4, // smoother line
+      pointRadius: 0, // hide dots
+      pointHoverRadius: 0 // hide dots on hover
     }
   ]
 };
@@ -53,6 +55,15 @@ export class HomePage implements OnInit {
     responsive: true,
     plugins: {
       legend: { display: true },
+    },
+    elements: {
+      point: {
+        radius: 0,
+        hoverRadius: 0
+      },
+      line: {
+        tension: 0.4 // smoother line
+      }
     },
     scales: {
       x: {
