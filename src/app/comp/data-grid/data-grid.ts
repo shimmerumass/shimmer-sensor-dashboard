@@ -25,16 +25,37 @@ export class DataGrid implements OnInit {
   // Modal/chart logic removed; modal now handled by parent component
   rowData: any[] = [];
   columnDefs: (ColDef | ColGroupDef)[] = [
-    { headerName: 'Patient', field: 'patient', filter: 'agTextColumnFilter', sortable: true, minWidth: 120, maxWidth: 160 },
-    { headerName: 'Device', field: 'device', filter: 'agTextColumnFilter', sortable: true, minWidth: 120, maxWidth: 160 },
-    { headerName: 'Synced Date', field: 'date', filter: 'agDateColumnFilter', sortable: true, minWidth: 120, maxWidth: 140 },
-    { headerName: 'Recorded Time', field: 'recorded_timestamp', filter: 'agTextColumnFilter', sortable: true, minWidth: 180, maxWidth: 220 },
-    { headerName: 'Shimmer 1', field: 'shimmer1', filter: 'agTextColumnFilter', sortable: true, minWidth: 120, maxWidth: 160 },
-    { headerName: 'Shimmer 2', field: 'shimmer2', filter: 'agTextColumnFilter', sortable: true, minWidth: 120, maxWidth: 160 },
+    {
+      headerName: '',
+      field: 'common_action',
+      minWidth: 50,
+      maxWidth: 70,
+      cellRenderer: (params: any) => {
+        // Show button only if both shimmer1 and shimmer2 are present
+        const hasShimmer1 = params.data && params.data.shimmer1_full_file_name;
+        const hasShimmer2 = params.data && params.data.shimmer2_full_file_name;
+        if (hasShimmer1 && hasShimmer2) {
+          const btn = document.createElement('button');
+          btn.className = 'ag-btn ag-btn-action themed-action-btn';
+          btn.title = 'Show Details';
+          btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`;
+          btn.onclick = () => {
+            // Placeholder: implement desired action here
+            alert('Magnifying glass action for both shimmers!');
+          };
+          return btn;
+        }
+        return '';
+      }
+    },
+  { headerName: 'Patient', field: 'patient', filter: 'agTextColumnFilter', sortable: true, minWidth: 120, maxWidth: 160 },
+  { headerName: 'Device', field: 'device', filter: 'agTextColumnFilter', sortable: true, minWidth: 120, maxWidth: 160 },
+  { headerName: 'Synced Date', field: 'date', filter: 'agDateColumnFilter', sortable: true, minWidth: 120, maxWidth: 140 },
     {
       headerName: 'Shimmer 1',
       groupId: 'shimmer1',
       children: [
+        { headerName: 'Recorded Time', field: 'shimmer1_recorded_timestamp', filter: 'agTextColumnFilter', sortable: true, minWidth: 180, maxWidth: 220 },
         { headerName: 'Day', field: 'shimmer1_shimmer_day', filter: 'agTextColumnFilter', sortable: true, minWidth: 80, maxWidth: 100 },
         { headerName: 'Accel Var', field: 'shimmer1_accel_var', filter: 'agNumberColumnFilter', sortable: true, minWidth: 110, maxWidth: 130 },
         // { headerName: 'Time', field: 'shimmer1_time', filter: 'agTextColumnFilter', sortable: true, minWidth: 100, maxWidth: 120 },
@@ -88,6 +109,7 @@ export class DataGrid implements OnInit {
       headerName: 'Shimmer 2',
       groupId: 'shimmer2',
       children: [
+        { headerName: 'Recorded Time', field: 'shimmer2_recorded_timestamp', filter: 'agTextColumnFilter', sortable: true, minWidth: 180, maxWidth: 220 },
         { headerName: 'Day', field: 'shimmer2_shimmer_day', filter: 'agTextColumnFilter', sortable: true, minWidth: 80, maxWidth: 100 },
         { headerName: 'Accel Var', field: 'shimmer2_accel_var', filter: 'agNumberColumnFilter', sortable: true, minWidth: 110, maxWidth: 130 },
         // { headerName: 'Time', field: 'shimmer2_time', filter: 'agTextColumnFilter', sortable: true, minWidth: 100, maxWidth: 120 },
@@ -149,37 +171,21 @@ export class DataGrid implements OnInit {
     this.apiService.listFilesCombinedMeta().subscribe((resp: any) => {
       if (resp && Array.isArray(resp.data)) {
         this.rowData = resp.data.flatMap((item: any) => {
-          // Build maps for shimmer1 and shimmer2 by recordedTimestamp
-          const shimmer1Map = new Map<string, any>();
-          (item.shimmer1_decoded || []).forEach((s: any) => {
-            if (s.recordedTimestamp) shimmer1Map.set(s.recordedTimestamp, s);
-          });
-          const shimmer2Map = new Map<string, any>();
-          (item.shimmer2_decoded || []).forEach((s: any) => {
-            if (s.recordedTimestamp) shimmer2Map.set(s.recordedTimestamp, s);
-          });
-
-          // Get all unique recordedTimestamps
-          const allTimestamps = new Set([
-            ...Array.from(shimmer1Map.keys()),
-            ...Array.from(shimmer2Map.keys())
-          ]);
-
-          // Combine into single row per timestamp
-          return Array.from(allTimestamps).map((ts: string) => {
-            const s1 = shimmer1Map.get(ts) || {};
-            const s2 = shimmer2Map.get(ts) || {};
-            // Use the recordedTimestamp from either shimmer (should be the same if both exist)
-            let recordedTimestamp = s1.recordedTimestamp || s2.recordedTimestamp;
-            let recordedTimestampDisplay = recordedTimestamp ? new Date(recordedTimestamp).toLocaleString() : null;
-            return {
+          const shimmer1Arr = item.shimmer1_decoded || [];
+          const shimmer2Arr = item.shimmer2_decoded || [];
+          const maxLen = Math.max(shimmer1Arr.length, shimmer2Arr.length);
+          const rows = [];
+          for (let i = 0; i < maxLen; i++) {
+            const s1 = shimmer1Arr[i] || {};
+            const s2 = shimmer2Arr[i] || {};
+            rows.push({
               patient: item.patient,
               device: item.device,
               date: item.date,
-              recorded_timestamp: recordedTimestampDisplay,
               shimmer1: item.shimmer1,
               shimmer2: item.shimmer2,
               // Shimmer 1 fields
+              shimmer1_recorded_timestamp: s1.recordedTimestamp ? new Date(s1.recordedTimestamp).toLocaleString() : null,
               shimmer1_time: s1.time,
               shimmer1_full_file_name: s1.full_file_name,
               shimmer1_mac_address: s1.macAddress,
@@ -190,6 +196,7 @@ export class DataGrid implements OnInit {
               shimmer1_part: s1.part,
               shimmer1_accel_var: s1.Accel_WR_VAR ? parseFloat(Number(s1.Accel_WR_VAR).toFixed(4)) : null,
               // Shimmer 2 fields
+              shimmer2_recorded_timestamp: s2.recordedTimestamp ? new Date(s2.recordedTimestamp).toLocaleString() : null,
               shimmer2_time: s2.time,
               shimmer2_full_file_name: s2.full_file_name,
               shimmer2_mac_address: s2.macAddress,
@@ -199,8 +206,9 @@ export class DataGrid implements OnInit {
               shimmer2_shimmer_day: s2.shimmer_day,
               shimmer2_part: s2.part,
               shimmer2_accel_var: s2.Accel_WR_VAR ? parseFloat(Number(s2.Accel_WR_VAR).toFixed(4)) : null
-            };
-          });
+            });
+          }
+          return rows;
         });
       }
       this.isLoading = false;
