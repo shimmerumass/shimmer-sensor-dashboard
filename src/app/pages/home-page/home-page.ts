@@ -27,6 +27,7 @@ export class HomePage implements OnInit {
   downsampleRate = 100;
   rawTimeData: any[] = [];
   rawAbsData: any[] = [];
+  isUwbData = false;
 
   // Data points metrics
   public dataPointsTotal = 0;
@@ -221,6 +222,9 @@ export class HomePage implements OnInit {
     this.rawTimeData = Array.isArray(data.time) ? [...data.time] : [];
     this.rawAbsData = Array.isArray(data.abs) ? [...data.abs] : [];
     
+    // Set flag to track if this is UWB data
+    this.isUwbData = data.noDownsample || false;
+    
     // Apply downsampling only if not disabled
     if (data.noDownsample) {
       this.x_values = this.rawTimeData;
@@ -308,10 +312,14 @@ export class HomePage implements OnInit {
   }
 
   updateChartDataDirect() {
-    // Use data directly without downsampling
-    console.log('Using data directly without downsampling:', {
+    // Apply light downsampling for UWB data (1-200 range)
+    this.x_values = this.rawTimeData.filter((_, index) => index % this.downsampleRate === 0);
+    this.y_values = this.rawAbsData.filter((_, index) => index % this.downsampleRate === 0);
+    
+    console.log('UWB data with light downsampling:', {
       x_values: this.x_values.length,
-      y_values: this.y_values.length
+      y_values: this.y_values.length,
+      downsampleRate: this.downsampleRate
     });
 
     this.lineChartData = {
