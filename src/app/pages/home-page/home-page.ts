@@ -245,6 +245,23 @@ export class HomePage implements OnInit {
       downsampleRate: this.downsampleRate
     });
 
+    // Calculate dynamic Y-axis range for better zoom on accelerometer data
+    const yValues = this.y_values.filter(v => v != null && !isNaN(v));
+    let minY = Math.min(...yValues);
+    let maxY = Math.max(...yValues);
+    
+    // Add padding to see variations better (10% padding on each side)
+    const padding = (maxY - minY) * 0.1;
+    minY = Math.max(0, minY - padding); // Don't go below 0
+    maxY = maxY + padding;
+    
+    // Ensure minimum range for small variations
+    if (maxY - minY < 1) {
+      const center = (maxY + minY) / 2;
+      minY = Math.max(0, center - 0.5);
+      maxY = center + 0.5;
+    }
+
     this.lineChartData = {
       labels: this.x_values.length ? this.x_values : ['No Data'],
       datasets: [
@@ -253,9 +270,38 @@ export class HomePage implements OnInit {
           label: 'Abs(Y)',
           fill: false,
           borderColor: 'rgb(75, 192, 192)',
-          tension: 0.1
+          tension: 0.4,
+          pointRadius: 0,
+          pointHoverRadius: 0
         }
       ]
+    };
+
+    // Update chart options with dynamic Y-axis
+    this.lineChartOptions = {
+      responsive: true,
+      plugins: {
+        legend: { display: true },
+      },
+      elements: {
+        point: {
+          radius: 0,
+          hoverRadius: 0
+        },
+        line: {
+          tension: 0.4
+        }
+      },
+      scales: {
+        x: {
+          display: false
+        },
+        y: {
+          title: { display: true, text: this.y_axis_label },
+          min: minY,
+          max: maxY
+        }
+      }
     };
     
     this.cdr.detectChanges();

@@ -112,7 +112,7 @@ export class DataGrid implements OnInit {
             const btn = document.createElement('button');
             btn.className = 'ag-btn ag-btn-uwb themed-graph-btn';
             btn.title = 'Show UWB Distance Graph';
-            btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="m21.35 11.1-12.7-12.7a9 9 0 0 0 0 12.6 9 9 0 0 0 12.6 0l-12.7-12.7z"/><path d="M21.35 12.9 8.65 25.6a9 9 0 0 0 12.6 0 9 9 0 0 0 0-12.6L8.65 25.6z"/></svg>`;
+            btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12H3"/><path d="m8 8-4 4 4 4"/><path d="m16 16 4-4-4-4"/></svg>`;
             btn.onclick = () => {
               btn.disabled = true;
               btn.style.opacity = '0.5';
@@ -209,7 +209,7 @@ export class DataGrid implements OnInit {
             const btn = document.createElement('button');
             btn.className = 'ag-btn ag-btn-uwb themed-graph-btn';
             btn.title = 'Show UWB Distance Graph';
-            btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="m21.35 11.1-12.7-12.7a9 9 0 0 0 0 12.6 9 9 0 0 0 12.6 0l-12.7-12.7z"/><path d="M21.35 12.9 8.65 25.6a9 9 0 0 0 12.6 0 9 9 0 0 0 0-12.6L8.65 25.6z"/></svg>`;
+            btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12H3"/><path d="m8 8-4 4 4 4"/><path d="m16 16 4-4-4-4"/></svg>`;
             btn.onclick = () => {
               btn.disabled = true;
               btn.style.opacity = '0.5';
