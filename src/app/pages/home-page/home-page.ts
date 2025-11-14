@@ -208,20 +208,27 @@ export class HomePage implements OnInit {
   // }
 
 
-  openGraphModal(data: { time?: any[]; abs?: any[] }) {
+  openGraphModal(data: { time?: any[]; abs?: any[]; noDownsample?: boolean }) {
     console.log('Graph Button Output:', {
       time: data.time,
       abs: data.abs,
       timeLength: data.time?.length,
-      absLength: data.abs?.length
+      absLength: data.abs?.length,
+      noDownsample: data.noDownsample
     });
     
     // Store raw data
     this.rawTimeData = Array.isArray(data.time) ? [...data.time] : [];
     this.rawAbsData = Array.isArray(data.abs) ? [...data.abs] : [];
     
-    // Apply initial downsampling
-    this.updateChartData();
+    // Apply downsampling only if not disabled
+    if (data.noDownsample) {
+      this.x_values = this.rawTimeData;
+      this.y_values = this.rawAbsData;
+      this.updateChartDataDirect();
+    } else {
+      this.updateChartData();
+    }
     
     this.showGraphModal = true;
     this.cdr.detectChanges();
@@ -254,6 +261,30 @@ export class HomePage implements OnInit {
     this.cdr.detectChanges();
   }
 
+  updateChartDataDirect() {
+    // Use data directly without downsampling
+    console.log('Using data directly without downsampling:', {
+      x_values: this.x_values.length,
+      y_values: this.y_values.length
+    });
+
+    this.lineChartData = {
+      labels: this.x_values.length ? this.x_values : ['No Data'],
+      datasets: [
+        {
+          data: this.y_values.length ? this.y_values : [0],
+          label: 'UWB Distance',
+          fill: false,
+          borderColor: 'rgb(16, 185, 129)',
+          tension: 0.4,
+          pointRadius: 0,
+          pointHoverRadius: 0
+        }
+      ]
+    };
+    
+    this.cdr.detectChanges();
+  }
 
   closeModal() { 
     this.showGraphModal = false; 

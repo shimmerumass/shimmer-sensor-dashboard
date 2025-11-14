@@ -12,7 +12,7 @@ import { forkJoin } from 'rxjs';
   styleUrl: './data-grid.css'
 })
 export class DataGrid implements OnInit {
-  @Output() graphOutput = new EventEmitter<{ time?: any[]; abs?: any[] }>();
+  @Output() graphOutput = new EventEmitter<{ time?: any[]; abs?: any[]; noDownsample?: boolean }>();
   private chartInstance: Chart | null = null;
 
   private destroyChart() {
@@ -103,6 +103,49 @@ export class DataGrid implements OnInit {
           },
           minWidth: 40, maxWidth: 60
         },
+        {
+          headerName: '',
+          field: 'shimmer1_uwb_graph',
+          cellRenderer: (params: any) => {
+            const fullFileName = params.data.shimmer1_full_file_name;
+            if (!fullFileName) return '';
+            const btn = document.createElement('button');
+            btn.className = 'ag-btn ag-btn-uwb themed-graph-btn';
+            btn.title = 'Show UWB Distance Graph';
+            btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="m21.35 11.1-12.7-12.7a9 9 0 0 0 0 12.6 9 9 0 0 0 12.6 0l-12.7-12.7z"/><path d="M21.35 12.9 8.65 25.6a9 9 0 0 0 12.6 0 9 9 0 0 0 0-12.6L8.65 25.6z"/></svg>`;
+            btn.onclick = () => {
+              btn.disabled = true;
+              btn.style.opacity = '0.5';
+              forkJoin({
+                time: this.apiService.getDecodedFieldDirect(fullFileName, 'timestampCal'),
+                uwbDis: this.apiService.getDecodedFieldDirect(fullFileName, 'uwbDis')
+              }).subscribe({
+                next: (result) => {
+                  console.log('UWB API Response for Shimmer 1:', result);
+                  console.log('Time data:', result.time);
+                  console.log('UWB Distance data:', result.uwbDis);
+                  
+                  // Send raw data - no downsampling for UWB distance
+                  this.graphOutput.emit({
+                    time: result.time?.values || [],
+                    abs: result.uwbDis?.values || [],
+                    noDownsample: true
+                  });
+                  btn.disabled = false;
+                  btn.style.opacity = '1';
+                },
+                error: (err) => {
+                  console.error('Error fetching UWB graph data:', err);
+                  btn.disabled = false;
+                  btn.style.opacity = '1';
+                  alert('Failed to load UWB graph data');
+                }
+              });
+            };
+            return btn;
+          },
+          minWidth: 40, maxWidth: 60
+        },
       ]
     },
     {
@@ -150,6 +193,49 @@ export class DataGrid implements OnInit {
                   btn.disabled = false;
                   btn.style.opacity = '1';
                   alert('Failed to load graph data');
+                }
+              });
+            };
+            return btn;
+          },
+          minWidth: 40, maxWidth: 60
+        },
+        {
+          headerName: '',
+          field: 'shimmer2_uwb_graph',
+          cellRenderer: (params: any) => {
+            const fullFileName = params.data.shimmer2_full_file_name;
+            if (!fullFileName) return '';
+            const btn = document.createElement('button');
+            btn.className = 'ag-btn ag-btn-uwb themed-graph-btn';
+            btn.title = 'Show UWB Distance Graph';
+            btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="m21.35 11.1-12.7-12.7a9 9 0 0 0 0 12.6 9 9 0 0 0 12.6 0l-12.7-12.7z"/><path d="M21.35 12.9 8.65 25.6a9 9 0 0 0 12.6 0 9 9 0 0 0 0-12.6L8.65 25.6z"/></svg>`;
+            btn.onclick = () => {
+              btn.disabled = true;
+              btn.style.opacity = '0.5';
+              forkJoin({
+                time: this.apiService.getDecodedFieldDirect(fullFileName, 'timestampCal'),
+                uwbDis: this.apiService.getDecodedFieldDirect(fullFileName, 'uwbDis')
+              }).subscribe({
+                next: (result) => {
+                  console.log('UWB API Response for Shimmer 2:', result);
+                  console.log('Time data:', result.time);
+                  console.log('UWB Distance data:', result.uwbDis);
+                  
+                  // Send raw data - no downsampling for UWB distance
+                  this.graphOutput.emit({
+                    time: result.time?.values || [],
+                    abs: result.uwbDis?.values || [],
+                    noDownsample: true
+                  });
+                  btn.disabled = false;
+                  btn.style.opacity = '1';
+                },
+                error: (err) => {
+                  console.error('Error fetching UWB graph data:', err);
+                  btn.disabled = false;
+                  btn.style.opacity = '1';
+                  alert('Failed to load UWB graph data');
                 }
               });
             };
