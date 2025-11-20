@@ -221,11 +221,18 @@ export class HomePage implements OnInit {
     // Store raw data
     this.rawTimeData = Array.isArray(data.time) ? [...data.time] : [];
     this.rawAbsData = Array.isArray(data.abs) ? [...data.abs] : [];
-    
+
     // Set flag to track if this is UWB data
     this.isUwbData = data.noDownsample || false;
-    
-    // Apply downsampling only if not disabled
+
+    // Reset downsample slider to start value
+    if (this.isUwbData) {
+      this.downsampleRate = 1;
+    } else {
+      this.downsampleRate = 200;
+    }
+
+    // Reset chart scale/options for each open
     if (data.noDownsample) {
       this.x_values = this.rawTimeData;
       this.y_values = this.rawAbsData;
@@ -233,7 +240,7 @@ export class HomePage implements OnInit {
     } else {
       this.updateChartData();
     }
-    
+
     this.showGraphModal = true;
     this.cdr.detectChanges();
   }
@@ -242,7 +249,7 @@ export class HomePage implements OnInit {
     // Downsample the data
     this.x_values = this.rawTimeData.filter((_, index) => index % this.downsampleRate === 0);
     this.y_values = this.rawAbsData.filter((_, index) => index % this.downsampleRate === 0);
-    
+
     console.log('Processed values:', {
       x_values: this.x_values.length,
       y_values: this.y_values.length,
@@ -253,12 +260,12 @@ export class HomePage implements OnInit {
     const yValues = this.y_values.filter(v => v != null && !isNaN(v));
     let minY = Math.min(...yValues);
     let maxY = Math.max(...yValues);
-    
+
     // Add padding to see variations better (10% padding on each side)
     const padding = (maxY - minY) * 0.1;
     minY = Math.max(0, minY - padding); // Don't go below 0
     maxY = maxY + padding;
-    
+
     // Ensure minimum range for small variations
     if (maxY - minY < 1) {
       const center = (maxY + minY) / 2;
@@ -266,6 +273,7 @@ export class HomePage implements OnInit {
       maxY = center + 0.5;
     }
 
+    // If resetScale is true, reset chart scale to fit data
     this.lineChartData = {
       labels: this.x_values.length ? this.x_values : ['No Data'],
       datasets: [
@@ -281,7 +289,6 @@ export class HomePage implements OnInit {
       ]
     };
 
-    // Update chart options with dynamic Y-axis
     this.lineChartOptions = {
       responsive: true,
       plugins: {
@@ -307,7 +314,7 @@ export class HomePage implements OnInit {
         }
       }
     };
-    
+
     this.cdr.detectChanges();
   }
 
@@ -315,12 +322,25 @@ export class HomePage implements OnInit {
     // Apply light downsampling for UWB data (1-200 range)
     this.x_values = this.rawTimeData.filter((_, index) => index % this.downsampleRate === 0);
     this.y_values = this.rawAbsData.filter((_, index) => index % this.downsampleRate === 0);
-    
+
     console.log('UWB data with light downsampling:', {
       x_values: this.x_values.length,
       y_values: this.y_values.length,
       downsampleRate: this.downsampleRate
     });
+
+    // Calculate dynamic Y-axis range for UWB data
+    const yValues = this.y_values.filter(v => v != null && !isNaN(v));
+    let minY = Math.min(...yValues);
+    let maxY = Math.max(...yValues);
+    const padding = (maxY - minY) * 0.1;
+    minY = Math.max(0, minY - padding);
+    maxY = maxY + padding;
+    if (maxY - minY < 1) {
+      const center = (maxY + minY) / 2;
+      minY = Math.max(0, center - 0.5);
+      maxY = center + 0.5;
+    }
 
     this.lineChartData = {
       labels: this.x_values.length ? this.x_values : ['No Data'],
@@ -336,7 +356,33 @@ export class HomePage implements OnInit {
         }
       ]
     };
-    
+
+    this.lineChartOptions = {
+      responsive: true,
+      plugins: {
+        legend: { display: true },
+      },
+      elements: {
+        point: {
+          radius: 0,
+          hoverRadius: 0
+        },
+        line: {
+          tension: 0.4
+        }
+      },
+      scales: {
+        x: {
+          display: false
+        },
+        y: {
+          title: { display: true, text: 'UWB Distance' },
+          min: minY,
+          max: maxY
+        }
+      }
+    };
+
     this.cdr.detectChanges();
   }
 
