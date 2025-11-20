@@ -12,6 +12,20 @@ import { forkJoin } from 'rxjs';
   styleUrl: './data-grid.css'
 })
 export class DataGrid implements OnInit {
+  // ...existing code...
+
+  showToast(message: string) {
+    const toast = document.getElementById('toast');
+    const msg = document.getElementById('toast-message');
+    if (!toast || !msg) return;
+    msg.textContent = message;
+    toast.classList.remove('hidden');
+    toast.style.opacity = '1';
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      setTimeout(() => toast.classList.add('hidden'), 300);
+    }, 2500);
+  }
   @Output() graphOutput = new EventEmitter<{ time?: any[]; abs?: any[]; noDownsample?: boolean }>();
   private chartInstance: Chart | null = null;
 
@@ -167,7 +181,7 @@ export class DataGrid implements OnInit {
               </svg>`;
 
             btn.onclick = () => {
-              alert('Shimmer 1 File Name:\n' + fullFileName);
+              this.showToast('Shimmer 1 File:\n' + fullFileName);
             };
 
             return btn;
@@ -291,7 +305,7 @@ export class DataGrid implements OnInit {
               </svg>`;
 
             btn.onclick = () => {
-              alert('Shimmer 2 File Name:\n' + fullFileName);
+              this.showToast('Shimmer 2 File:\n' + fullFileName);
             };
 
             return btn;
