@@ -39,29 +39,6 @@ export class DataGrid implements OnInit {
   // Modal/chart logic removed; modal now handled by parent component
   rowData: any[] = [];
   columnDefs: (ColDef | ColGroupDef)[] = [
-    {
-      headerName: '',
-      field: 'common_action',
-      minWidth: 50,
-      maxWidth: 70,
-      cellRenderer: (params: any) => {
-        // Show button only if both shimmer1 and shimmer2 are present
-        const hasShimmer1 = params.data && params.data.shimmer1_full_file_name;
-        const hasShimmer2 = params.data && params.data.shimmer2_full_file_name;
-        if (hasShimmer1 && hasShimmer2) {
-          const btn = document.createElement('button');
-          btn.className = 'ag-btn ag-btn-action themed-action-btn';
-          btn.title = 'Show Details';
-          btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`;
-          btn.onclick = () => {
-            // Placeholder: implement desired action here
-            alert('Magnifying glass action for both shimmers!');
-          };
-          return btn;
-        }
-        return '';
-      }
-    },
   { headerName: 'Patient', field: 'patient', filter: 'agTextColumnFilter', sortable: true, minWidth: 120, maxWidth: 160 },
   { headerName: 'Device', field: 'device', filter: 'agTextColumnFilter', sortable: true, minWidth: 120, maxWidth: 160 },
   { headerName: 'Synced Date', field: 'date', filter: 'agDateColumnFilter', sortable: true, minWidth: 120, maxWidth: 140 },
