@@ -221,13 +221,13 @@
         min="1" 
         max="200" 
         step="10"
-        [(ngModel)]="downsampleRate"
-        (input)="updateChartDataDirect()"
+        [(ngModel)]="uwbSliderValue"
+        (input)="onUwbSliderChange()"
         class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-600"
       />
       <div class="flex justify-between text-xs text-gray-500 mt-1 items-center">
         <span>1</span>
-        <span class="mx-2 px-2 py-0.5 rounded bg-green-100 text-green-700 font-semibold border border-green-200 shadow-sm">{{ downsampleRate }}</span>
+        <span class="mx-2 px-2 py-0.5 rounded bg-green-100 text-green-700 font-semibold border border-green-200 shadow-sm">{{ uwbSliderValue }}</span>
         <span>200</span>
       </div>
     </div>

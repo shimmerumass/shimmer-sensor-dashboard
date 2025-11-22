@@ -25,6 +25,7 @@ export class HomePage implements OnInit {
   
   // Downsample slider
   downsampleRate = 100;
+  uwbSliderValue = 50;
   rawTimeData: any[] = [];
   rawAbsData: any[] = [];
   isUwbData = false;
@@ -222,27 +223,31 @@ export class HomePage implements OnInit {
     this.rawTimeData = Array.isArray(data.time) ? [...data.time] : [];
     this.rawAbsData = Array.isArray(data.abs) ? [...data.abs] : [];
 
+
     // Set flag to track if this is UWB data
     this.isUwbData = data.noDownsample || false;
 
-    // Reset downsample slider to start value
+    // For UWB, decouple slider and chart initial values
     if (this.isUwbData) {
-      this.downsampleRate = 1;
-    } else {
-      this.downsampleRate = 200;
-    }
-
-    // Reset chart scale/options for each open
-    if (data.noDownsample) {
+      this.downsampleRate = 200; // Chart starts at 200
+      this.uwbSliderValue = 50;  // Slider starts at 50
       this.x_values = this.rawTimeData;
       this.y_values = this.rawAbsData;
       this.updateChartDataDirect();
+
     } else {
+      this.downsampleRate = 200;
       this.updateChartData();
     }
 
     this.showGraphModal = true;
     this.cdr.detectChanges();
+  }
+
+  // Called when UWB slider is moved
+  onUwbSliderChange() {
+    this.downsampleRate = this.uwbSliderValue;
+    this.updateChartDataDirect();
   }
 
   updateChartData() {

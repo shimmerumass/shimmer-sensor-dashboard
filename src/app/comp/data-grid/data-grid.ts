@@ -115,15 +115,16 @@ export class DataGrid implements OnInit {
                   console.log('UWB API Response for Shimmer 1:', result);
                   console.log('Time data:', result.time);
                   console.log('UWB Distance data:', result.uwbDis);
-                  
-                  // Send raw data - no downsampling for UWB distance
-                  this.graphOutput.emit({
-                    time: result.time?.values || [],
-                    abs: result.uwbDis?.values || [],
-                    noDownsample: true
-                  });
-                  btn.disabled = false;
-                  btn.style.opacity = '1';
+                  // Decouple emission to prevent recursion
+                  setTimeout(() => {
+                    this.graphOutput.emit({
+                      time: result.time?.values || [],
+                      abs: result.uwbDis?.values || [],
+                      noDownsample: true
+                    });
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                  }, 0);
                 },
                 error: (err) => {
                   console.error('Error fetching UWB graph data:', err);
@@ -239,15 +240,16 @@ export class DataGrid implements OnInit {
                   console.log('UWB API Response for Shimmer 2:', result);
                   console.log('Time data:', result.time);
                   console.log('UWB Distance data:', result.uwbDis);
-                  
-                  // Send raw data - no downsampling for UWB distance
-                  this.graphOutput.emit({
-                    time: result.time?.values || [],
-                    abs: result.uwbDis?.values || [],
-                    noDownsample: true
-                  });
-                  btn.disabled = false;
-                  btn.style.opacity = '1';
+                  // Decouple emission to prevent recursion
+                  setTimeout(() => {
+                    this.graphOutput.emit({
+                      time: result.time?.values || [],
+                      abs: result.uwbDis?.values || [],
+                      noDownsample: true
+                    });
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                  }, 0);
                 },
                 error: (err) => {
                   console.error('Error fetching UWB graph data:', err);
