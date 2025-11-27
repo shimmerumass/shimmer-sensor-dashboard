@@ -6,8 +6,10 @@ import { CompModule } from '../comp/modules';
 import { HomePage } from './home-page/home-page';
 import { UserOpsPage } from './user-ops/user-ops';
 import { DataOps } from './data-ops/data-ops';
+
 import { FormsModule } from '@angular/forms';
 import { BaseChartDirective } from 'ng2-charts';
+import { LatestFilesPage } from './latest-files/latest-files';
 
 
 const routes: Routes = [
@@ -16,12 +18,14 @@ const routes: Routes = [
   { path: 'user-ops', component: UserOpsPage },
   { path: 'login', component: LoginPage },
   { path: 'data-ops', component: DataOps },
+  { path: 'latest-files', component: LatestFilesPage },
 ];
 
+
 @NgModule({
-  declarations: [LoginPage, HomePage, UserOpsPage, DataOps],
+  declarations: [LoginPage, HomePage, UserOpsPage, DataOps, LatestFilesPage],
   imports: [CommonModule, CompModule, RouterModule.forChild(routes), FormsModule, BaseChartDirective],
-  exports: [RouterModule,LoginPage, HomePage, UserOpsPage, DataOps],
+  exports: [RouterModule, LoginPage, HomePage, UserOpsPage, DataOps, LatestFilesPage],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PagesModule {}
