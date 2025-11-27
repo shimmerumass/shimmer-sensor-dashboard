@@ -14,7 +14,7 @@ import { ChartConfiguration } from 'chart.js';
 })
 export class HomePage implements OnInit {
   public activeSensors = 0;
-  public expectedSensors = 4; // Preset expected number of devices
+  public expectedSensors = 0;
   public usersCount = 0;
   patients$!: Observable<string[]>;
   showGraphModal = false;
@@ -33,6 +33,7 @@ export class HomePage implements OnInit {
   // Data points metrics
   public dataPointsTotal = 0;
   public dataPointsRecentPercent = 0;
+  public allShimmers: string[] = [];
 
   // New: unregistered devices count
   public unregisteredCount = 0;
@@ -102,22 +103,52 @@ export class HomePage implements OnInit {
     });
     
     // Load active sensors from metadata
-    this.api.listFilesMetadata().subscribe({
-      next: (response: any) => {
-        const items = Array.isArray(response?.data) ? response.data : [];
-        
-        // Count unique devices from the metadata
-        const uniqueDevices = new Set();
-        items.forEach((row: any) => {
-          if (row?.device) {
-            uniqueDevices.add(row.device);
+    this.api.ddbGetDevicePatientMapDetails().subscribe((shimmerRecords) => {
+      this.api.listFilesDeconstructed().subscribe((files) => {
+        const allShimmersSet = new Set<string>();
+        shimmerRecords.forEach(rec => {
+          if (rec.shimmer1) allShimmersSet.add(rec.shimmer1);
+          if (rec.shimmer2) allShimmersSet.add(rec.shimmer2);
+        });
+
+        // Support both array and {data: array, error: null} response
+        let fileList: any[] = [];
+        if (Array.isArray(files)) {
+          fileList = files;
+        } else if (files && Array.isArray(files.data)) {
+          fileList = files.data;
+        } else {
+          console.error('Expected files to be an array or {data: array}, got:', files);
+          return;
+        }
+
+        const now = new Date();
+        const activeShimmers = new Set<string>();
+
+        fileList.forEach((file: any) => {
+          if (file.shimmer_device && file.date && file.time) {
+            // Combine date and time for accurate recency check
+            const fileDateTimeStr = `${file.date}T${file.time}`;
+            const fileDate = new Date(fileDateTimeStr);
+            const diff = (now.getTime() - fileDate.getTime()) / (1000 * 60 * 60 * 24);
+            if (diff <= 2) {
+              activeShimmers.add(file.shimmer_device);
+            }
           }
         });
-        
-        this.activeSensors = uniqueDevices.size;
-        console.log(`Active sensors: ${this.activeSensors}, Expected: ${this.expectedSensors}`);
-      },
-      error: () => { this.activeSensors = 0; }
+
+        // Set the public property to the number of active shimmers
+        this.activeSensors = activeShimmers.size;
+
+        // allShimmers = all known shimmers
+        // activeShimmers = shimmers with files in last 2 days
+        this.allShimmers = Array.from(allShimmersSet);
+        this.expectedSensors = this.allShimmers.length;
+        this.cdr.detectChanges();
+        console.log('All shimmers:', this.allShimmers);
+        console.log('Active shimmers:', Array.from(activeShimmers));
+        console.log('Active sensors count:', this.activeSensors);
+      });
     });
   }
 
