@@ -15,7 +15,7 @@ Angular-based web application for managing and visualizing Shimmer wearable sens
 - **Framework**: Angular 20.1.6
 - **UI Components**: AG Grid, Tailwind CSS
 - **Charts**: Chart.js, ng2-charts
-- **Backend**: AWS Amplify, AWS S3
+- **Backend**: AWS Amplify (v22.x), AWS S3
 - **Language**: TypeScript
 - **Package Manager**: npm
 
@@ -68,25 +68,6 @@ To build with specific configuration:
 ng build --configuration production
 ```
 
-## Project Structure
-
-```
-src/
-├── app/
-│   ├── comp/
-│   │   ├── data-grid/          # AG Grid component for data display
-│   │   ├── header-comp/        # Header navigation component
-│   │   └── auth-comp/          # Authentication component
-│   ├── pages/
-│   │   ├── home-page/          # Main dashboard page
-│   │   ├── data-ops/           # Data operations page
-│   │   └── user-ops/           # User management page
-│   └── services/
-│       └── api.service.ts      # API integration for S3 data
-├── assets/                      # Static assets
-└── environments/                # Environment configurations
-```
-
 ## Key Components
 
 ### Data Grid Component
@@ -111,6 +92,21 @@ Handles data fetching from backend:
 - `listFilesCombinedMeta()`: Complete metadata with decoded sensor data
 - `listUniquePatients()`: Patient list for mapping
 - `listFilesDeconstructed()`: Parsed file structure
+
+### Latest File Per Device Page
+Displays the most recent file received for each Shimmer device:
+- **Purpose:** Quickly view the latest data file uploaded by each device, including timestamp and file details.
+- **Location:** Accessible from the main dashboard navigation ("Latest Files" link).
+- **Features:**
+  - Card-based layout matching other management pages
+  - Responsive table listing device ID, file name, and received time
+  - Updated automatically as new files arrive
+- **How to Use:**
+  1. Click "Latest Files" in the navigation bar.
+  2. View the most recent file for each device in the table.
+  3. Use this page to monitor device activity and data freshness at a glance.
+
+**Note:** This page uses the `/files/deconstructed/` API endpoint to fetch and display the latest file for each device.
 
 ## Configuration
 
