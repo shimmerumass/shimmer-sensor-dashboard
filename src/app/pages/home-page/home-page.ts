@@ -29,6 +29,7 @@ export class HomePage implements OnInit {
   rawTimeData: any[] = [];
   rawAbsData: any[] = [];
   isUwbData = false;
+  graphHeading = 'Time vs Accelerometer Absolute Value'; // Add this property
 
   // Data points metrics
   public dataPointsTotal = 0;
@@ -254,9 +255,13 @@ export class HomePage implements OnInit {
     this.rawTimeData = Array.isArray(data.time) ? [...data.time] : [];
     this.rawAbsData = Array.isArray(data.abs) ? [...data.abs] : [];
 
-
     // Set flag to track if this is UWB data
     this.isUwbData = data.noDownsample || false;
+
+    // Set the heading based on graph type
+    this.graphHeading = this.isUwbData 
+      ? 'Time vs UWB Distance' 
+      : 'Time vs Accelerometer Absolute Value';
 
     // For UWB, decouple slider and chart initial values
     if (this.isUwbData) {
@@ -292,24 +297,7 @@ export class HomePage implements OnInit {
       downsampleRate: this.downsampleRate
     });
 
-    // Calculate dynamic Y-axis range for better zoom on accelerometer data
-    const yValues = this.y_values.filter(v => v != null && !isNaN(v));
-    let minY = Math.min(...yValues);
-    let maxY = Math.max(...yValues);
-
-    // Add padding to see variations better (10% padding on each side)
-    const padding = (maxY - minY) * 0.1;
-    minY = Math.max(0, minY - padding); // Don't go below 0
-    maxY = maxY + padding;
-
-    // Ensure minimum range for small variations
-    if (maxY - minY < 1) {
-      const center = (maxY + minY) / 2;
-      minY = Math.max(0, center - 0.5);
-      maxY = center + 0.5;
-    }
-
-    // If resetScale is true, reset chart scale to fit data
+    // Fixed Y-axis range for accelerometer data: -25 to 25
     this.lineChartData = {
       labels: this.x_values.length ? this.x_values : ['No Data'],
       datasets: [
@@ -345,8 +333,8 @@ export class HomePage implements OnInit {
         },
         y: {
           title: { display: true, text: this.y_axis_label },
-          min: minY,
-          max: maxY
+          min: -25,
+          max: 25
         }
       }
     };
