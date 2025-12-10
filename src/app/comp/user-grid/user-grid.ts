@@ -18,8 +18,8 @@ export class UserGridComponent implements OnInit {
   columnDefs: ColDef[] = [
   { headerName: 'Device', field: 'device', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
   { headerName: 'Patient', field: 'patient', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
-  { headerName: 'Shimmer 1', field: 'shimmer1', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
-  { headerName: 'Shimmer 2', field: 'shimmer2', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
+  { headerName: 'Left Shimmer', field: 'shimmer1', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
+  { headerName: 'Right Shimmer', field: 'shimmer2', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
   { headerName: 'Updated At', field: 'updatedAt', filter: 'agDateColumnFilter', sortable: true, flex: 1 },
     {
       headerName: 'Actions',
