@@ -20,8 +20,8 @@ export interface FileItem {
 export interface DevicePatientRecord {
   device: string;
   patient?: string | null;
-  shimmer1?: string | null;
-  shimmer2?: string | null;
+  shimmer1?: string[] | null;
+  shimmer2?: string[] | null;
   updatedAt?: string | null;
 }
 
@@ -90,7 +90,7 @@ export class ApiService {
     return this.http.get<any>(`${this.baseUrl}/ddb/device-patient-map/${encodeURIComponent(device)}`);
   }
 
-  ddbPutDeviceMapping(device: string, payload: Record<string, string>): Observable<any> {
+  ddbPutDeviceMapping(device: string, payload: Record<string, any>): Observable<any> {
     return this.http.put<any>(`${this.baseUrl}/ddb/device-patient-map/${encodeURIComponent(device)}`, payload);
   }
 

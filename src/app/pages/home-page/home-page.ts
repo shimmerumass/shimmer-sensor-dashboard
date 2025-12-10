@@ -108,8 +108,12 @@ export class HomePage implements OnInit {
       this.api.listFilesDeconstructed().subscribe((files) => {
         const allShimmersSet = new Set<string>();
         shimmerRecords.forEach(rec => {
-          if (rec.shimmer1) allShimmersSet.add(rec.shimmer1);
-          if (rec.shimmer2) allShimmersSet.add(rec.shimmer2);
+          if (rec.shimmer1 && Array.isArray(rec.shimmer1)) {
+            rec.shimmer1.forEach(shimmer => allShimmersSet.add(shimmer));
+          }
+          if (rec.shimmer2 && Array.isArray(rec.shimmer2)) {
+            rec.shimmer2.forEach(shimmer => allShimmersSet.add(shimmer));
+          }
         });
 
         // Support both array and {data: array, error: null} response
