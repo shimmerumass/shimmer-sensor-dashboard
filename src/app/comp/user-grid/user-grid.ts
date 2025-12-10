@@ -18,9 +18,47 @@ export class UserGridComponent implements OnInit {
   columnDefs: ColDef[] = [
   { headerName: 'Device', field: 'device', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
   { headerName: 'Patient', field: 'patient', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
-  { headerName: 'Left Shimmer', field: 'shimmer1', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
-  { headerName: 'Right Shimmer', field: 'shimmer2', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
-  { headerName: 'Updated At', field: 'updatedAt', filter: 'agDateColumnFilter', sortable: true, flex: 1 },
+  { 
+    headerName: 'Left Shimmers', 
+    field: 'shimmer1', 
+    filter: 'agTextColumnFilter', 
+    sortable: true, 
+    flex: 1,
+    cellRenderer: (params: any) => {
+      if (!params.value) return '';
+      const items = Array.isArray(params.value) ? params.value : [];
+      if (items.length === 0) return '';
+      return items.map((item: string) => `<div style="padding: 2px 0;">${item}</div>`).join('');
+    },
+    cellStyle: { 
+      whiteSpace: 'normal',
+      wordWrap: 'break-word',
+      lineHeight: '1.5',
+      padding: '8px'
+    },
+    autoHeight: true
+  },
+  { 
+    headerName: 'Right Shimmers', 
+    field: 'shimmer2', 
+    filter: 'agTextColumnFilter', 
+    sortable: true, 
+    flex: 1,
+    cellRenderer: (params: any) => {
+      if (!params.value) return '';
+      const items = Array.isArray(params.value) ? params.value : [];
+      if (items.length === 0) return '';
+      return items.map((item: string) => `<div style="padding: 2px 0;">${item}</div>`).join('');
+    },
+    cellStyle: { 
+      whiteSpace: 'normal',
+      wordWrap: 'break-word',
+      lineHeight: '1.5',
+      padding: '8px'
+    },
+    autoHeight: true
+  },
+  // { headerName: 'Updated At', field: 'updatedAt', filter: 'agDateColumnFilter', sortable: true, flex: 1 },
     {
       headerName: 'Actions',
       field: 'actions',

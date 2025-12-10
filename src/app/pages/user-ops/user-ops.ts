@@ -16,6 +16,10 @@ export class UserOpsPage implements OnInit {
   showModal = false;
   device = '';
   patient = '';
+  shimmer1: string[] = [];
+  shimmer2: string[] = [];
+  newShimmer1 = '';
+  newShimmer2 = '';
   readonlyDevice = false;
   saving = false;
   actionError = '';
@@ -47,18 +51,20 @@ export class UserOpsPage implements OnInit {
     this.loadUnregistered();
   }
 
-  openModal(dev?: string, pat?: string) {
+  openModal(dev?: string, pat?: string, rec?: DevicePatientRecord) {
     this.device = dev || '';
     this.patient = pat || '';
+    this.shimmer1 = rec?.shimmer1 ? [...rec.shimmer1] : [];
+    this.shimmer2 = rec?.shimmer2 ? [...rec.shimmer2] : [];
+    this.newShimmer1 = '';
+    this.newShimmer2 = '';
     this.readonlyDevice = !!dev; // make device static when editing a selected device
     this.actionError = '';
     this.showModal = true;
   }
 
   onUpdate(rec: DevicePatientRecord) {
-  // Pass shimmer1 and shimmer2 to modal if needed in future
-  this.openModal(rec.device, rec.patient || '');
-  // You can now access rec.shimmer1 and rec.shimmer2 here
+    this.openModal(rec.device, rec.patient || '', rec);
   }
 
   onGridChanged(evt: { action: 'delete'; device: string; ok: boolean; error?: string }) {
@@ -71,17 +77,63 @@ export class UserOpsPage implements OnInit {
     }
   }
 
-  closeModal() { this.showModal = false; this.readonlyDevice = false; }
+  closeModal() { 
+    this.showModal = false; 
+    this.readonlyDevice = false;
+    this.shimmer1 = [];
+    this.shimmer2 = [];
+    this.newShimmer1 = '';
+    this.newShimmer2 = '';
+  }
+
+  addShimmer1() {
+    if (this.newShimmer1.trim()) {
+      this.shimmer1.push(this.newShimmer1.trim());
+      this.newShimmer1 = '';
+    }
+  }
+
+  removeShimmer1(index: number) {
+    this.shimmer1.splice(index, 1);
+  }
+
+  addShimmer2() {
+    if (this.newShimmer2.trim()) {
+      this.shimmer2.push(this.newShimmer2.trim());
+      this.newShimmer2 = '';
+    }
+  }
+
+  removeShimmer2(index: number) {
+    this.shimmer2.splice(index, 1);
+  }
 
   saveMapping() {
     if (!this.device) { this.actionError = 'Device is required'; return; }
     this.saving = true;
     this.actionError = '';
-    this.api.ddbPutDeviceMapping(this.device, { patient: this.patient || '' }).subscribe({
+    
+    const payload: Record<string, any> = {
+      patient: this.patient || ''
+    };
+    
+    if (this.shimmer1.length > 0) {
+      payload['shimmer1'] = this.shimmer1;
+    }
+    
+    if (this.shimmer2.length > 0) {
+      payload['shimmer2'] = this.shimmer2;
+    }
+    
+    this.api.ddbPutDeviceMapping(this.device, payload).subscribe({
       next: () => {
         this.saving = false;
         this.showModal = false;
         this.readonlyDevice = false;
+        this.shimmer1 = [];
+        this.shimmer2 = [];
+        this.newShimmer1 = '';
+        this.newShimmer2 = '';
         this.toast('Mapping saved', 'success');
         this.grid?.reload();
         this.loadUnregistered();
