@@ -269,14 +269,14 @@ export class HomePage implements OnInit {
 
     // For UWB, decouple slider and chart initial values
     if (this.isUwbData) {
-      this.downsampleRate = 200; // Chart starts at 200
+      this.downsampleRate = 100; // Chart starts at 100
       this.uwbSliderValue = 50;  // Slider starts at 50
       this.x_values = this.rawTimeData;
       this.y_values = this.rawAbsData;
       this.updateChartDataDirect();
 
     } else {
-      this.downsampleRate = 200;
+      this.downsampleRate = 100;
       this.updateChartData();
     }
 
