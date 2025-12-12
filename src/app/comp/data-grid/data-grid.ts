@@ -40,7 +40,7 @@ export class DataGrid implements OnInit {
   rowData: any[] = [];
   columnDefs: (ColDef | ColGroupDef)[] = [
   { headerName: 'Patient', field: 'patient', filter: 'agTextColumnFilter', sortable: true, minWidth: 120, maxWidth: 160 },
-  { headerName: 'Device', field: 'device', filter: 'agTextColumnFilter', sortable: true, minWidth: 120, maxWidth: 160 },
+  { headerName: 'Device', field: 'device', filter: 'agTextColumnFilter', sortable: true, minWidth: 120, maxWidth: 160, hide: true },
   { headerName: 'Synced Date', field: 'date', filter: 'agDateColumnFilter', sortable: true, minWidth: 120, maxWidth: 140 },
     {
       headerName: 'Left Hand Device',
