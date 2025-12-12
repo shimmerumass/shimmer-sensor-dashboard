@@ -88,6 +88,7 @@ export class FilesGrid implements OnInit {
   showPopup = false;
   popupTimeFrom = '';
   popupTimeTo = '';
+  expandedRowData: any = null; // Store the row data to access date
 
   columnDefs: ColDef[] = [
     { headerName: 'Patient', field: 'patient', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
@@ -106,8 +107,8 @@ export class FilesGrid implements OnInit {
       flex: 1
     },
     { headerName: 'Experiment Name', field: 'experiment_name', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
-    { headerName: 'Shimmer 1', field: 'shimmer1', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
-    { headerName: 'Shimmer 2', field: 'shimmer2', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
+    { headerName: 'Left Hand Device', field: 'shimmer1', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
+    { headerName: 'Right Hand Device', field: 'shimmer2', headerComponent: 'clearFilterHeader', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
 
     {
       headerName: 'Actions',
@@ -358,6 +359,7 @@ export class FilesGrid implements OnInit {
     } else if (classList.includes('ag-action-expand')) {
       console.log('Expand clicked, files:', files);
       this.expandedFiles = files;
+      this.expandedRowData = event.data; // Store row data to access date
       this.showPopup = true;
       this.popupTimeFrom = '';
       this.popupTimeTo = '';
@@ -379,6 +381,7 @@ export class FilesGrid implements OnInit {
   closePopup() {
     this.showPopup = false;
     this.expandedFiles = [];
+    this.expandedRowData = null;
     this.popupTimeFrom = '';
     this.popupTimeTo = '';
   }
