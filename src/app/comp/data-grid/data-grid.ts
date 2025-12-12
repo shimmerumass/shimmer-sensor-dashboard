@@ -43,7 +43,7 @@ export class DataGrid implements OnInit {
   { headerName: 'Device', field: 'device', filter: 'agTextColumnFilter', sortable: true, minWidth: 120, maxWidth: 160 },
   { headerName: 'Synced Date', field: 'date', filter: 'agDateColumnFilter', sortable: true, minWidth: 120, maxWidth: 140 },
     {
-      headerName: 'Left Shimmer',
+      headerName: 'Left Hand Device',
       groupId: 'shimmer1',
       children: [
         { headerName: 'Recorded Time', field: 'shimmer1_recorded_timestamp', filter: 'agTextColumnFilter', sortable: true, minWidth: 180, maxWidth: 220 },
@@ -168,7 +168,7 @@ export class DataGrid implements OnInit {
       ]
     },
     {
-      headerName: 'Right Shimmer',
+      headerName: 'Right Hand Device',
       groupId: 'shimmer2',
       children: [
         { headerName: 'Recorded Time', field: 'shimmer2_recorded_timestamp', filter: 'agTextColumnFilter', sortable: true, minWidth: 180, maxWidth: 220 },

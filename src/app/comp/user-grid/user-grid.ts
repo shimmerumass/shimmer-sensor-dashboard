@@ -19,7 +19,7 @@ export class UserGridComponent implements OnInit {
   { headerName: 'Device', field: 'device', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
   { headerName: 'Patient', field: 'patient', filter: 'agTextColumnFilter', sortable: true, flex: 1 },
   { 
-    headerName: 'Left Shimmers', 
+    headerName: 'Left Hand Device', 
     field: 'shimmer1', 
     filter: 'agTextColumnFilter', 
     sortable: true, 
@@ -39,7 +39,7 @@ export class UserGridComponent implements OnInit {
     autoHeight: true
   },
   { 
-    headerName: 'Right Shimmers', 
+    headerName: 'Right Hand Device', 
     field: 'shimmer2', 
     filter: 'agTextColumnFilter', 
     sortable: true, 
