@@ -1,0 +1,184 @@
+/* Action buttons inside ag-grid */
+.ag-theme-quartz .ag-cell .action-btn,
+.ag-theme-quartz .ag-cell button.action-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  display: inline-block;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+
+.view-btn, .ag-cell button.view-btn {
+  background-color: hsl(190, 95%, 30%) !important;
+  color: white !important;
+  border-radius: 0.5rem;
+  border: 1px solid hsl(190, 95%, 20%) !important;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-block;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+}
+
+.ag-theme-quartz .ag-cell .view-btn:hover,
+.ag-theme-quartz .ag-cell button.view-btn:hover {
+  background-color: hsl(190, 95%, 25%) !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.ag-theme-quartz .ag-cell .view-btn:active,
+.ag-theme-quartz .ag-cell button.view-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* General action button styles (for non-grid contexts) */
+.action-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  display: inline-block;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.view-btn {
+  background-color: hsl(190, 95%, 30%);
+  color: white;
+  border-radius: 0.5rem;
+  border: 1px solid hsl(190, 95%, 20%);
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-block;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.view-btn:hover {
+  background-color: hsl(190, 95%, 25%);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.view-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.download-btn {
+  background-color: #10b981;
+  color: white;
+}
+
+.download-btn:hover {
+  background-color: #059669;
+}
+
+.chart-btn {
+  background-color: #8b5cf6;
+  color: white;
+}
+
+.chart-btn:hover {
+  background-color: #7c3aed;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.animate-float-slow {
+  animation: float 8s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* Popup tab buttons */
+.chart-modal-tab-btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  font-weight: 600;
+  transition: all 0.3s;
+  border: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.chart-modal-tab-btn.active {
+  background-color: hsl(190, 95%, 30%);
+  color: white;
+  border-bottom-color: hsl(190, 95%, 20%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chart-modal-tab-btn:not(.active) {
+  background-color: #f3f4f6;
+  color: #374151;
+  border-bottom-color: transparent;
+}
+
+.chart-modal-tab-btn:not(.active):hover {
+  background-color: #e5e7eb;
+  color: hsl(190, 95%, 30%);
+  transform: translateY(-2px);
+}
+

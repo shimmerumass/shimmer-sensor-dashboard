@@ -1,0 +1,135 @@
+<app-header-comp (logoutEvent)="onLogout()"></app-header-comp>
+
+<div class="min-h-screen w-full bg-gray-50 p-4">
+	<!-- Loader -->
+	<div *ngIf="isLoading" class="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex items-center justify-center">
+		<div class="bg-white rounded-xl shadow-lg border border-gray-100 px-5 py-4 flex items-center gap-3">
+			<svg class="w-5 h-5 animate-spin text-sky-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>
+			<span class="text-sm text-gray-800">Loading data…</span>
+		</div>
+	</div>
+	<div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-4">
+		<div class="flex items-center gap-3">
+			<span class="text-xs px-2 py-1 rounded-full bg-slate-50 text-slate-700 border border-slate-200">Rows: {{ rowData.length || 0 }}</span>
+		</div>
+		<div class="flex flex-wrap items-center gap-2">
+			<div class="relative">
+				<svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z"/></svg>
+				<input type="text" placeholder="Quick search..." [(ngModel)]="quickFilterText" class="pl-9 pr-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-300" />
+			</div>
+		</div>
+	</div>
+	<div *ngIf="loadError" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+		{{ loadError }}
+	</div>
+	<div class="flex justify-center">
+		<ag-grid-angular
+			class="ag-theme-quartz"
+			style="width: 800px; height: calc(100vh - 200px); font-size: 12px;"
+			[rowData]="rowData"
+			[columnDefs]="columnDefs"
+			[defaultColDef]="defaultColDef"
+			[quickFilterText]="quickFilterText"
+			[pagination]="true"
+			[paginationPageSize]="50"
+			[enableCellTextSelection]="true"
+			[domLayout]="'normal'"
+			[rowHeight]="30"
+			(gridReady)="onGridReady($any($event))"
+		>
+		</ag-grid-angular>
+	</div>
+</div>
+
+<!-- Chart Modal -->
+<div 
+  *ngIf="showChartModal" 
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in"
+  (click)="closeChartModal()"
+>
+  <div 
+    class="bg-white rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto animate-slide-up"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="bg-gradient-to-r from-[hsl(190,95%,30%)] to-[hsl(190,95%,25%)] text-white p-6 rounded-t-2xl border-b border-white/10">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-bold tracking-tight mb-1">
+            Combined Data: {{ selectedRow?.date }} - {{ selectedRow?.patient }}
+          </h2>
+          <p class="text-sm text-blue-100 opacity-80">Acceleration Data Visualization</p>
+        </div>
+        <button 
+          (click)="closeChartModal()" 
+          class="text-white/80 hover:text-white hover:bg-white/20 rounded-lg p-2 transition-all duration-200 text-2xl font-bold backdrop-blur-sm border border-white/20"
+        >
+          ×
+        </button>
+      </div>
+    </div>
+    
+    <div class="p-6">
+      <!-- Tabs for Shimmer 1 and Shimmer 2 -->
+      <div class="mb-4 flex gap-2 border-b border-gray-200">
+        <button 
+          [class.active]="currentChartShimmer === 'shimmer1'"
+          class="chart-modal-tab-btn"
+          (click)="toggleShimmer('shimmer1')"
+          [disabled]="selectedRow?.shimmer1 === '-'"
+        >
+          Shimmer 1
+        </button>
+        <button 
+          [class.active]="currentChartShimmer === 'shimmer2'"
+          class="chart-modal-tab-btn"
+          (click)="toggleShimmer('shimmer2')"
+          [disabled]="selectedRow?.shimmer2 === '-'"
+        >
+          Shimmer 2
+        </button>
+      </div>
+      
+      <!-- Chart -->
+      <div class="mb-6" style="height: 400px;">
+        <canvas baseChart 
+          [data]="chartData" 
+          [options]="chartOptions" 
+          type="line">
+        </canvas>
+      </div>
+      
+      <!-- Statistics -->
+      <div class="bg-gradient-to-br from-slate-50 to-blue-50 rounded-xl p-6 border border-gray-200/50 shadow-sm">
+        <h3 class="text-lg font-semibold text-[hsl(190,95%,30%)] mb-4 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+          </svg>
+          Statistics
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <div class="bg-white/80 backdrop-blur-sm rounded-lg p-4 border border-gray-200/50 shadow-sm">
+            <p class="text-sm text-gray-600 mb-1">Mean</p>
+            <p class="text-xl font-bold text-[hsl(190,95%,30%)]">{{ chartStats.mean | number:'1.2-2' }} m/s²</p>
+          </div>
+          <div class="bg-white/80 backdrop-blur-sm rounded-lg p-4 border border-gray-200/50 shadow-sm">
+            <p class="text-sm text-gray-600 mb-1">Max</p>
+            <p class="text-xl font-bold text-[hsl(190,95%,30%)]">{{ chartStats.max | number:'1.2-2' }} m/s²</p>
+          </div>
+          <div class="bg-white/80 backdrop-blur-sm rounded-lg p-4 border border-gray-200/50 shadow-sm">
+            <p class="text-sm text-gray-600 mb-1">Min</p>
+            <p class="text-xl font-bold text-[hsl(190,95%,30%)]">{{ chartStats.min | number:'1.2-2' }} m/s²</p>
+          </div>
+          <div class="bg-white/80 backdrop-blur-sm rounded-lg p-4 border border-gray-200/50 shadow-sm">
+            <p class="text-sm text-gray-600 mb-1">UWB Non-Zero Count</p>
+            <p class="text-xl font-bold text-[hsl(190,95%,30%)]">{{ chartStats.uwbNonZero | number }}</p>
+          </div>
+          <div class="bg-white/80 backdrop-blur-sm rounded-lg p-4 border border-gray-200/50 shadow-sm">
+            <p class="text-sm text-gray-600 mb-1">Accel Points</p>
+            <p class="text-xl font-bold text-[hsl(190,95%,30%)]">{{ chartStats.accelPoints | number }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
