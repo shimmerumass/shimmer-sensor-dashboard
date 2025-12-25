@@ -4,16 +4,24 @@
 <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 animate-fade-in">
   
   <!-- Hero Section -->
-  <section class="relative overflow-hidden bg-gradient-to-r from-[hsl(190,95%,30%)] to-[hsl(190,95%,25%)] text-white py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
+  <section class="relative overflow-hidden bg-gradient-to-r from-[hsl(190,95%,30%)] to-[hsl(190,95%,25%)] text-white py-16 px-4 sm:px-6 lg:px-8">
     <div class="absolute inset-0 bg-black opacity-10"></div>
     <div class="relative max-w-7xl mx-auto">
       <div class="text-center animate-slide-up">
-        <h1 class="text-3xl md:text-5xl font-bold mb-4 tracking-tight">
-          Daily Aggregated <span class="text-yellow-300">Shimmer Data</span>
+        <h1 class="text-4xl md:text-6xl font-bold mb-6 tracking-tight">
+          Welcome to <span class="text-yellow-300">COSDA</span>
         </h1>
-        <p class="text-lg md:text-xl mb-6 text-blue-100 max-w-3xl mx-auto">
-          View and analyze combined Shimmer sensor data with interactive charts and detailed statistics.
+        <p class="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto">
+          Your intelligent sensor dashboard for real-time monitoring and analytics
         </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="https://cosda-umass.github.io/cosda-umass/" target="_blank" rel="noopener" class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg animate-pulse flex items-center justify-center">
+            Get Started
+          </a>
+          <a href="https://github.com/cosda-umass/cosda-umass" target="_blank" rel="noopener" class="border-2 border-white hover:bg-white hover:text-[hsl(190,95%,30%)] px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+            Contact Us
+          </a>
+        </div>
       </div>
     </div>
     
@@ -21,6 +29,123 @@
     <div class="absolute top-10 left-10 w-20 h-20 bg-white opacity-10 rounded-full animate-float"></div>
     <div class="absolute bottom-10 right-10 w-16 h-16 bg-yellow-300 opacity-20 rounded-full animate-float-delayed"></div>
     <div class="absolute top-1/2 left-1/4 w-12 h-12 bg-blue-200 opacity-30 rounded-full animate-float-slow"></div>
+  </section>
+
+  <!-- Stats Cards Section -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-3xl font-bold text-gray-900 text-center mb-12 animate-slide-up">
+        Dashboard Overview
+      </h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <!-- Sensor Status Card -->
+        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-slide-up" style="animation-delay: 0.1s;">
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+              {{ activeSensors }} / {{ expectedSensors }}
+              <div class="w-3 h-3 rounded-full" 
+                   [ngClass]="{
+                     'bg-green-500': activeSensors === expectedSensors,
+                     'bg-amber-500': activeSensors > 0 && activeSensors < expectedSensors,
+                     'bg-red-500': activeSensors === 0
+                   }">
+              </div>
+            </h3>
+            <p class="text-gray-600">Active Sensors</p>
+            <p class="text-sm text-gray-400 mt-1">Present / Expected</p>
+            <div class="mt-4 flex justify-end">
+              <a routerLink="/latest-files" class="text-indigo-600 font-semibold hover:text-indigo-700 inline-flex items-center gap-1" title="Go to Latest Files">
+                Latest File Per Device
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            </div>
+            
+            <!-- Status Legend -->
+            <div class="mt-3 pt-3 border-t border-gray-100">
+              <div class="flex flex-wrap gap-3 text-xs">
+                <div class="flex items-center gap-1">
+                  <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                  <span class="text-gray-500">All Online</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+                  <span class="text-gray-500">Partial</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                  <span class="text-gray-500">All Offline</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Points Card -->
+        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-slide-up" style="animation-delay: 0.2s;">
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+              </div>
+              <span class="inline-flex items-center gap-1.5 text-blue-600 text-sm font-semibold leading-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 -mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h6v6"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 19l14-14"/>
+                </svg>
+                {{ dataPointsRecentPercent }}%
+                <span class="text-xs text-blue-400 font-normal align-middle"> in 5 days</span>
+              </span>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ dataPointsTotal | number }}</h3>
+            <p class="text-gray-600">Data Points</p>
+            <div class="mt-4 flex justify-end">
+              <a routerLink="/data-ops" class="text-indigo-600 font-semibold hover:text-indigo-700 inline-flex items-center gap-1" title="Go to User Ops">
+                View Bulk Data
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Users Card -->
+        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-slide-up" style="animation-delay: 0.4s;">
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ usersCount }}</h3>
+            <p class="text-gray-600">Users</p>
+            <div class="mt-4 flex justify-end">
+              <a routerLink="/user-ops" class="text-indigo-600 font-semibold hover:text-indigo-700 inline-flex items-center gap-1" title="Go to User Ops">
+                Manage Users
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
 <div class="w-full p-4">

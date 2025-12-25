@@ -34,6 +34,13 @@ export class DashboardPage implements OnInit {
   loadError = '';
   quickFilterText = '';
 
+  // Stats cards properties
+  public activeSensors = 0;
+  public expectedSensors = 0;
+  public usersCount = 0;
+  public dataPointsTotal = 0;
+  public dataPointsRecentPercent = 0;
+
   // Modal properties
   selectedRow: CombinedDataRow | null = null;
 
@@ -481,6 +488,60 @@ export class DashboardPage implements OnInit {
 
   onLogout() {
     this.router.navigate(['/login']);
+  }
+
+  loadStats() {
+    // Load users count
+    this.apiService.listUniquePatients().subscribe({
+      next: (patients: any[]) => {
+        this.usersCount = Array.isArray(patients) ? patients.length : 0;
+      },
+      error: () => { this.usersCount = 0; }
+    });
+
+    // Load sensor stats
+    this.apiService.listFilesCombinedMeta().subscribe({
+      next: (resp: any) => {
+        if (resp && Array.isArray(resp.data)) {
+          const activeShimmers = new Set<string>();
+          resp.data.forEach((item: any) => {
+            if (item.shimmer1) activeShimmers.add(item.shimmer1);
+            if (item.shimmer2) activeShimmers.add(item.shimmer2);
+          });
+          this.activeSensors = activeShimmers.size;
+          this.expectedSensors = activeShimmers.size; // You can adjust this based on your requirements
+        }
+      },
+      error: () => { this.activeSensors = 0; this.expectedSensors = 0; }
+    });
+
+    // Load data points stats
+    this.apiService.listFilesCombinedMeta().subscribe({
+      next: (resp: any) => {
+        if (resp && Array.isArray(resp.data)) {
+          const allFiles: any[] = [];
+          resp.data.forEach((item: any) => {
+            if (item.shimmer1_decoded) allFiles.push(...item.shimmer1_decoded);
+            if (item.shimmer2_decoded) allFiles.push(...item.shimmer2_decoded);
+          });
+          this.dataPointsTotal = allFiles.length;
+          
+          // Calculate recent files (last 5 days)
+          const fiveDaysAgo = new Date();
+          fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+          const recent = allFiles.filter((file: any) => {
+            if (file.recordedTimestamp) {
+              const fileDate = new Date(file.recordedTimestamp);
+              return fileDate >= fiveDaysAgo;
+            }
+            return false;
+          }).length;
+          
+          this.dataPointsRecentPercent = this.dataPointsTotal ? Math.round((recent / this.dataPointsTotal) * 100) : 0;
+        }
+      },
+      error: () => { this.dataPointsTotal = 0; this.dataPointsRecentPercent = 0; }
+    });
   }
 }
 
