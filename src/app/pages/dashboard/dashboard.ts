@@ -421,6 +421,40 @@ export class DashboardPage implements OnInit {
     this.showChartModal = false;
   }
 
+  downloadFile() {
+    if (!this.selectedRow) return;
+    
+    const filename = this.currentChartShimmer === 'shimmer1' 
+      ? (this.selectedRow.shimmer1File !== '-' ? this.selectedRow.shimmer1File : null)
+      : (this.selectedRow.shimmer2File !== '-' ? this.selectedRow.shimmer2File : null);
+    
+    if (!filename || filename === '-') {
+      alert('No file available for download');
+      return;
+    }
+
+    // Get the file data and trigger download
+    this.apiService.getCombinedDataFile(filename).subscribe({
+      next: (fileData: any) => {
+        // Create a blob and download
+        const jsonStr = JSON.stringify(fileData, null, 2);
+        const blob = new Blob([jsonStr], { type: 'application/json' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => {
+        console.error('Failed to download file', err);
+        alert('Failed to download file. Please try again.');
+      }
+    });
+  }
+
   toggleShimmer(shimmer: 'shimmer1' | 'shimmer2') {
     if (!this.selectedRow) return;
     this.currentChartShimmer = shimmer;
