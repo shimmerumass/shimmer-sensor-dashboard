@@ -83,7 +83,7 @@ export class DashboardPage implements OnInit {
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   columnDefs: ColDef[] = [
-    { field: 'date', headerName: 'Date', sortable: true, filter: 'agTextColumnFilter', flex: 1, minWidth: 100 },
+    { field: 'date', headerName: 'Date', sortable: true, filter: 'agTextColumnFilter', flex: 1, width: 300 },
     { field: 'patient', headerName: 'Patient', sortable: true, filter: 'agTextColumnFilter', flex: 1, minWidth: 120 },
     { field: 'device', headerName: 'Device', sortable: true, filter: 'agTextColumnFilter', flex: 1, minWidth: 150 },
     { field: 'shimmer1', headerName: 'Shimmer1', sortable: true, filter: 'agTextColumnFilter', flex: 1, minWidth: 120 },
@@ -117,10 +117,20 @@ export class DashboardPage implements OnInit {
     {
       headerName: 'Actions',
       flex: 0,
-      width: 100,
+      width: 280,
       cellRenderer: (params: any) => {
+        const rowData = params.data;
+        const dateStr = rowData?.date || '';
+        // Convert YYYY-MM-DD to MM/DD/YYYY
+        let formattedDate = '';
+        if (dateStr) {
+          const parts = dateStr.split('-');
+          if (parts.length === 3) {
+            formattedDate = `${parts[1]}/${parts[2]}/${parts[0]}`;
+          }
+        }
         return `
-          <div style="display: flex; gap: 0.25rem; align-items: center; justify-content: center;">
+          <div style="display: flex; gap: 0.5rem; align-items: center; justify-content: center; flex-wrap: nowrap;">
             <button 
               class="action-btn view-btn" 
               data-action="view"
@@ -146,6 +156,33 @@ export class DashboardPage implements OnInit {
               onmouseup="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.15)'"
             >
               View
+            </button>
+            <button 
+              class="action-btn view-hour-btn" 
+              data-action="view-by-hour"
+              data-date="${formattedDate}"
+              style="
+                background-color: hsl(190, 95%, 30%);
+                color: white;
+                border: 1px solid hsl(190, 95%, 20%);
+                border-radius: 0.375rem;
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s;
+                display: inline-block;
+                text-align: center;
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                white-space: nowrap;
+                line-height: 1.2;
+              "
+              onmouseover="this.style.backgroundColor='hsl(190, 95%, 25%)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.15)'; this.style.transform='translateY(-1px)'"
+              onmouseout="this.style.backgroundColor='hsl(190, 95%, 30%)'; this.style.boxShadow='0 1px 2px rgba(0, 0, 0, 0.1)'; this.style.transform='translateY(0)'"
+              onmousedown="this.style.transform='translateY(0)'; this.style.boxShadow='0 1px 2px rgba(0, 0, 0, 0.1)'"
+              onmouseup="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.15)'"
+            >
+              Files by Hour
             </button>
           </div>
         `;
@@ -293,7 +330,7 @@ export class DashboardPage implements OnInit {
     event.api.addEventListener('cellClicked', (e: any) => {
       const target = e.event?.target as HTMLElement;
       // Check if clicked element is a button with action-btn or view-btn class, or if it's inside such a button
-      const button = target.closest('.action-btn, .view-btn') as HTMLElement;
+      const button = target.closest('.action-btn, .view-btn, .view-hour-btn') as HTMLElement;
       if (button) {
         const action = button.getAttribute('data-action');
         const rowData = e.data as CombinedDataRow;
@@ -303,6 +340,19 @@ export class DashboardPage implements OnInit {
         if (rowData) {
           if (action === 'view') {
             this.showChart(rowData);
+          } else if (action === 'view-by-hour') {
+            const dateStr = rowData?.date || '';
+            // Convert YYYY-MM-DD to MM/DD/YYYY
+            let formattedDate = '';
+            if (dateStr) {
+              const parts = dateStr.split('-');
+              if (parts.length === 3) {
+                formattedDate = `${parts[1]}/${parts[2]}/${parts[0]}`;
+              }
+            }
+            if (formattedDate) {
+              this.router.navigate(['/home'], { queryParams: { filter: formattedDate } });
+            }
           }
         }
       }
