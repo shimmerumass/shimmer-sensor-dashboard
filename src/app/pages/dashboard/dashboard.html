@@ -1,6 +1,29 @@
 <app-header-comp (logoutEvent)="onLogout()"></app-header-comp>
 
-<div class="min-h-screen w-full bg-gray-50 p-4">
+<!-- Main Dashboard Container -->
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 animate-fade-in">
+  
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden bg-gradient-to-r from-[hsl(190,95%,30%)] to-[hsl(190,95%,25%)] text-white py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
+    <div class="absolute inset-0 bg-black opacity-10"></div>
+    <div class="relative max-w-7xl mx-auto">
+      <div class="text-center animate-slide-up">
+        <h1 class="text-3xl md:text-5xl font-bold mb-4 tracking-tight">
+          Daily Aggregated <span class="text-yellow-300">Shimmer Data</span>
+        </h1>
+        <p class="text-lg md:text-xl mb-6 text-blue-100 max-w-3xl mx-auto">
+          View and analyze combined Shimmer sensor data with interactive charts and detailed statistics.
+        </p>
+      </div>
+    </div>
+    
+    <!-- Floating Elements -->
+    <div class="absolute top-10 left-10 w-20 h-20 bg-white opacity-10 rounded-full animate-float"></div>
+    <div class="absolute bottom-10 right-10 w-16 h-16 bg-yellow-300 opacity-20 rounded-full animate-float-delayed"></div>
+    <div class="absolute top-1/2 left-1/4 w-12 h-12 bg-blue-200 opacity-30 rounded-full animate-float-slow"></div>
+  </section>
+
+<div class="w-full p-4">
 	<!-- Loader -->
 	<div *ngIf="isLoading" class="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex items-center justify-center">
 		<div class="bg-white rounded-xl shadow-lg border border-gray-100 px-5 py-4 flex items-center gap-3">
@@ -39,6 +62,8 @@
 		>
 		</ag-grid-angular>
 	</div>
+</div>
+
 </div>
 
 <!-- Chart Modal -->
