@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { fetchAuthSession } from '@aws-amplify/auth';
 import { ApiService, FileItem } from '../../services/api.service';
 import { Observable } from 'rxjs';
@@ -38,6 +38,9 @@ export class HomePage implements OnInit {
 
   // New: unregistered devices count
   public unregisteredCount = 0;
+
+  // Filter from URL query parameter
+  public filterValue: string | null = null;
 
   
     lineChartData: ChartConfiguration<'line'>['data'] = {
@@ -81,7 +84,12 @@ export class HomePage implements OnInit {
     }
   };
 
-  constructor(private router: Router, private api: ApiService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private api: ApiService, 
+    private cdr: ChangeDetectorRef
+  ) {}
 
   async checkAuth() {
     try {
@@ -222,6 +230,15 @@ export class HomePage implements OnInit {
     this.loadActiveSensors();
     this.loadDataPoints();
     this.loadUnregisteredCount();
+    
+    // Read filter from URL query parameter
+    this.route.queryParams.subscribe(params => {
+      if (params['filter']) {
+        this.filterValue = params['filter'];
+      } else {
+        this.filterValue = null;
+      }
+    });
   }
 
   onLogout() {

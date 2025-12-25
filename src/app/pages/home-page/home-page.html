@@ -62,7 +62,7 @@
             <p class="text-gray-600">Active Sensors</p>
             <p class="text-sm text-gray-400 mt-1">Present / Expected</p>
                         <div class="mt-4 flex justify-end">
-                          <a routerLink="/latest-files" class="text-indigo-600 font-semibold hover:text-indigo-700 inline-flex items-center gap-1" title="Go to Latest Files">
+                          <a [routerLink]="['/latest-files']" [queryParams]="filterValue ? {filter: filterValue} : {}" class="text-indigo-600 font-semibold hover:text-indigo-700 inline-flex items-center gap-1" title="Go to Latest Files">
                             Latest File Per Device
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -111,7 +111,7 @@
             <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ dataPointsTotal | number }}</h3>
             <p class="text-gray-600">Data Points</p>
                         <div class="mt-4 flex justify-end">
-              <a routerLink="/data-ops" class="text-indigo-600 font-semibold hover:text-indigo-700 inline-flex items-center gap-1" title="Go to User Ops">
+              <a [routerLink]="['/data-ops']" [queryParams]="filterValue ? {filter: filterValue} : {}" class="text-indigo-600 font-semibold hover:text-indigo-700 inline-flex items-center gap-1" title="Go to User Ops">
                 View Bulk Data
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -150,7 +150,7 @@
             <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ usersCount }}</h3>
             <p class="text-gray-600">Users</p>
             <div class="mt-4 flex justify-end">
-              <a routerLink="/user-ops" class="text-indigo-600 font-semibold hover:text-indigo-700 inline-flex items-center gap-1" title="Go to User Ops">
+              <a [routerLink]="['/user-ops']" [queryParams]="filterValue ? {filter: filterValue} : {}" class="text-indigo-600 font-semibold hover:text-indigo-700 inline-flex items-center gap-1" title="Go to User Ops">
                 Manage Users
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -163,7 +163,7 @@
     </div>
   </section>
 
-  <app-data-grid (graphOutput)="openGraphModal($event)"></app-data-grid>
+  <app-data-grid [initialFilter]="filterValue || ''" (graphOutput)="openGraphModal($event)"></app-data-grid>
 
 
    <!-- <div class="mt-4">

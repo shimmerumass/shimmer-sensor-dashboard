@@ -2,7 +2,7 @@
 import Chart from 'chart.js/auto';
 import { ColDef, ColGroupDef } from 'ag-grid-community';
 import { ApiService } from '../../services/api.service';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -11,7 +11,7 @@ import { forkJoin } from 'rxjs';
   templateUrl: './data-grid.html',
   styleUrl: './data-grid.css'
 })
-export class DataGrid implements OnInit {
+export class DataGrid implements OnInit, OnChanges {
   // ...existing code...
 
   showToast(message: string) {
@@ -295,12 +295,24 @@ export class DataGrid implements OnInit {
   ];
 
 
+  @Input() initialFilter: string = '';
   quickFilterText: string = '';
   isLoading: boolean = true;
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
+    // Set initial filter from input if provided
+    if (this.initialFilter) {
+      this.quickFilterText = this.initialFilter;
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Update quickFilterText when initialFilter input changes
+    if (changes['initialFilter'] && changes['initialFilter'].currentValue) {
+      this.quickFilterText = changes['initialFilter'].currentValue;
+    }
     this.apiService.listFilesCombinedMeta().subscribe((resp: any) => {
       if (resp && Array.isArray(resp.data)) {
         this.rowData = resp.data.flatMap((item: any) => {
