@@ -156,4 +156,26 @@ export class ApiService {
       .set('field_name', fieldName);
     return this.http.get<any>(`${this.baseUrl}/get-decoded-field-direct/`, { params });
   }
+
+  // Combined data files endpoints for dashboard
+  getCombinedDataFiles(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/combined-data-files/`);
+  }
+
+  getCombinedDataFile(filename: string): Observable<any> {
+    const params = new HttpParams().set('filename', filename);
+    return this.http.get<any>(`${this.baseUrl}/get-combined-data-file/`, { params });
+  }
+
+  getCombinedDataField(filename: string, fieldName: string): Observable<any> {
+    const params = new HttpParams()
+      .set('filename', filename)
+      .set('field_name', fieldName);
+    return this.http.get<any>(`${this.baseUrl}/get-combined-data-field/`, { params });
+  }
+
+  getDecodedFileUrl(rawFileName: string): Observable<{ download_url: string; s3_key: string }> {
+    const params = new HttpParams().set('full_file_name', rawFileName);
+    return this.http.get<{ download_url: string; s3_key: string }>(`${this.baseUrl}/get-decoded-file-url/`, { params });
+  }
 }

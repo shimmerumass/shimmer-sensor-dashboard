@@ -9,7 +9,9 @@ import { DataOps } from './data-ops/data-ops';
 
 import { FormsModule } from '@angular/forms';
 import { BaseChartDirective } from 'ng2-charts';
+import { AgGridModule } from 'ag-grid-angular';
 import { LatestFilesPage } from './latest-files/latest-files';
+import { DashboardPage } from './dashboard/dashboard';
 
 
 const routes: Routes = [
@@ -19,13 +21,14 @@ const routes: Routes = [
   { path: 'login', component: LoginPage },
   { path: 'data-ops', component: DataOps },
   { path: 'latest-files', component: LatestFilesPage },
+  { path: 'dashboard', component: DashboardPage },
 ];
 
 
 @NgModule({
-  declarations: [LoginPage, HomePage, UserOpsPage, DataOps, LatestFilesPage],
-  imports: [CommonModule, CompModule, RouterModule.forChild(routes), FormsModule, BaseChartDirective],
-  exports: [RouterModule, LoginPage, HomePage, UserOpsPage, DataOps, LatestFilesPage],
+  declarations: [LoginPage, HomePage, UserOpsPage, DataOps, LatestFilesPage, DashboardPage],
+  imports: [CommonModule, CompModule, RouterModule.forChild(routes), FormsModule, BaseChartDirective, AgGridModule],
+  exports: [RouterModule, LoginPage, HomePage, UserOpsPage, DataOps, LatestFilesPage, DashboardPage],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PagesModule {}
