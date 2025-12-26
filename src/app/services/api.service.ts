@@ -158,8 +158,12 @@ export class ApiService {
   }
 
   // Combined data files endpoints for dashboard
-  getCombinedDataFiles(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/combined-data-files/`);
+  getCombinedDataFiles(params?: { date?: string }): Observable<any> {
+    let httpParams = new HttpParams();
+    if (params?.date) {
+      httpParams = httpParams.set('date', params.date);
+    }
+    return this.http.get<any>(`${this.baseUrl}/combined-data-files/`, { params: httpParams });
   }
 
   getCombinedDataFile(filename: string): Observable<any> {
@@ -172,6 +176,15 @@ export class ApiService {
       .set('filename', filename)
       .set('field_name', fieldName);
     return this.http.get<any>(`${this.baseUrl}/get-combined-data-field/`, { params });
+  }
+
+  // Daily aggregator endpoint
+  triggerDailyAggregator(payload?: { date?: string }): Observable<any> {
+    const body: any = {};
+    if (payload?.date) {
+      body.date = payload.date;
+    }
+    return this.http.post<any>(`${this.baseUrl}/daily-aggregator/`, body);
   }
 
   getDecodedFileUrl(rawFileName: string): Observable<{ download_url: string; s3_key: string }> {
