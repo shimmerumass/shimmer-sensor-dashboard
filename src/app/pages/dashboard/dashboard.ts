@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { fetchAuthSession } from '@aws-amplify/auth';
 import { ApiService } from '../../services/api.service';
@@ -199,11 +199,12 @@ export class DashboardPage implements OnInit {
     filter: true
   };
 
-  constructor(private router: Router, private apiService: ApiService) {}
+  constructor(private router: Router, private apiService: ApiService, private cdr: ChangeDetectorRef) {}
 
   async ngOnInit() {
     await this.checkAuth();
     this.loadData();
+    this.loadStats();
   }
 
   async checkAuth() {
@@ -533,7 +534,7 @@ export class DashboardPage implements OnInit {
   }
 
   loadStats() {
-    // Load users count
+    // Load users count - same as home-page
     this.apiService.listUniquePatients().subscribe({
       next: (patients: any[]) => {
         this.usersCount = Array.isArray(patients) ? patients.length : 0;
@@ -541,46 +542,101 @@ export class DashboardPage implements OnInit {
       error: () => { this.usersCount = 0; }
     });
 
-    // Load sensor stats
-    this.apiService.listFilesCombinedMeta().subscribe({
-      next: (resp: any) => {
-        if (resp && Array.isArray(resp.data)) {
-          const activeShimmers = new Set<string>();
-          resp.data.forEach((item: any) => {
-            if (item.shimmer1) activeShimmers.add(item.shimmer1);
-            if (item.shimmer2) activeShimmers.add(item.shimmer2);
-          });
-          this.activeSensors = activeShimmers.size;
-          this.expectedSensors = activeShimmers.size; // You can adjust this based on your requirements
+    // Load active sensors - same as home-page
+    this.apiService.ddbGetDevicePatientMapDetails().subscribe((shimmerRecords) => {
+      this.apiService.listFilesDeconstructed().subscribe((files) => {
+        const allShimmersSet = new Set<string>();
+        shimmerRecords.forEach(rec => {
+          if (rec.shimmer1 && Array.isArray(rec.shimmer1)) {
+            rec.shimmer1.forEach(shimmer => allShimmersSet.add(shimmer));
+          }
+          if (rec.shimmer2 && Array.isArray(rec.shimmer2)) {
+            rec.shimmer2.forEach(shimmer => allShimmersSet.add(shimmer));
+          }
+        });
+
+        // Support both array and {data: array, error: null} response
+        let fileList: any[] = [];
+        if (Array.isArray(files)) {
+          fileList = files;
+        } else if (files && Array.isArray(files.data)) {
+          fileList = files.data;
+        } else {
+          console.error('Expected files to be an array or {data: array}, got:', files);
+          return;
         }
-      },
-      error: () => { this.activeSensors = 0; this.expectedSensors = 0; }
+
+        const now = new Date();
+        const activeShimmers = new Set<string>();
+
+        fileList.forEach((file: any) => {
+          if (file.shimmer_device && file.date && file.time) {
+            // Combine date and time for accurate recency check
+            const fileDateTimeStr = `${file.date}T${file.time}`;
+            const fileDate = new Date(fileDateTimeStr);
+            const diff = (now.getTime() - fileDate.getTime()) / (1000 * 60 * 60 * 24);
+            if (diff <= 2) {
+              activeShimmers.add(file.shimmer_device);
+            }
+          }
+        });
+
+        // Set the public property to the number of active shimmers
+        this.activeSensors = activeShimmers.size;
+
+        // allShimmers = all known shimmers
+        // activeShimmers = shimmers with files in last 2 days
+        this.expectedSensors = allShimmersSet.size;
+        this.cdr.detectChanges();
+      });
     });
 
-    // Load data points stats
-    this.apiService.listFilesCombinedMeta().subscribe({
-      next: (resp: any) => {
-        if (resp && Array.isArray(resp.data)) {
-          const allFiles: any[] = [];
-          resp.data.forEach((item: any) => {
-            if (item.shimmer1_decoded) allFiles.push(...item.shimmer1_decoded);
-            if (item.shimmer2_decoded) allFiles.push(...item.shimmer2_decoded);
-          });
-          this.dataPointsTotal = allFiles.length;
+    // Load data points stats - same as home-page
+    const now = new Date();
+    const cutoff = new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000);
+    this.apiService.listFilesMetadata().subscribe({
+      next: (response: any) => {
+        const items = Array.isArray(response?.data) ? response.data : [];
+        console.log('Files data:', items.slice(0, 2)); // Debug: log first 2 items
+        
+        // Count all individual files, not just rows, excluding files with "_decode" in name
+        let allFiles: any[] = [];
+        items.forEach((row: any) => {
+          const rowFiles = row?.files;
+          if (rowFiles && Array.isArray(rowFiles)) {
+            // Filter out files with "_decode" in the name
+            const filteredFiles = rowFiles.filter((file: any) => {
+              const fileName = file?.fullname || file?.name || '';
+              return !fileName.includes('_decode');
+            });
+            allFiles = allFiles.concat(filteredFiles);
+          }
+        });
+        
+        console.log(`Total individual files found (excluding _decode): ${allFiles.length}`);
+        
+        this.dataPointsTotal = allFiles.length;
+        
+        const recent = allFiles.filter(f => {
+          // Extract date from timestamp format: 20250827_013909 or 20250904_003502
+          const timestamp = f?.timestamp || '';
           
-          // Calculate recent files (last 5 days)
-          const fiveDaysAgo = new Date();
-          fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
-          const recent = allFiles.filter((file: any) => {
-            if (file.recordedTimestamp) {
-              const fileDate = new Date(file.recordedTimestamp);
-              return fileDate >= fiveDaysAgo;
-            }
-            return false;
-          }).length;
+          if (!timestamp || timestamp === 'files.zip') return false;
           
-          this.dataPointsRecentPercent = this.dataPointsTotal ? Math.round((recent / this.dataPointsTotal) * 100) : 0;
-        }
+          // Parse timestamp YYYYMMDD_HHMMSS
+          const dateMatch = timestamp.match(/^(\d{4})(\d{2})(\d{2})_/);
+          if (!dateMatch) return false;
+          
+          const year = parseInt(dateMatch[1]);
+          const month = parseInt(dateMatch[2]) - 1; // months are 0-based
+          const day = parseInt(dateMatch[3]);
+          const dt = new Date(year, month, day);
+          
+          return !isNaN(dt.getTime()) && dt >= cutoff;
+        }).length;
+        
+        this.dataPointsRecentPercent = this.dataPointsTotal ? Math.round((recent / this.dataPointsTotal) * 100) : 0;
+        console.log(`Total files: ${this.dataPointsTotal}, Recent files: ${recent}, Percent: ${this.dataPointsRecentPercent}`);
       },
       error: () => { this.dataPointsTotal = 0; this.dataPointsRecentPercent = 0; }
     });
