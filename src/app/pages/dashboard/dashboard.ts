@@ -83,11 +83,11 @@ export class DashboardPage implements OnInit {
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   columnDefs: ColDef[] = [
-    { field: 'date', headerName: 'Date', sortable: true, filter: 'agTextColumnFilter', flex: 1, width: 300 },
-    { field: 'patient', headerName: 'Patient', sortable: true, filter: 'agTextColumnFilter', flex: 1, minWidth: 120 },
-    { field: 'device', headerName: 'Device', sortable: true, filter: 'agTextColumnFilter', flex: 1, minWidth: 150 },
-    { field: 'shimmer1', headerName: 'Shimmer1', sortable: true, filter: 'agTextColumnFilter', flex: 1, minWidth: 120 },
-    { field: 'shimmer2', headerName: 'Shimmer2', sortable: true, filter: 'agTextColumnFilter', flex: 1, minWidth: 120 },
+    { field: 'date', headerName: 'Date', sortable: true, filter: 'agTextColumnFilter', width: 150, flex: 0, suppressSizeToFit: true },
+    { field: 'patient', headerName: 'Patient', sortable: true, filter: 'agTextColumnFilter', width: 130, flex: 0, suppressSizeToFit: true },
+    { field: 'device', headerName: 'Device', sortable: true, filter: 'agTextColumnFilter', width: 200, flex: 0, suppressSizeToFit: true },
+    { field: 'shimmer1', headerName: 'Shimmer1', sortable: true, filter: 'agTextColumnFilter', width: 200, flex: 0, suppressSizeToFit: true },
+    { field: 'shimmer2', headerName: 'Shimmer2', sortable: true, filter: 'agTextColumnFilter', width: 200, flex: 0, suppressSizeToFit: true },
     { 
       field: 'shimmer1File', 
       headerName: 'Shimmer1 File', 
@@ -117,7 +117,8 @@ export class DashboardPage implements OnInit {
     {
       headerName: 'Actions',
       flex: 0,
-      width: 280,
+      width: 350,
+      suppressSizeToFit: true,
       cellRenderer: (params: any) => {
         const rowData = params.data;
         const dateStr = rowData?.date || '';
@@ -139,8 +140,8 @@ export class DashboardPage implements OnInit {
                 color: white;
                 border: 1px solid hsl(190, 95%, 20%);
                 border-radius: 0.375rem;
-                padding: 0.25rem 0.5rem;
-                font-size: 0.75rem;
+                padding: 0.2rem 0.4rem;
+                font-size: 0.7rem;
                 font-weight: 600;
                 cursor: pointer;
                 transition: all 0.2s;
@@ -166,8 +167,8 @@ export class DashboardPage implements OnInit {
                 color: white;
                 border: 1px solid hsl(190, 95%, 20%);
                 border-radius: 0.375rem;
-                padding: 0.25rem 0.5rem;
-                font-size: 0.75rem;
+                padding: 0.2rem 0.4rem;
+                font-size: 0.7rem;
                 font-weight: 600;
                 cursor: pointer;
                 transition: all 0.2s;
@@ -191,6 +192,8 @@ export class DashboardPage implements OnInit {
   ];
 
   defaultColDef: ColDef = {
+    flex: 0,
+    suppressSizeToFit: true,
     resizable: true,
     sortable: true,
     filter: true
@@ -313,18 +316,7 @@ export class DashboardPage implements OnInit {
       console.log('First row sample:', this.rowData[0]);
     }
     
-    // Auto-size columns to fit content
-    setTimeout(() => {
-      const allColumnIds: string[] = [];
-      event.api.getColumns()?.forEach((column: any) => {
-        if (column && column.getColId) {
-          allColumnIds.push(column.getColId());
-        }
-      });
-      if (allColumnIds.length > 0) {
-        event.api.autoSizeColumns(allColumnIds, false);
-      }
-    }, 100);
+    // Columns have fixed widths with suppressSizeToFit: true, so no auto-sizing needed
     
     // Handle action button clicks using cellClicked event
     event.api.addEventListener('cellClicked', (e: any) => {
