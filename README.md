@@ -108,6 +108,73 @@ Displays the most recent file received for each Shimmer device:
 
 **Note:** This page uses the `/files/deconstructed/` API endpoint to fetch and display the latest file for each device.
 
+### Dashboard Page (Daily Aggregated Shimmer Data)
+Displays daily aggregated Shimmer sensor data with comprehensive statistics and visualization:
+- **Purpose:** View daily aggregated data files grouped by date, device, and patient, with detailed statistics for each Shimmer sensor.
+- **Location:** Accessible from the main navigation ("Dashboard" link) or as the default page after login.
+- **Features:**
+  - Hero section with "Welcome to COSDA" branding
+  - Statistics cards showing:
+    - Active Sensors (present/expected count)
+    - Data Points (total count and recent percentage)
+    - Users count
+  - Data grid displaying:
+    - Date, Patient, Device
+    - Shimmer1 and Shimmer2 assignments
+    - Shimmer1 and Shimmer2 file names
+    - Actions column with "View" and "Files by Hour" buttons
+  - Chart modal with:
+    - Tabs for Shimmer1 and Shimmer2
+    - Line chart for acceleration data visualization
+    - Statistics display (Mean, Max, Min, UWB Non-Zero Count, Accel Points)
+    - Download button for combined data files
+    - Export chart as PNG
+  - Quick search functionality
+  - "View Files by Hour" link in Data Points card
+- **How to Use:**
+  1. Navigate to Dashboard from the header or it will load automatically after login.
+  2. View aggregated data in the grid, sorted by date.
+  3. Click "View" button to see detailed charts and statistics for a specific day.
+  4. Click "Files by Hour" to navigate to the home page filtered by that date.
+  5. Use quick search to filter across all columns.
+- **API Endpoints:**
+  - `GET /combined-data-files/` - Fetches all combined data files
+  - `GET /get-combined-data-file/?filename=...` - Gets detailed file information
+  - `GET /get-combined-data-field/?filename=...&field_name=...` - Gets specific field data for charting
+
+### Daily Aggregator Page
+Manages daily data aggregation and combined data files:
+- **Purpose:** Trigger daily aggregation processes and view combined data files from S3.
+- **Location:** Accessible from the main navigation ("Daily Aggregator" link).
+- **Features:**
+  - **Daily Aggregation Section:**
+    - Date input (optional) - Enter specific date or leave empty for automatic processing
+    - "Trigger Aggregation" button to start the aggregation process
+    - Result display showing aggregation status and details
+    - Error handling with clear error messages
+  - **Load Combined Data Files Section:**
+    - Optional date filter for viewing files from a specific date
+    - "Load Files" button to fetch combined data files from S3
+    - Data grid displaying:
+      - Date, Patient, Shimmer1, Shimmer2
+      - Shimmer1 File and Shimmer2 File names
+    - Quick search functionality
+    - Row count display
+- **How to Use:**
+  1. Navigate to Daily Aggregator from the header.
+  2. **To trigger aggregation:**
+     - Optionally enter a date (YYYY-MM-DD) or leave empty for automatic processing
+     - Click "Trigger Aggregation" button
+     - View the result in the success message
+  3. **To view combined data files:**
+     - Optionally enter a date to filter files
+     - Click "Load Files" button
+     - View results in the data grid below
+     - Use quick search to filter the results
+- **API Endpoints:**
+  - `POST /daily-aggregator/` - Triggers daily aggregation (with optional date in body)
+  - `GET /combined-data-files/` - Fetches combined data files (with optional date query parameter)
+
 ## Configuration
 
 ### Angular Build Budgets
