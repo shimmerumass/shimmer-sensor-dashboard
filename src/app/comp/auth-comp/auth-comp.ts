@@ -15,7 +15,7 @@ export class AuthComp implements OnDestroy {
   constructor(public authenticator: AuthenticatorService, private router: Router) {
     this.routeCheckInterval = setInterval(() => {
       if (this.authenticator.route === 'authenticated') {
-        this.router.navigate(['/home']);
+        this.router.navigate(['/dashboard']);
         // window.location.reload();
         clearInterval(this.routeCheckInterval);
       }

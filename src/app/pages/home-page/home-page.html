@@ -9,19 +9,19 @@
     <div class="relative max-w-7xl mx-auto">
       <div class="text-center animate-slide-up">
         <h1 class="text-4xl md:text-6xl font-bold mb-6 tracking-tight">
-          Welcome to <span class="text-yellow-300">COSDA</span>
+          Files by <span class="text-yellow-300">Hour</span>
         </h1>
         <p class="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto">
-          Your intelligent sensor dashboard for real-time monitoring and analytics
+          View and analyze sensor data files organized by hour with detailed filtering and visualization
         </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <!-- <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <a href="https://cosda-umass.github.io/cosda-umass/" target="_blank" rel="noopener" class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg animate-pulse flex items-center justify-center">
             Get Started
           </a>
           <a href="https://github.com/cosda-umass/cosda-umass" target="_blank" rel="noopener" class="border-2 border-white hover:bg-white hover:text-[hsl(190,95%,30%)] px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
             Contact Us
           </a>
-        </div>
+        </div> -->
       </div>
     </div>
     
@@ -32,14 +32,13 @@
   </section>
 
   <!-- Stats Cards Section -->
-  <section class="py-16 px-4 sm:px-6 lg:px-8">
+  <!-- <section class="py-16 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
       <h2 class="text-3xl font-bold text-gray-900 text-center mb-12 animate-slide-up">
         Dashboard Overview
       </h2>
       
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-        <!-- Sensor Status Card -->
         <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-slide-up" style="animation-delay: 0.1s;">
           <div class="p-6">
             <div class="flex items-center justify-between mb-4">
@@ -70,7 +69,6 @@
                           </a>
                         </div>
             
-            <!-- Status Legend -->
             <div class="mt-3 pt-3 border-t border-gray-100">
               <div class="flex flex-wrap gap-3 text-xs">
                 <div class="flex items-center gap-1">
@@ -90,7 +88,6 @@
           </div>
         </div>
 
-        <!-- Data Points Card -->
         <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-slide-up" style="animation-delay: 0.2s;">
           <div class="p-6">
             <div class="flex items-center justify-between mb-4">
@@ -121,22 +118,6 @@
           </div>
         </div>
 
-        <!-- Unregistered Devices Card (replaces Alerts) -->
-        <!-- <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-slide-up" style="animation-delay: 0.3s;">
-          <div class="p-6">
-            <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
-                <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M6 10h12M4 14h16M5 18h14" />
-                </svg>
-              </div>
-            </div>
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ unregisteredCount }}</h3>
-            <p class="text-gray-600">Unregistered Devices</p>
-          </div>
-        </div> -->
-
-        <!-- Users Card (replaces Performance/Uptime) -->
         <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-slide-up" style="animation-delay: 0.4s;">
           <div class="p-6">
             <div class="flex items-center justify-between mb-4">
@@ -161,7 +142,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <app-data-grid [initialFilter]="filterValue || ''" (graphOutput)="openGraphModal($event)"></app-data-grid>
 

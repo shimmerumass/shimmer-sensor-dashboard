@@ -20,7 +20,7 @@ export class LoginPage {
       const session = await fetchAuthSession();
       this.isAuthenticated = session?.tokens?.idToken ? true : false;
       if (this.isAuthenticated) {
-        this.router.navigate(['/home']);
+        this.router.navigate(['/dashboard']);
       }
     } catch {
       this.isAuthenticated = false;
@@ -30,6 +30,6 @@ export class LoginPage {
   onAuthSuccess() {
 
     console.log("SUCCESSS")
-    this.router.navigate(['/home']);
+    this.router.navigate(['/dashboard']);
   }
 }
