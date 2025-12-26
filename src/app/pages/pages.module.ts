@@ -12,6 +12,7 @@ import { BaseChartDirective } from 'ng2-charts';
 import { AgGridModule } from 'ag-grid-angular';
 import { LatestFilesPage } from './latest-files/latest-files';
 import { DashboardPage } from './dashboard/dashboard';
+import { DailyAggregatorPage } from './daily-aggregator/daily-aggregator';
 
 
 const routes: Routes = [
@@ -22,13 +23,14 @@ const routes: Routes = [
   { path: 'data-ops', component: DataOps },
   { path: 'latest-files', component: LatestFilesPage },
   { path: 'dashboard', component: DashboardPage },
+  { path: 'daily-aggregator', component: DailyAggregatorPage },
 ];
 
 
 @NgModule({
-  declarations: [LoginPage, HomePage, UserOpsPage, DataOps, LatestFilesPage, DashboardPage],
+  declarations: [LoginPage, HomePage, UserOpsPage, DataOps, LatestFilesPage, DashboardPage, DailyAggregatorPage],
   imports: [CommonModule, CompModule, RouterModule.forChild(routes), FormsModule, BaseChartDirective, AgGridModule],
-  exports: [RouterModule, LoginPage, HomePage, UserOpsPage, DataOps, LatestFilesPage, DashboardPage],
+  exports: [RouterModule, LoginPage, HomePage, UserOpsPage, DataOps, LatestFilesPage, DashboardPage, DailyAggregatorPage],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PagesModule {}
